@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MGM Garage Lab is an independent software lab exploring developer tooling, AI-assisted engineering and data systems.">
+    <meta name="theme-color" content="#071426">
+    <title>MGM Garage Lab</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="blueprint" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="MGM Garage Lab home">
+        <span class="monogram" aria-hidden="true">MGM</span>
+        <span class="brand-name">Garage Lab</span>
+      </a>
+      <span class="status"><span class="status-dot"></span>Lab online</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="welcome-title">
+        <p class="eyebrow">// INDEPENDENT SOFTWARE LAB</p>
+        <h1 id="welcome-title">Welcome to<br><span>MGM Garage Lab.</span></h1>
+        <p class="intro">
+          Exploring developer tooling, AI-assisted engineering and data systems—one experiment at a time.
+        </p>
+
+        <div class="actions">
+          <a class="button button-primary" href="https://github.com/mmorgano/workflow-management-skill">
+            Explore Workflow Management
+          </a>
+          <a class="button button-secondary" href="https://github.com/mmorgano">
+            View GitHub
+          </a>
+        </div>
+
+        <p class="tagline" aria-label="Build, Learn, Share">
+          <span>BUILD</span><i></i><span>LEARN</span><i></i><span>SHARE</span>
+        </p>
+      </section>
+
+      <aside class="project-card" aria-label="Statelier project status">
+        <div class="card-topline">
+          <span>PROJECT / 002</span>
+          <span>IN DEVELOPMENT</span>
+        </div>
+        <div class="diagram" aria-hidden="true">
+          <span class="node node-a"></span>
+          <span class="node node-b"></span>
+          <span class="node node-c"></span>
+          <span class="connector connector-a"></span>
+          <span class="connector connector-b"></span>
+        </div>
+        <p class="card-label">STATISTICS + ATELIER</p>
+        <h2>Statelier</h2>
+        <p>Statistical and data-engineering tooling, currently taking shape inside the lab.</p>
+      </aside>
+    </main>
+
+    <footer>
+      <span>© <span id="year">2026</span> MGM Garage Lab</span>
+      <span class="coordinates">BUILD_01 / LEARN_02 / SHARE_03</span>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
