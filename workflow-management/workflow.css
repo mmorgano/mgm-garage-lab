@@ -60,7 +60,7 @@
 .portability-section { padding: 75px 0; border-block: 1px solid var(--line-strong); }
 .portability-section h2 { max-width: 1050px; margin-top: 32px; font-size: clamp(2.1rem,4.6vw,4rem); }
 .portability-section h2 span { color: var(--blue); }
-.assistant-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 40px; margin: 40px 0 28px; }
+.assistant-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 40px; margin: 40px 0 28px; }
 .assistant-list h3 { font-size: 1.7rem; color: var(--blue-soft); }
 .text-link { display: inline-block; color: var(--blue-soft); margin-top: 20px; font-size: .84rem; }
 .lifecycle { list-style: none; counter-reset: steps; padding: 0; margin: 35px 0; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 26px; }
