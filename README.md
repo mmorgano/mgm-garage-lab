@@ -5,12 +5,16 @@ An independent software lab exploring developer tooling, AI-assisted engineering
 ## Public pages
 
 - [MGM Garage Lab](https://mgmgaragelab.com/)
+- [Projects](https://mgmgaragelab.com/projects/)
+- [Notes](https://mgmgaragelab.com/notes/)
+- [About](https://mgmgaragelab.com/about/)
 - [Workflow Management](https://mgmgaragelab.com/workflow-management/)
 
 ## Local preview
 
 Serve this directory with any static web server. The homepage is `index.html`
-and the project page is `workflow-management/index.html`.
+and the internal pages live in `projects/`, `notes/`, `about/` and
+`workflow-management/`.
 
 ## Publishing
 
