@@ -37,12 +37,24 @@
       .skill-shell { width: calc(100% - 2 * var(--page-gutter)); max-width: 1564px; margin: 0 auto; }
       .skill-header, .skill-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 18px max(var(--page-gutter), calc((100% - var(--page-max-width)) / 2 + var(--page-gutter))); background: #10231f; color: #fafaf7; }
       .skill-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid #28423c; }
-      .skill-brand { color: #fafaf7; font-size: 19px; font-weight: 700; }
-      .skill-nav, .skill-footer nav { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 13px; }
+      .skill-brand-block { min-width: 0; }
+      .skill-brand { display: inline-block; color: #fafaf7; font-size: 19px; font-weight: 700; text-decoration: none; }
+      .skill-brand-subtitle { margin: 4px 0 0; font-size: 14px; color: #cad7d0; }
+      .skill-nav, .skill-footer nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; }
       .skill-header a, .skill-footer a { color: #cad7d0; }
       .skill-header .skill-brand { color: #fafaf7; }
-      .skill-nav a:hover, .skill-footer a:hover { color: #f6d169; }
-      .skill-nav a[aria-current="page"] { color: #f6d169; text-decoration: underline; text-underline-offset: 6px; }
+      .skill-nav a, .skill-nav button, .nav-wip { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid #47665d; border-radius: 4px; background: #172d29; color: #edf5ed; text-decoration: none; font: inherit; }
+      .skill-nav a, .skill-nav button { cursor: pointer; }
+      .skill-nav a:hover, .skill-nav button:hover { background: #e9efe6; color: #17302b; }
+      .skill-nav a[aria-current="page"] { background: #e9efe6; color: #17302b; }
+      .nav-wip { gap: 8px; color: #cad7d0; cursor: default; }
+      .nav-wip small { color: #f6d169; font: 800 10px/1 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+      .language-switch { display: inline-flex; gap: 0; flex-shrink: 0; }
+      .skill-nav .language-switch button { min-width: 44px; min-height: 44px; justify-content: center; border-radius: 0; }
+      .skill-nav .language-switch button:first-child { border-radius: 4px 0 0 4px; }
+      .skill-nav .language-switch button:last-child { border-radius: 0 4px 4px 0; border-left: 0; }
+      .skill-nav .language-switch button[aria-pressed="true"] { background: #e9efe6; color: #17302b; }
+      .skill-footer a:hover { color: #f6d169; }
       .skill-footer { padding-block: 24px; border-top: 1px solid #28423c; color: #b8c9c1; font-size: 13px; }
       .skill-header :focus-visible, .skill-footer :focus-visible, .skill-hero :focus-visible { outline-color: #f6d169; }
       .eyebrow { margin: 0 0 18px; font: 700 12px/1.5 "JetBrains Mono", monospace; letter-spacing: .16em; color: var(--blue-soft); text-transform: uppercase; }
@@ -53,17 +65,18 @@
       .button-secondary:hover, .button-secondary:focus-visible { border-color: var(--warm); color: var(--warm); }
 
       .skill-hero { padding: clamp(42px, 6vw, 78px) 0 clamp(34px, 5vw, 64px); background: #142522; color: #fafaf7; --text: #cad7d0; --white: #fafaf7; --muted: #b8c9c1; --warm: #f6d169; --blue-soft: #f6d169; --panel: #172d29; --line: #28423c; --line-strong: #47665d; }
-      .hero-board { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); align-items: stretch; }
+      .hero-board { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); align-items: start; }
       .hero-copy-block { grid-column: span 7; display: flex; flex-direction: column; justify-content: space-between; min-height: 460px; padding: clamp(26px, 3vw, 42px); border: 1px solid #47665d; border-radius: 8px; background: #172d29; }
       .skill-hero h1 { margin: 0; max-width: 960px; font-size: clamp(56px, 8vw, 124px); line-height: .88; letter-spacing: -.07em; }
+      html[lang="it"] .skill-hero h1 { max-width: 820px; font-size: clamp(48px, 6.4vw, 98px); line-height: .94; letter-spacing: -.055em; }
       .skill-hero h1 span { color: var(--warm); }
       .hero-copy { margin: clamp(22px, 3vw, 36px) 0 0; max-width: 760px; color: var(--text); font-size: clamp(18px, 1.55vw, 23px); line-height: 1.55; }
       .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-      .hero-side { grid-column: span 5; display: grid; grid-template-rows: auto 1fr; gap: clamp(18px, 2vw, 28px); min-width: 0; }
+      .hero-side { grid-column: span 5; display: grid; grid-template-rows: auto auto; align-content: start; gap: clamp(18px, 2vw, 28px); min-width: 0; }
       .date-card { padding: clamp(24px, 3vw, 36px); border-radius: 8px; border: 1px solid #bdc9c0; background: #edf0e9; }
       .date-card p { margin: 0; color: #243a36; font-size: clamp(22px, 2.3vw, 36px); line-height: 1.15; letter-spacing: -.03em; }
       .date-card small { display: block; margin-top: 18px; color: #576d64; font: 700 11px/1.7 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
-      .mini-stack { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+      .mini-stack { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); align-items: start; gap: 12px; }
       .mini-card { min-height: 140px; padding: 18px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--panel); }
       .mini-card strong { display: block; margin-bottom: 12px; color: var(--warm); font: 700 11px/1.4 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
       .mini-card span { color: var(--text); font-size: 14px; line-height: 1.55; }
@@ -76,12 +89,13 @@
       .signal-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
       .signal { padding: clamp(22px, 3vw, 34px); border-right: 1px solid var(--line); }
       .signal:last-child { border-right: 0; }
-      .signal code { color: var(--mint); font-size: 13px; }
+      .signal code { position: relative; display: inline-block; z-index: 0; color: #8f3936; font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+      .signal code::before { content: ""; position: absolute; left: -6px; right: -6px; bottom: 1px; z-index: -1; height: .65em; background: #f6d169; transform: rotate(-1.5deg); opacity: .9; }
       .signal p { margin: 10px 0 0; color: var(--text); font-size: 17px; line-height: 1.55; }
 
       .section { border-top: 1px solid var(--line); padding: clamp(54px, 7vw, 96px) 0; }
       .section-grid { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: clamp(28px, 5vw, 70px); align-items: start; }
-      .section-kicker { position: sticky; top: 98px; margin: 6px 0 0; color: var(--blue-soft); font: 700 11px/1.7 "JetBrains Mono", monospace; letter-spacing: .16em; text-transform: uppercase; }
+      .section-kicker { position: sticky; top: 98px; display: inline-flex; align-items: center; width: fit-content; min-height: 34px; margin: 2px 0 0; padding: 0 12px; border-left: 3px solid #9b3332; background: #f1ded9; color: #8f3936; font: 800 13px/1.4 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
       .section h2 { margin: 0; max-width: 1100px; font-size: clamp(34px, 5.5vw, 76px); line-height: .98; letter-spacing: -.055em; }
       .section-lead { margin: 22px 0 0; max-width: 860px; color: var(--text); font-size: clamp(17px, 1.45vw, 21px); line-height: 1.7; }
       .card { border: 1px solid var(--line-strong); border-radius: 8px; background: var(--panel); padding: clamp(20px, 2vw, 28px); }
@@ -205,11 +219,18 @@
   </head>
   <body class="skill-page">
     <header class="skill-header">
-      <a class="skill-brand" href="../index.html">MGM Garage Lab</a>
+      <div class="skill-brand-block">
+        <a class="skill-brand" href="../index.html">MGM Garage Lab</a>
+        <p class="skill-brand-subtitle">Not a company. A garage for ideas ready to step outside.</p>
+      </div>
       <nav class="skill-nav" aria-label="Main navigation">
-        <a href="../index.html">Home</a>
         <a href="./index.html" aria-current="page">Workflow</a>
+        <span class="nav-wip" aria-disabled="true"><span class="origin-label">Origin Story</span><small>WIP</small></span>
         <a href="https://github.com/mmorgano">GitHub</a>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-language="it" lang="it" aria-label="Italiano" aria-pressed="false">IT</button>
+          <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+        </div>
       </nav>
     </header>
 
@@ -462,12 +483,300 @@
     </main>
 
     <footer class="skill-footer">
-      <span>Â© 2026 MGM GARAGE LAB</span>
+      <span>&copy; 2026 MGM GARAGE LAB</span>
       <nav aria-label="Project links">
         <a href="https://github.com/mmorgano/workflow-management-skill">Claude / Codex</a>
         <a href="../index.html">MGM Garage Lab</a>
       </nav>
     </footer>
+    <script>
+      (function () {
+        var languageKey = "mgm-garage-language";
+        var copy = {
+          en: {
+            title: "Workflow Management Skill - MGM Garage Lab",
+            description: "Workflow Management Skill gives AI coding assistants a durable project memory across sessions, with stable Claude/Codex support and a Kiro beta.",
+            labels: {
+              ".skill-nav": "Main navigation",
+              ".signal-row": "Core promises",
+              ".hero-side": "Workflow Management summary",
+              ".skill-footer nav": "Project links",
+              ".language-switch": "Language"
+            },
+            attrs: {
+              ".comic-feature": { "aria-label": "Three-panel comic showing an AI assistant forgetting a project and recovering context through workflow records." },
+              ".comic-feature img": { "alt": "Three-panel comic labelled New Chat, No Context, Project Memory, showing an AI assistant moving from confusion to organized project memory with RECAP, TASKS and SESSION files." }
+            },
+            content: {
+              ".skill-brand-subtitle": "Not a company. A garage for ideas ready to step outside.",
+              ".origin-label": "Origin Story",
+              ".nav-wip small": "WIP",
+              ".skill-hero .eyebrow": "Workflow Management Skill",
+              ".skill-hero h1": "Every new chat is a first date. <span>Give it a diary.</span>",
+              ".hero-copy": "AI assistants are sharp, but a fresh conversation starts without yesterday's project memory. Workflow Management gives the next session a durable handoff: what changed, what matters, what is blocked, and where to continue.",
+              ".actions .button-primary": "Stable Claude/Codex edition",
+              ".actions .button-secondary": "Kiro beta in private test",
+              ".date-card p": "The assistant is not lazy. It just wakes up in a new conversation with no diary.",
+              ".date-card small": "Personal project memory for AI-assisted work",
+              ".mini-card:nth-child(1) strong": "Start",
+              ".mini-card:nth-child(1) span": "Read the current state before guessing.",
+              ".mini-card:nth-child(2) strong": "Work",
+              ".mini-card:nth-child(2) span": "Capture decisions and useful progress.",
+              ".mini-card:nth-child(3) strong": "Resume",
+              ".mini-card:nth-child(3) span": "Continue tomorrow without ritual amnesia.",
+              ".comic-caption span:nth-child(1)": "New chat",
+              ".comic-caption span:nth-child(2)": "No context",
+              ".comic-caption span:nth-child(3)": "Project memory",
+              ".signal:nth-child(1) code": "Plain files",
+              ".signal:nth-child(1) p": "Markdown and JSON in a context folder you control.",
+              ".signal:nth-child(2) code": "Portable workflow",
+              ".signal:nth-child(2) p": "The project memory belongs to the work, not one chat window.",
+              ".signal:nth-child(3) code": "Beta path",
+              ".signal:nth-child(3) p": "Kiro adds a team experiment while the stable package stays focused.",
+              ".section:nth-of-type(3) .section-kicker": "01 / The Problem",
+              ".section:nth-of-type(3) h2": "AI can write code. The hard part is remembering why the work looks like this.",
+              ".section:nth-of-type(3) .section-lead": "Chat history is not a project plan. It is too long, too hidden, and too fragile. Workflow Management turns the living state of the project into plain files the assistant can read on purpose.",
+              ".problem-bento .large h3": "New session, same introduction.",
+              ".problem-bento .large p": "You explain the repository, constraints, decisions, blockers, and next step again. The cost is not dramatic once. It becomes heavy because real work spans many sessions.",
+              ".problem-bento .wide:nth-child(2) h3": "Lost handoffs",
+              ".problem-bento .wide:nth-child(2) p": "The useful ending of yesterday's work gets buried in a transcript instead of becoming today's starting point.",
+              ".problem-bento .wide:nth-child(3) h3": "Context overflow",
+              ".problem-bento .wide:nth-child(3) p": "The assistant reads too much or too little because there is no compact, current source of truth.",
+              ".problem-bento .small:nth-child(4) h3": "Invisible decisions",
+              ".problem-bento .small:nth-child(4) p": "Choices live in chat fragments instead of records you can inspect.",
+              ".problem-bento .small:nth-child(5) h3": "Forgotten blockers",
+              ".problem-bento .small:nth-child(5) p": "Open issues return as surprises instead of known project state.",
+              ".problem-bento .small:nth-child(6) h3": "Messy restart",
+              ".problem-bento .small:nth-child(6) p": "The first half hour becomes archaeology.",
+              ".section:nth-of-type(4) .section-kicker": "02 / Two Editions",
+              ".section:nth-of-type(4) h2": "One workflow contract, two practical packages.",
+              ".section:nth-of-type(4) .section-lead": "The stable edition supports Claude Code and Codex. The Kiro edition is a separate beta package with the same personal workflow plus an optional team layer.",
+              ".edition-card:nth-child(1) h3": "Claude / Codex edition",
+              ".edition-card:nth-child(1) .badge": "Stable",
+              ".edition-card:nth-child(1) p": "Open-source package for durable personal project context: sessions, RECAP, tasks, focus notes, meetings, roadmaps, decisions, and sprints.",
+              ".edition-card:nth-child(1) li:nth-child(1)": "Public repository: `workflow-management-skill`",
+              ".edition-card:nth-child(1) li:nth-child(2)": "Designed for file-based, local-first context",
+              ".edition-card:nth-child(1) li:nth-child(3)": "Tested with guided setup and session resume flows",
+              ".edition-card:nth-child(1) .button": "Open repository",
+              ".contract-pill": "Same contract",
+              ".edition-card:nth-child(3) h3": "Kiro edition",
+              ".edition-card:nth-child(3) .badge": "Beta test",
+              ".edition-card:nth-child(3) p": "A Kiro-specific package with the personal workflow skill and an optional team skill for shared roadmap, tasks, and assignments.",
+              ".edition-card:nth-child(3) li:nth-child(1)": "Private beta while real Kiro testing is pending",
+              ".edition-card:nth-child(3) li:nth-child(2)": "Team context stays separate from personal notes",
+              ".edition-card:nth-child(3) li:nth-child(3)": "Built for a first pilot before public release",
+              ".edition-card:nth-child(3) .button": "Private beta",
+              ".quote-band blockquote": "It does not make the AI omniscient. It gives it a notebook, a map, and enough manners to read them before guessing.",
+              ".quote-band p": "Everything stays inspectable: Markdown records, JSON configuration, and normal project files under a context folder you control.",
+              ".voyage-heading .eyebrow": "03 / Long Vision &middot; Workflow Management",
+              ".voyage-heading h2": "A hundred sessions.<br>Still <em>one destination.</em>",
+              ".voyage-heading > p:last-child": "Weeks pass. Chats restart. Your project should still remember where it is going.",
+              ".voyage-stop:nth-child(1) small": "THE MAP / ROADMAP",
+              ".voyage-stop:nth-child(1) h3": "Set the course.",
+              ".voyage-stop:nth-child(1) p": "Keep the long-term goal and the milestones that lead there.",
+              ".voyage-stop:nth-child(2) small": "THE LOGBOOK / SESSIONS",
+              ".voyage-stop:nth-child(2) h3": "Remember why.",
+              ".voyage-stop:nth-child(2) p": "Carry decisions forward. Stop rediscovering yesterday.",
+              ".voyage-stop:nth-child(3) small": "THE WEATHER / RISKS",
+              ".voyage-stop:nth-child(3) h3": "Meet the detours.",
+              ".voyage-stop:nth-child(3) p": "Record blockers and changes before they become surprises.",
+              ".voyage-stop:nth-child(4) small": "THE COMPASS / RECAP",
+              ".voyage-stop:nth-child(4) h3": "Find the next step.",
+              ".voyage-stop:nth-child(4) p": "Start each session knowing what matters now.",
+              ".voyage-stop:nth-child(5) small": "THE VISION / PHASE GATES",
+              ".voyage-stop:nth-child(5) h3": "The destination.",
+              ".voyage-stop:nth-child(5) p": "Check progress against the outcome you set out to reach.",
+              ".voyage-footer p": "Long-vision support in the Claude/Codex edition.<br>A shared direction, from the first idea to the final milestone.",
+              ".voyage-footer a": "Explore the stable edition &rarr;",
+              ".section:nth-of-type(7) .section-kicker": "04 / What It Keeps",
+              ".section:nth-of-type(7) h2": "The minimum memory a serious work session needs.",
+              ".memory-card:nth-child(1) h3": "Current state",
+              ".memory-card:nth-child(1) p": "Open work, blockers, and next steps without re-reading everything.",
+              ".memory-card:nth-child(2) h3": "Daily handoff",
+              ".memory-card:nth-child(2) p": "What happened today: decisions, progress, verification, and next actions.",
+              ".memory-card:nth-child(3) h3": "Work records",
+              ".memory-card:nth-child(3) p": "Goals, plans, progress, and done criteria.",
+              ".memory-card:nth-child(4) h3": "Ideas and research",
+              ".memory-card:nth-child(4) p": "Notes that should survive the conversation.",
+              ".memory-card:nth-child(5) h3": "Direction",
+              ".memory-card:nth-child(5) p": "Phases, milestones, sequencing, and decisions.",
+              ".memory-card:nth-child(6) h3": "Outcomes",
+              ".memory-card:nth-child(6) p": "Owners, unresolved questions, and follow-ups from real conversations.",
+              ".section:nth-of-type(8) .section-kicker": "05 / What Comes Next",
+              ".section:nth-of-type(8) h2": "The memory layer becomes the base for smarter project context.",
+              ".section:nth-of-type(8) .section-lead": "Workflow Management is the first layer: durable state. Two later experiments explore how an assistant can choose the right documents instead of swallowing the whole project.",
+              ".roadmap-row:nth-child(1) span": "A local-first knowledge graph over docs, decisions, tasks, and source references.",
+              ".roadmap-row:nth-child(1) strong": "Focus",
+              ".roadmap-row:nth-child(2) span": "A future RAG implementation where the graph narrows the search before semantic retrieval.",
+              ".roadmap-row:nth-child(2) strong": "Later",
+              ".roadmap-row:nth-child(3) span": "Real Kiro test, then public release decision for the beta package.",
+              ".roadmap-row:nth-child(3) strong": "Next",
+              ".skill-footer nav a:nth-child(1)": "Claude / Codex",
+              ".skill-footer nav a:nth-child(2)": "MGM Garage Lab"
+            }
+          },
+          it: {
+            title: "Workflow Management Skill - MGM Garage Lab",
+            description: "Workflow Management Skill dà agli assistenti AI una memoria di progetto durevole tra sessioni, con supporto stabile Claude/Codex e una beta Kiro.",
+            labels: {
+              ".skill-nav": "Navigazione principale",
+              ".signal-row": "Promesse principali",
+              ".hero-side": "Sintesi Workflow Management",
+              ".skill-footer nav": "Link del progetto",
+              ".language-switch": "Lingua"
+            },
+            attrs: {
+              ".comic-feature": { "aria-label": "Fumetto in tre pannelli in cui un assistente AI perde il contesto e lo recupera tramite record di workflow." },
+              ".comic-feature img": { "alt": "Fumetto in tre pannelli etichettati Nuova chat, Nessun contesto, Memoria di progetto: l'assistente AI passa dalla confusione a una memoria ordinata con file RECAP, TASKS e SESSION." }
+            },
+            content: {
+              ".skill-brand-subtitle": "Non una company. Un garage per idee che possono uscire allo scoperto.",
+              ".origin-label": "Origin Story",
+              ".nav-wip small": "WIP",
+              ".skill-hero .eyebrow": "Workflow Management Skill",
+              ".skill-hero h1": "Ogni nuova chat è come un primo appuntamento. <span>Dalle un diario.</span>",
+              ".hero-copy": "Gli assistenti AI sono brillanti, ma una conversazione nuova parte senza la memoria di progetto di ieri. Workflow Management consegna alla sessione successiva un passaggio di consegne durevole: cosa è cambiato, cosa conta, cosa è bloccato e da dove continuare.",
+              ".actions .button-primary": "Edizione stabile Claude/Codex",
+              ".actions .button-secondary": "Beta Kiro in test privato",
+              ".date-card p": "L'assistente non è pigro. Si sveglia solo in una conversazione nuova senza diario.",
+              ".date-card small": "Memoria personale di progetto per il lavoro assistito dall'AI",
+              ".mini-card:nth-child(1) strong": "Avvio",
+              ".mini-card:nth-child(1) span": "Legge lo stato corrente prima di indovinare.",
+              ".mini-card:nth-child(2) strong": "Lavoro",
+              ".mini-card:nth-child(2) span": "Registra decisioni e avanzamento utile.",
+              ".mini-card:nth-child(3) strong": "Ripresa",
+              ".mini-card:nth-child(3) span": "Continua domani senza amnesia rituale.",
+              ".comic-caption span:nth-child(1)": "Nuova chat",
+              ".comic-caption span:nth-child(2)": "Nessun contesto",
+              ".comic-caption span:nth-child(3)": "Memoria di progetto",
+              ".signal:nth-child(1) code": "File semplici",
+              ".signal:nth-child(1) p": "Markdown e JSON in una cartella di contesto che controlli tu.",
+              ".signal:nth-child(2) code": "Workflow portabile",
+              ".signal:nth-child(2) p": "La memoria del progetto appartiene al lavoro, non a una finestra di chat.",
+              ".signal:nth-child(3) code": "Percorso beta",
+              ".signal:nth-child(3) p": "Kiro aggiunge un esperimento team mentre il pacchetto stabile resta focalizzato.",
+              ".section:nth-of-type(3) .section-kicker": "01 / Il problema",
+              ".section:nth-of-type(3) h2": "L'AI sa scrivere codice. La parte difficile è ricordare perché il lavoro è fatto così.",
+              ".section:nth-of-type(3) .section-lead": "La cronologia chat non è un piano di progetto. È troppo lunga, troppo nascosta e troppo fragile. Workflow Management trasforma lo stato vivo del progetto in file semplici che l'assistente può leggere intenzionalmente.",
+              ".problem-bento .large h3": "Nuova sessione, stessa introduzione.",
+              ".problem-bento .large p": "Rispieghi repository, vincoli, decisioni, blocker e prossimo passo. Una volta non pesa troppo. Diventa pesante quando il lavoro reale dura molte sessioni.",
+              ".problem-bento .wide:nth-child(2) h3": "Passaggi persi",
+              ".problem-bento .wide:nth-child(2) p": "La parte utile della chiusura di ieri finisce sepolta in una trascrizione invece di diventare il punto di partenza di oggi.",
+              ".problem-bento .wide:nth-child(3) h3": "Overflow di contesto",
+              ".problem-bento .wide:nth-child(3) p": "L'assistente legge troppo o troppo poco perché non esiste una fonte compatta e corrente della verità.",
+              ".problem-bento .small:nth-child(4) h3": "Decisioni invisibili",
+              ".problem-bento .small:nth-child(4) p": "Le scelte vivono in frammenti di chat invece che in record ispezionabili.",
+              ".problem-bento .small:nth-child(5) h3": "Blocker dimenticati",
+              ".problem-bento .small:nth-child(5) p": "I problemi aperti ritornano come sorprese invece che come stato noto del progetto.",
+              ".problem-bento .small:nth-child(6) h3": "Ripartenza confusa",
+              ".problem-bento .small:nth-child(6) p": "La prima mezz'ora diventa archeologia.",
+              ".section:nth-of-type(4) .section-kicker": "02 / Due edizioni",
+              ".section:nth-of-type(4) h2": "Un contratto di workflow, due pacchetti pratici.",
+              ".section:nth-of-type(4) .section-lead": "L'edizione stabile supporta Claude Code e Codex. L'edizione Kiro è un pacchetto beta separato con lo stesso workflow personale e un layer team opzionale.",
+              ".edition-card:nth-child(1) h3": "Edizione Claude / Codex",
+              ".edition-card:nth-child(1) .badge": "Stabile",
+              ".edition-card:nth-child(1) p": "Pacchetto open source per contesto personale di progetto durevole: sessioni, RECAP, task, focus note, meeting, roadmap, decisioni e sprint.",
+              ".edition-card:nth-child(1) li:nth-child(1)": "Repository pubblico: `workflow-management-skill`",
+              ".edition-card:nth-child(1) li:nth-child(2)": "Pensato per contesto locale, in file leggibili",
+              ".edition-card:nth-child(1) li:nth-child(3)": "Testato con setup guidato e ripresa sessione",
+              ".edition-card:nth-child(1) .button": "Apri repository",
+              ".contract-pill": "Stesso contratto",
+              ".edition-card:nth-child(3) h3": "Edizione Kiro",
+              ".edition-card:nth-child(3) .badge": "Beta test",
+              ".edition-card:nth-child(3) p": "Pacchetto specifico per Kiro con skill personale di workflow e una skill team opzionale per roadmap, task e assegnazioni condivise.",
+              ".edition-card:nth-child(3) li:nth-child(1)": "Beta privata finché il test reale in Kiro non è completato",
+              ".edition-card:nth-child(3) li:nth-child(2)": "Il contesto team resta separato dalle note personali",
+              ".edition-card:nth-child(3) li:nth-child(3)": "Costruito per un primo pilot prima della pubblicazione",
+              ".edition-card:nth-child(3) .button": "Beta privata",
+              ".quote-band blockquote": "Non rende l'AI onnisciente. Le dà un taccuino, una mappa e abbastanza buone maniere da leggerli prima di tirare a indovinare.",
+              ".quote-band p": "Tutto resta ispezionabile: record Markdown, configurazione JSON e normali file di progetto in una cartella di contesto che controlli tu.",
+              ".voyage-heading .eyebrow": "03 / Long Vision &middot; Workflow Management",
+              ".voyage-heading h2": "Cento sessioni.<br>Ancora <em>una destinazione.</em>",
+              ".voyage-heading > p:last-child": "Passano settimane. Le chat ripartono. Il progetto deve ricordare comunque dove sta andando.",
+              ".voyage-stop:nth-child(1) small": "LA MAPPA / ROADMAP",
+              ".voyage-stop:nth-child(1) h3": "Traccia la rotta.",
+              ".voyage-stop:nth-child(1) p": "Conserva l'obiettivo di lungo periodo e le milestone che portano lì.",
+              ".voyage-stop:nth-child(2) small": "IL DIARIO / SESSIONI",
+              ".voyage-stop:nth-child(2) h3": "Ricorda il perché.",
+              ".voyage-stop:nth-child(2) p": "Porta avanti le decisioni. Smetti di riscoprire ieri.",
+              ".voyage-stop:nth-child(3) small": "IL METEO / RISCHI",
+              ".voyage-stop:nth-child(3) h3": "Affronta le deviazioni.",
+              ".voyage-stop:nth-child(3) p": "Registra blocker e cambi prima che diventino sorprese.",
+              ".voyage-stop:nth-child(4) small": "LA BUSSOLA / RECAP",
+              ".voyage-stop:nth-child(4) h3": "Trova il prossimo passo.",
+              ".voyage-stop:nth-child(4) p": "Inizia ogni sessione sapendo cosa conta adesso.",
+              ".voyage-stop:nth-child(5) small": "LA VISIONE / PHASE GATE",
+              ".voyage-stop:nth-child(5) h3": "La destinazione.",
+              ".voyage-stop:nth-child(5) p": "Controlla l'avanzamento rispetto all'esito che volevi raggiungere.",
+              ".voyage-footer p": "Supporto long-vision nell'edizione Claude/Codex.<br>Una direzione condivisa, dalla prima idea alla milestone finale.",
+              ".voyage-footer a": "Esplora l'edizione stabile &rarr;",
+              ".section:nth-of-type(7) .section-kicker": "04 / Cosa conserva",
+              ".section:nth-of-type(7) h2": "La memoria minima che serve a una sessione di lavoro seria.",
+              ".memory-card:nth-child(1) h3": "Stato corrente",
+              ".memory-card:nth-child(1) p": "Lavoro aperto, blocker e prossimi passi senza rileggere tutto.",
+              ".memory-card:nth-child(2) h3": "Passaggio quotidiano",
+              ".memory-card:nth-child(2) p": "Cosa è successo oggi: decisioni, avanzamento, verifiche e prossime azioni.",
+              ".memory-card:nth-child(3) h3": "Record di lavoro",
+              ".memory-card:nth-child(3) p": "Obiettivi, piani, progresso e criteri di chiusura.",
+              ".memory-card:nth-child(4) h3": "Idee e ricerca",
+              ".memory-card:nth-child(4) p": "Note che devono sopravvivere alla conversazione.",
+              ".memory-card:nth-child(5) h3": "Direzione",
+              ".memory-card:nth-child(5) p": "Fasi, milestone, sequenza e decisioni.",
+              ".memory-card:nth-child(6) h3": "Esiti",
+              ".memory-card:nth-child(6) p": "Owner, domande aperte e follow-up delle conversazioni reali.",
+              ".section:nth-of-type(8) .section-kicker": "05 / Cosa viene dopo",
+              ".section:nth-of-type(8) h2": "Il layer di memoria diventa la base per un contesto di progetto più intelligente.",
+              ".section:nth-of-type(8) .section-lead": "Workflow Management è il primo strato: stato durevole. Due esperimenti successivi esplorano come un assistente possa scegliere i documenti giusti invece di inghiottire tutto il progetto.",
+              ".roadmap-row:nth-child(1) span": "Un knowledge graph locale su documenti, decisioni, task e riferimenti al codice.",
+              ".roadmap-row:nth-child(1) strong": "Focus",
+              ".roadmap-row:nth-child(2) span": "Una futura implementazione RAG in cui il grafo restringe la ricerca prima del retrieval semantico.",
+              ".roadmap-row:nth-child(2) strong": "Dopo",
+              ".roadmap-row:nth-child(3) span": "Test reale in Kiro, poi decisione sulla pubblicazione del pacchetto beta.",
+              ".roadmap-row:nth-child(3) strong": "Next",
+              ".skill-footer nav a:nth-child(1)": "Claude / Codex",
+              ".skill-footer nav a:nth-child(2)": "MGM Garage Lab"
+            }
+          }
+        };
+        function setContent(selector, value) {
+          var element = document.querySelector(selector);
+          if (!element) return;
+          if (value.indexOf("<") >= 0 || value.indexOf("&") >= 0) element.innerHTML = value;
+          else element.textContent = value;
+        }
+        function setLanguage(language) {
+          if (language !== "it" && language !== "en") return;
+          var data = copy[language];
+          document.documentElement.lang = language;
+          document.title = data.title;
+          var meta = document.querySelector("meta[name='description']");
+          if (meta) meta.setAttribute("content", data.description);
+          Object.keys(data.content).forEach(function (selector) { setContent(selector, data.content[selector]); });
+          Object.keys(data.labels).forEach(function (selector) {
+            var element = document.querySelector(selector);
+            if (element) element.setAttribute("aria-label", data.labels[selector]);
+          });
+          Object.keys(data.attrs).forEach(function (selector) {
+            var element = document.querySelector(selector);
+            if (!element) return;
+            Object.keys(data.attrs[selector]).forEach(function (name) { element.setAttribute(name, data.attrs[selector][name]); });
+          });
+          document.querySelectorAll("[data-language]").forEach(function (button) {
+            button.setAttribute("aria-pressed", String(button.dataset.language === language));
+          });
+          try { localStorage.setItem(languageKey, language); } catch (error) {}
+        }
+        var language = navigator.language.toLowerCase().startsWith("it") ? "it" : "en";
+        try {
+          var savedLanguage = localStorage.getItem(languageKey);
+          if (savedLanguage === "it" || savedLanguage === "en") language = savedLanguage;
+        } catch (error) {}
+        document.querySelectorAll("[data-language]").forEach(function (button) {
+          button.addEventListener("click", function () { setLanguage(button.dataset.language); });
+        });
+        setLanguage(language);
+      })();
+    </script>
     <script>
       (function () {
         var voyage = document.querySelector("[data-voyage]");
