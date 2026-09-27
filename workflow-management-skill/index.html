@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Workflow Management Skill gives AI coding assistants a durable project memory across sessions, with stable Claude/Codex support and a Kiro beta.">
+    <meta name="theme-color" content="#10231f">
+    <title>Workflow Management Skill - MGM Garage Lab</title>
+    <link rel="canonical" href="https://mgmgaragelab.com/workflow-management-skill/">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+      :root { color-scheme: light; background: #142522; }
+      .skill-page {
+        --warm: #8f3936;
+        --coral: #9b3332;
+        --mint: #315f55;
+        --panel: #fafaf7;
+        --panel-strong: #d5e4da;
+        --text: #243a36;
+        --white: #243a36;
+        --muted: #4b6158;
+        --blue-soft: #8f3936;
+        --green: #315f55;
+        --line: #bdc9c0;
+        --line-strong: #adbbae;
+        --page-max-width: 1700px;
+        --page-gutter: clamp(20px, 4vw, 68px);
+        background: #edf0e9;
+        color: var(--text);
+      }
+      .skill-page::before { display: none; }
+      .skill-page :focus-visible { outline: 3px solid #9b3332; outline-offset: 5px; }
+      .skill-shell { width: calc(100% - 2 * var(--page-gutter)); max-width: 1564px; margin: 0 auto; }
+      .skill-header, .skill-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 18px max(var(--page-gutter), calc((100% - var(--page-max-width)) / 2 + var(--page-gutter))); background: #10231f; color: #fafaf7; }
+      .skill-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid #28423c; }
+      .skill-brand { color: #fafaf7; font-size: 19px; font-weight: 700; }
+      .skill-nav, .skill-footer nav { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 13px; }
+      .skill-header a, .skill-footer a { color: #cad7d0; }
+      .skill-header .skill-brand { color: #fafaf7; }
+      .skill-nav a:hover, .skill-footer a:hover { color: #f6d169; }
+      .skill-nav a[aria-current="page"] { color: #f6d169; text-decoration: underline; text-underline-offset: 6px; }
+      .skill-footer { padding-block: 24px; border-top: 1px solid #28423c; color: #b8c9c1; font-size: 13px; }
+      .skill-header :focus-visible, .skill-footer :focus-visible, .skill-hero :focus-visible { outline-color: #f6d169; }
+      .eyebrow { margin: 0 0 18px; font: 700 12px/1.5 "JetBrains Mono", monospace; letter-spacing: .16em; color: var(--blue-soft); text-transform: uppercase; }
+      .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; }
+      .button-primary { background: #f6d169; color: #17302b; }
+      .button-secondary { border: 1px solid var(--line-strong); color: var(--text); }
+      .button-primary:hover, .button-primary:focus-visible { background: #ffe3a0; color: #17302b; }
+      .button-secondary:hover, .button-secondary:focus-visible { border-color: var(--warm); color: var(--warm); }
+
+      .skill-hero { padding: clamp(42px, 6vw, 78px) 0 clamp(34px, 5vw, 64px); background: #142522; color: #fafaf7; --text: #cad7d0; --white: #fafaf7; --muted: #b8c9c1; --warm: #f6d169; --blue-soft: #f6d169; --panel: #172d29; --line: #28423c; --line-strong: #47665d; }
+      .hero-board { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); align-items: stretch; }
+      .hero-copy-block { grid-column: span 7; display: flex; flex-direction: column; justify-content: space-between; min-height: 460px; padding: clamp(26px, 3vw, 42px); border: 1px solid #47665d; border-radius: 8px; background: #172d29; }
+      .skill-hero h1 { margin: 0; max-width: 960px; font-size: clamp(56px, 8vw, 124px); line-height: .88; letter-spacing: -.07em; }
+      .skill-hero h1 span { color: var(--warm); }
+      .hero-copy { margin: clamp(22px, 3vw, 36px) 0 0; max-width: 760px; color: var(--text); font-size: clamp(18px, 1.55vw, 23px); line-height: 1.55; }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+      .hero-side { grid-column: span 5; display: grid; grid-template-rows: auto 1fr; gap: clamp(18px, 2vw, 28px); min-width: 0; }
+      .date-card { padding: clamp(24px, 3vw, 36px); border-radius: 8px; border: 1px solid #bdc9c0; background: #edf0e9; }
+      .date-card p { margin: 0; color: #243a36; font-size: clamp(22px, 2.3vw, 36px); line-height: 1.15; letter-spacing: -.03em; }
+      .date-card small { display: block; margin-top: 18px; color: #576d64; font: 700 11px/1.7 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+      .mini-stack { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+      .mini-card { min-height: 140px; padding: 18px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--panel); }
+      .mini-card strong { display: block; margin-bottom: 12px; color: var(--warm); font: 700 11px/1.4 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+      .mini-card span { color: var(--text); font-size: 14px; line-height: 1.55; }
+      .comic-feature { grid-column: 1 / -1; margin-top: clamp(4px, 1vw, 12px); border: 1px solid #47665d; border-radius: 8px; background: var(--panel); overflow: hidden; }
+      .comic-feature img { display: block; width: 100%; height: auto; }
+      .comic-caption { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1px; border-top: 1px solid var(--line-strong); color: var(--muted); font: 700 11px/1.6 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+      .comic-caption span { padding: 14px 18px; background: #10231f; }
+
+      .signal-row { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #d5e4da; }
+      .signal-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .signal { padding: clamp(22px, 3vw, 34px); border-right: 1px solid var(--line); }
+      .signal:last-child { border-right: 0; }
+      .signal code { color: var(--mint); font-size: 13px; }
+      .signal p { margin: 10px 0 0; color: var(--text); font-size: 17px; line-height: 1.55; }
+
+      .section { border-top: 1px solid var(--line); padding: clamp(54px, 7vw, 96px) 0; }
+      .section-grid { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: clamp(28px, 5vw, 70px); align-items: start; }
+      .section-kicker { position: sticky; top: 98px; margin: 6px 0 0; color: var(--blue-soft); font: 700 11px/1.7 "JetBrains Mono", monospace; letter-spacing: .16em; text-transform: uppercase; }
+      .section h2 { margin: 0; max-width: 1100px; font-size: clamp(34px, 5.5vw, 76px); line-height: .98; letter-spacing: -.055em; }
+      .section-lead { margin: 22px 0 0; max-width: 860px; color: var(--text); font-size: clamp(17px, 1.45vw, 21px); line-height: 1.7; }
+      .card { border: 1px solid var(--line-strong); border-radius: 8px; background: var(--panel); padding: clamp(20px, 2vw, 28px); }
+      .card h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.25; }
+      .card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+      .problem-bento { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 14px; margin-top: 34px; }
+      .problem-bento .large { grid-column: span 3; grid-row: span 2; min-height: 290px; background: #f1ded9; }
+      .problem-bento .wide { grid-column: span 3; }
+      .problem-bento .small { grid-column: span 2; }
+      .problem-bento .large h3 { font-size: clamp(28px, 3vw, 44px); letter-spacing: -.04em; }
+
+      .edition-stage { display: grid; grid-template-columns: minmax(0,1fr) 110px minmax(0,1fr); gap: 14px; margin-top: 34px; align-items: stretch; }
+      .edition-card { min-height: 390px; display: flex; flex-direction: column; }
+      .edition-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 22px; }
+      .badge { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border-radius: 4px; border: 1px solid #adbbae; color: #315f55; background: #d5e4da; font: 700 10px/1 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+      .badge-beta { border-color: #c4a74f; background: #f6d169; color: #243a36; }
+      .edition-card h3 { font-size: clamp(28px, 3vw, 44px); letter-spacing: -.04em; }
+      .edition-list { margin: 24px 0 0; padding: 0; list-style: none; color: var(--text); font-size: 15px; line-height: 1.8; }
+      .edition-list li { padding: 10px 0; border-top: 1px solid var(--line); }
+      .edition-card .button { margin-top: auto; align-self: flex-start; }
+      .contract-pill { display: grid; place-items: center; min-height: 100%; border: 1px solid #adbbae; border-radius: 8px; color: var(--mint); background: #d5e4da; font: 700 11px/1.5 "JetBrains Mono", monospace; letter-spacing: .12em; text-align: center; text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); }
+
+      .quote-band { border-block: 1px solid #28423c; background: #142522; --white: #fafaf7; --muted: #b8c9c1; padding: clamp(54px, 7vw, 86px) 0; }
+      .quote-band blockquote { margin: 0; max-width: 1260px; font-size: clamp(34px, 5.8vw, 86px); line-height: .98; letter-spacing: -.06em; color: var(--white); }
+      .quote-band p { margin: 22px 0 0; max-width: 760px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+
+      .memory-board { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap: 14px; margin-top: 34px; }
+      .memory-card { min-height: 180px; }
+      .memory-card:nth-child(1) { grid-column: span 5; background: #d5e4da; }
+      .memory-card:nth-child(2) { grid-column: span 4; }
+      .memory-card:nth-child(3) { grid-column: span 3; }
+      .memory-card:nth-child(4), .memory-card:nth-child(5), .memory-card:nth-child(6) { grid-column: span 4; }
+      .memory-card code { display: inline-block; margin-bottom: 14px; color: var(--warm); font-size: 13px; }
+
+      .voyage { color: #243a36; background: #edf0e9; position: relative; --nav-height: 68px; scroll-margin-top: var(--nav-height); }
+      .voyage, .voyage * { letter-spacing: 0; }
+      .voyage-stage { position: relative; min-height: 760px; isolation: isolate; overflow: hidden; }
+      .voyage-paper { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+      .voyage-heading { padding: 48px 24px 0; text-align: center; position: relative; z-index: 2; }
+      .voyage-heading .eyebrow { color: #42615a; margin-bottom: 16px; }
+      .voyage-heading h2 { font: 400 64px/1.04 Georgia, serif; margin: 0 auto; max-width: 920px; text-wrap: balance; }
+      .voyage-heading h2 em { color: #9b3332; }
+      .voyage-heading > p:last-child { font-size: 17px; line-height: 1.5; max-width: 630px; margin: 18px auto 0; }
+      .voyage-chart { position: absolute; left: 15%; right: 15%; top: 38%; height: 32%; }
+      .voyage-chart svg { width: 100%; height: 100%; overflow: visible; position: absolute; inset: 0; }
+      .voyage-route, .voyage-guide, .voyage-drift { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+      .voyage-guide { stroke: #315f55; stroke-width: 1.5; stroke-dasharray: 3 8; opacity: .5; }
+      .voyage-route { stroke: #9b3332; stroke-width: 3.5; vector-effect: none; }
+      .voyage-drift { stroke: #576d64; stroke-width: 2; stroke-dasharray: 5 9; opacity: 0; }
+      .voyage-position { fill: #9b3332; stroke: #fafaf7; stroke-width: 4; }
+      .voyage-stops { list-style: none; margin: 0; padding: 0; }
+      .voyage-stop { position: absolute; left: var(--x); top: var(--y); width: 190px; transform: translateX(-50%); text-align: center; text-shadow: 0 1px 4px #edf0e9; }
+      .voyage-pin { display: grid; place-items: center; width: 32px; height: 32px; margin: -16px auto 12px; background: #edf0e9; border: 1px solid #315f55; border-radius: 50%; font: 700 11px/1 "JetBrains Mono", monospace; }
+      .voyage-stop h3 { font: 700 20px/1.15 Georgia, serif; margin: 0 0 7px; }
+      .voyage-stop p { margin: 0; font-size: 14px; line-height: 1.45; }
+      .voyage-stop small { display: block; color: #8f3936; font: 700 10px/1.4 "JetBrains Mono", monospace; margin-bottom: 7px; }
+      .voyage-stop:last-child .voyage-pin { background: #243a36; color: #fafaf7; outline: 4px double #243a36; outline-offset: 4px; }
+      .voyage-footer { position: absolute; left: 24px; right: 24px; bottom: 30px; text-align: center; }
+      .voyage-footer p { font-size: 16px; margin: 0 auto 16px; max-width: 560px; line-height: 1.5; }
+      .voyage-footer a { display: inline-block; color: #243a36; font-weight: 700; border-bottom: 1px solid currentColor; padding: 5px 0; }
+      .voyage-footer a:hover { color: #9b3332; }
+      .voyage-footer a:focus-visible { outline: 2px solid #9b3332; outline-offset: 5px; }
+      .voyage.is-animated { height: 300vh; }
+      .voyage.is-animated .voyage-stage { position: sticky; top: var(--nav-height); height: calc(100svh - var(--nav-height)); min-height: 620px; }
+      .voyage.is-animated .voyage-stop { opacity: 0; translate: 0 12px; transition: opacity .3s ease, translate .3s ease; }
+      .voyage.is-animated .voyage-stop.is-reached { opacity: 1; translate: 0 0; }
+      .voyage.is-animated .voyage-stop:last-child { opacity: 1; translate: 0 0; }
+      .voyage.is-animated .voyage-stop:last-child:not(.is-reached) p,
+      .voyage.is-animated .voyage-stop:last-child:not(.is-reached) small { opacity: 0; }
+      @media (min-width: 1600px) {
+        .voyage-heading h2 { font-size: 80px; max-width: 1150px; }
+        .voyage-stop { width: 230px; }
+        .voyage-stop h3 { font-size: 25px; }
+        .voyage-stop p { font-size: 16px; }
+      }
+      @media (max-width: 1100px), (max-height: 760px) {
+        .voyage-stage { min-height: 0; padding-bottom: 32px; }
+        .voyage-heading { padding-top: 42px; }
+        .voyage-heading h2 { font-size: 42px; max-width: 600px; }
+        .voyage-heading > p:last-child { font-size: 16px; max-width: 460px; }
+        .voyage-paper { object-position: 48% center; opacity: .65; }
+        .voyage-chart { position: relative; inset: auto; height: auto; margin: 38px auto; width: min(460px, calc(100% - 64px)); }
+        .voyage-chart svg { display: none; }
+        .voyage-stops { border-left: 2px dashed #7a8a72; margin-left: 16px; }
+        .voyage-stop { position: relative; inset: auto; transform: none; width: auto; text-align: left; padding: 0 0 32px 36px; min-height: 112px; }
+        .voyage-stop:last-child { padding-bottom: 0; }
+        .voyage-pin { position: absolute; left: -17px; top: 0; margin: 0; }
+        .voyage-stop h3 { font-size: 24px; }
+        .voyage-stop p { font-size: 16px; }
+        .voyage-footer { position: relative; inset: auto; padding: 0 24px; }
+      }
+
+      .roadmap-list { display: grid; gap: 0; margin-top: 34px; border-top: 1px solid var(--line-strong); }
+      .roadmap-row { display: grid; grid-template-columns: 190px minmax(0, 1fr) 100px; gap: 22px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line-strong); }
+      .roadmap-row code { color: var(--warm); font-size: 14px; }
+      .roadmap-row span { color: var(--text); line-height: 1.55; }
+      .roadmap-row strong { justify-self: end; color: var(--green); font: 700 11px/1 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+      @media (max-width: 1120px) {
+        .hero-copy-block, .hero-side, .comic-feature { grid-column: 1 / -1; }
+        .hero-copy-block { min-height: auto; }
+        .skill-hero h1 { font-size: clamp(52px, 11vw, 100px); }
+        .section-grid { grid-template-columns: 1fr; }
+        .section-kicker { position: static; }
+      }
+      @media (max-width: 820px) {
+        .mini-stack, .signal-grid, .edition-stage, .comic-caption { grid-template-columns: 1fr; }
+        .contract-pill { writing-mode: horizontal-tb; transform: none; min-height: 64px; }
+        .problem-bento, .memory-board { grid-template-columns: 1fr; }
+        .problem-bento .large, .problem-bento .wide, .problem-bento .small, .memory-card:nth-child(n) { grid-column: auto; }
+        .roadmap-row { grid-template-columns: 1fr; gap: 8px; }
+        .roadmap-row strong { justify-self: start; }
+      }
+      @media (max-width: 560px) {
+        .hero-copy-block, .date-card, .card { padding: 20px; }
+        .button { width: 100%; }
+        .skill-hero h1 { font-size: clamp(44px, 15vw, 72px); }
+      }
+    </style>
+  </head>
+  <body class="skill-page">
+    <header class="skill-header">
+      <a class="skill-brand" href="../index.html">MGM Garage Lab</a>
+      <nav class="skill-nav" aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="./index.html" aria-current="page">Workflow</a>
+        <a href="https://github.com/mmorgano">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="skill-hero">
+        <div class="skill-shell hero-board">
+          <div class="hero-copy-block">
+            <div>
+              <p class="eyebrow">Workflow Management Skill</p>
+              <h1>Every new chat is a first date. <span>Give it a diary.</span></h1>
+              <p class="hero-copy">AI assistants are sharp, but a fresh conversation starts without yesterday's project memory. Workflow Management gives the next session a durable handoff: what changed, what matters, what is blocked, and where to continue.</p>
+            </div>
+            <div class="actions">
+              <a class="button button-primary" href="https://github.com/mmorgano/workflow-management-skill">Stable Claude/Codex edition</a>
+              <span class="button button-secondary" aria-disabled="true">Kiro beta in private test</span>
+            </div>
+          </div>
+
+          <aside class="hero-side" aria-label="Workflow Management summary">
+            <div class="date-card">
+              <p>The assistant is not lazy. It just wakes up in a new conversation with no diary.</p>
+              <small>Personal project memory for AI-assisted work</small>
+            </div>
+            <div class="mini-stack">
+              <div class="mini-card"><strong>Start</strong><span>Read the current state before guessing.</span></div>
+              <div class="mini-card"><strong>Work</strong><span>Capture decisions and useful progress.</span></div>
+              <div class="mini-card"><strong>Resume</strong><span>Continue tomorrow without ritual amnesia.</span></div>
+            </div>
+          </aside>
+
+          <figure class="comic-feature" aria-label="Three-panel comic showing an AI assistant forgetting a project and recovering context through workflow records.">
+            <img src="../assets/workflow-memory-comic-v2.png" alt="Three-panel comic labelled New Chat, No Context, Project Memory, showing an AI assistant moving from confusion to organized project memory with RECAP, TASKS and SESSION files.">
+            <figcaption class="comic-caption"><span>New chat</span><span>No context</span><span>Project memory</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="signal-row" aria-label="Core promises">
+        <div class="skill-shell signal-grid">
+          <div class="signal"><code>Plain files</code><p>Markdown and JSON in a context folder you control.</p></div>
+          <div class="signal"><code>Portable workflow</code><p>The project memory belongs to the work, not one chat window.</p></div>
+          <div class="signal"><code>Beta path</code><p>Kiro adds a team experiment while the stable package stays focused.</p></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker">01 / The Problem</p>
+          <div>
+            <h2>AI can write code. The hard part is remembering why the work looks like this.</h2>
+            <p class="section-lead">Chat history is not a project plan. It is too long, too hidden, and too fragile. Workflow Management turns the living state of the project into plain files the assistant can read on purpose.</p>
+            <div class="problem-bento">
+              <article class="card large">
+                <h3>New session, same introduction.</h3>
+                <p>You explain the repository, constraints, decisions, blockers, and next step again. The cost is not dramatic once. It becomes heavy because real work spans many sessions.</p>
+              </article>
+              <article class="card wide">
+                <h3>Lost handoffs</h3>
+                <p>The useful ending of yesterday's work gets buried in a transcript instead of becoming today's starting point.</p>
+              </article>
+              <article class="card wide">
+                <h3>Context overflow</h3>
+                <p>The assistant reads too much or too little because there is no compact, current source of truth.</p>
+              </article>
+              <article class="card small">
+                <h3>Invisible decisions</h3>
+                <p>Choices live in chat fragments instead of records you can inspect.</p>
+              </article>
+              <article class="card small">
+                <h3>Forgotten blockers</h3>
+                <p>Open issues return as surprises instead of known project state.</p>
+              </article>
+              <article class="card small">
+                <h3>Messy restart</h3>
+                <p>The first half hour becomes archaeology.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker">02 / Two Editions</p>
+          <div>
+            <h2>One workflow contract, two practical packages.</h2>
+            <p class="section-lead">The stable edition supports Claude Code and Codex. The Kiro edition is a separate beta package with the same personal workflow plus an optional team layer.</p>
+            <div class="edition-stage">
+              <article class="card edition-card">
+                <div class="edition-top">
+                  <h3>Claude / Codex edition</h3>
+                  <span class="badge">Stable</span>
+                </div>
+                <p>Open-source package for durable personal project context: sessions, RECAP, tasks, focus notes, meetings, roadmaps, decisions, and sprints.</p>
+                <ul class="edition-list">
+                  <li>Public repository: `workflow-management-skill`</li>
+                  <li>Designed for file-based, local-first context</li>
+                  <li>Tested with guided setup and session resume flows</li>
+                </ul>
+                <a class="button button-secondary" href="https://github.com/mmorgano/workflow-management-skill">Open repository</a>
+              </article>
+              <div class="contract-pill">Same contract</div>
+              <article class="card edition-card">
+                <div class="edition-top">
+                  <h3>Kiro edition</h3>
+                  <span class="badge badge-beta">Beta test</span>
+                </div>
+                <p>A Kiro-specific package with the personal workflow skill and an optional team skill for shared roadmap, tasks, and assignments.</p>
+                <ul class="edition-list">
+                  <li>Private beta while real Kiro testing is pending</li>
+                  <li>Team context stays separate from personal notes</li>
+                  <li>Built for a first pilot before public release</li>
+                </ul>
+                <span class="button button-secondary" aria-disabled="true">Private beta</span>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quote-band">
+        <div class="skill-shell">
+          <blockquote>It does not make the AI omniscient. It gives it a notebook, a map, and enough manners to read them before guessing.</blockquote>
+          <p>Everything stays inspectable: Markdown records, JSON configuration, and normal project files under a context folder you control.</p>
+        </div>
+      </section>
+
+      <section class="voyage" id="long-vision" aria-labelledby="voyage-title" data-voyage>
+        <div class="voyage-stage">
+          <img class="voyage-paper" src="../assets/voyage-chart.jpg" alt="" loading="lazy" width="1536" height="1024">
+          <div class="voyage-heading">
+            <p class="eyebrow">03 / Long Vision &middot; Workflow Management</p>
+            <h2 id="voyage-title">A hundred sessions.<br>Still <em>one destination.</em></h2>
+            <p>Weeks pass. Chats restart. Your project should still remember where it is going.</p>
+          </div>
+          <div class="voyage-chart">
+            <svg viewBox="0 0 1000 360" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <path class="voyage-drift" d="M50 270 C130 40 390 350 230 210 S440 10 490 150 S320 310 420 315 S730 20 670 170 S810 320 950 162"></path>
+              <path class="voyage-guide" d="M50 270 C120 270 180 108 280 108 S410 238 500 238 S650 72 730 72 S850 162 950 162"></path>
+              <path class="voyage-route" d="M50 270 C120 270 180 108 280 108 S410 238 500 238 S650 72 730 72 S850 162 950 162"></path>
+              <circle class="voyage-position" cx="950" cy="162" r="7"></circle>
+            </svg>
+            <ol class="voyage-stops">
+              <li class="voyage-stop" style="--x:5%;--y:75%">
+                <span class="voyage-pin">01</span>
+                <small>THE MAP / ROADMAP</small>
+                <h3>Set the course.</h3>
+                <p>Keep the long-term goal and the milestones that lead there.</p>
+              </li>
+              <li class="voyage-stop" style="--x:28%;--y:30%">
+                <span class="voyage-pin">02</span>
+                <small>THE LOGBOOK / SESSIONS</small>
+                <h3>Remember why.</h3>
+                <p>Carry decisions forward. Stop rediscovering yesterday.</p>
+              </li>
+              <li class="voyage-stop" style="--x:50%;--y:66.111%">
+                <span class="voyage-pin">03</span>
+                <small>THE WEATHER / RISKS</small>
+                <h3>Meet the detours.</h3>
+                <p>Record blockers and changes before they become surprises.</p>
+              </li>
+              <li class="voyage-stop" style="--x:73%;--y:20%">
+                <span class="voyage-pin">04</span>
+                <small>THE COMPASS / RECAP</small>
+                <h3>Find the next step.</h3>
+                <p>Start each session knowing what matters now.</p>
+              </li>
+              <li class="voyage-stop" style="--x:95%;--y:45%">
+                <span class="voyage-pin">05</span>
+                <small>THE VISION / PHASE GATES</small>
+                <h3>The destination.</h3>
+                <p>Check progress against the outcome you set out to reach.</p>
+              </li>
+            </ol>
+          </div>
+          <div class="voyage-footer">
+            <p>Long-vision support in the Claude/Codex edition.<br>A shared direction, from the first idea to the final milestone.</p>
+            <a href="https://github.com/mmorgano/workflow-management-skill">Explore the stable edition &rarr;</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker">04 / What It Keeps</p>
+          <div>
+            <h2>The minimum memory a serious work session needs.</h2>
+            <div class="memory-board">
+              <article class="card memory-card">
+                <code>RECAP.md</code>
+                <h3>Current state</h3>
+                <p>Open work, blockers, and next steps without re-reading everything.</p>
+              </article>
+              <article class="card memory-card">
+                <code>sessions/</code>
+                <h3>Daily handoff</h3>
+                <p>What happened today: decisions, progress, verification, and next actions.</p>
+              </article>
+              <article class="card memory-card">
+                <code>tasks/</code>
+                <h3>Work records</h3>
+                <p>Goals, plans, progress, and done criteria.</p>
+              </article>
+              <article class="card memory-card">
+                <code>focus/</code>
+                <h3>Ideas and research</h3>
+                <p>Notes that should survive the conversation.</p>
+              </article>
+              <article class="card memory-card">
+                <code>roadmap/</code>
+                <h3>Direction</h3>
+                <p>Phases, milestones, sequencing, and decisions.</p>
+              </article>
+              <article class="card memory-card">
+                <code>meetings/</code>
+                <h3>Outcomes</h3>
+                <p>Owners, unresolved questions, and follow-ups from real conversations.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker">05 / What Comes Next</p>
+          <div>
+            <h2>The memory layer becomes the base for smarter project context.</h2>
+            <p class="section-lead">Workflow Management is the first layer: durable state. Two later experiments explore how an assistant can choose the right documents instead of swallowing the whole project.</p>
+            <div class="roadmap-list">
+              <div class="roadmap-row">
+                <code>kb-graph</code>
+                <span>A local-first knowledge graph over docs, decisions, tasks, and source references.</span>
+                <strong>Focus</strong>
+              </div>
+              <div class="roadmap-row">
+                <code>graph-guided-rag</code>
+                <span>A future RAG implementation where the graph narrows the search before semantic retrieval.</span>
+                <strong>Later</strong>
+              </div>
+              <div class="roadmap-row">
+                <code>kiro-beta</code>
+                <span>Real Kiro test, then public release decision for the beta package.</span>
+                <strong>Next</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="skill-footer">
+      <span>Â© 2026 MGM GARAGE LAB</span>
+      <nav aria-label="Project links">
+        <a href="https://github.com/mmorgano/workflow-management-skill">Claude / Codex</a>
+        <a href="../index.html">MGM Garage Lab</a>
+      </nav>
+    </footer>
+    <script>
+      (function () {
+        var voyage = document.querySelector("[data-voyage]");
+        if (!voyage) return;
+        var stage = voyage.querySelector(".voyage-stage");
+        var route = voyage.querySelector(".voyage-route");
+        var drift = voyage.querySelector(".voyage-drift");
+        var position = voyage.querySelector(".voyage-position");
+        var stops = Array.from(voyage.querySelectorAll(".voyage-stop"));
+        var header = document.querySelector("body > header");
+        var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var desktop = window.matchMedia("(min-width: 1101px) and (min-height: 761px)");
+        var length = route.getTotalLength();
+        var ticking = false;
+
+        // Match reveal thresholds to the actual curved route, not horizontal distance.
+        var targets = [{x:50,y:270},{x:280,y:108},{x:500,y:238},{x:730,y:72},{x:950,y:162}];
+        var thresholds = targets.map(function (target) {
+          var nearest = 0, best = Infinity;
+          for (var i = 0; i <= 1000; i++) {
+            var point = route.getPointAtLength(length * i / 1000);
+            var distance = Math.hypot(point.x - target.x, point.y - target.y);
+            if (distance < best) { best = distance; nearest = i / 1000; }
+          }
+          return nearest;
+        });
+        function update() {
+          ticking = false;
+          var navHeight = header.getBoundingClientRect().height;
+          voyage.style.setProperty("--nav-height", navHeight + "px");
+          var animated = desktop.matches && !motion.matches;
+          voyage.classList.toggle("is-animated", animated);
+          var rect = voyage.getBoundingClientRect();
+          var travel = Math.max(1, voyage.offsetHeight - stage.offsetHeight);
+          var progress = animated ? Math.max(0, Math.min(1, (navHeight - rect.top) / (travel * .88))) : 1;
+          route.style.strokeDasharray = length;
+          route.style.strokeDashoffset = length * (1 - progress);
+          drift.style.opacity = animated ? .45 * (1 - Math.min(1, progress * 2)) : 0;
+          var point = route.getPointAtLength(length * progress);
+          position.setAttribute("cx", point.x);
+          position.setAttribute("cy", point.y);
+          stops.forEach(function (stop, index) {
+            stop.classList.toggle("is-reached", progress >= thresholds[index] - .008);
+          });
+        }
+        function requestUpdate() {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(update);
+        }
+        update();
+        window.addEventListener("scroll", requestUpdate, { passive: true });
+        window.addEventListener("resize", requestUpdate);
+        window.addEventListener("load", requestUpdate);
+        motion.addEventListener("change", requestUpdate);
+        desktop.addEventListener("change", requestUpdate);
+        if (window.ResizeObserver) new ResizeObserver(requestUpdate).observe(header);
+      })();
+    </script>
+  </body>
+</html>
