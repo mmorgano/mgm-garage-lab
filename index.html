@@ -31,7 +31,7 @@
     .room { position: relative; width: 100%; max-width: var(--page-max-width); margin-inline: auto; aspect-ratio: 1672 / 941; isolation: isolate; overflow: hidden; }
     .room::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 17% 37%, #10202399, transparent 34%), radial-gradient(ellipse at 28% 67%, #15212666, transparent 48%); opacity: 0; transition: opacity .55s ease; }
     .room::after { content: ''; position: absolute; inset: auto 0 0; z-index: 2; height: 14%; pointer-events: none; background: linear-gradient(to top, #0004, transparent); }
-    .room-image { display: block; width: 100%; height: 100%; transition: filter .55s ease; }
+    .room-image { display: block; width: 100%; height: 100%; pointer-events: none; transition: filter .55s ease; }
     .room.lamp-off::before { opacity: 1; }
     .room.lamp-off .room-image, .room.lamp-off .surface { filter: brightness(.94) saturate(.94); }
     .lamp-shade { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .55s ease; }
@@ -44,7 +44,7 @@
     .label-globe { left: auto; right: 1%; top: 21%; transform: translateY(-100%); }
     /* Every cutout shares the illustration's coordinates, so hotspots stay aligned at any width. */
     .object { position: absolute; inset: 0; z-index: 4; padding: 0; border: 0; background: transparent; clip-path: var(--shape); outline: none; }
-    .object .surface { position: absolute; inset: 0; background: url('assets/garage-room.png') 0 0 / 100% 100%; clip-path: var(--shape); transform-origin: var(--hinge); transition: transform .35s ease, filter .35s ease; }
+    .object .surface { position: absolute; inset: 0; background: url('assets/garage-room-topgun.png') 0 0 / 100% 100%; clip-path: var(--shape); transform-origin: var(--hinge); transition: transform .35s ease, filter .35s ease; }
     .folder::before { content: ''; position: absolute; inset: 0; clip-path: var(--shape); background: #e3e1ce; opacity: 0; transition: opacity .2s; }
     .folder:hover::before, .folder:focus-visible::before, .folder.opening::before { opacity: 1; }
     .folder:hover .surface, .folder:focus-visible .surface, .folder.opening .surface { transform: perspective(900px) rotate3d(0, 1, -.12, -10deg) translateY(-.35%); filter: brightness(1.12); }
@@ -110,15 +110,28 @@
     .links button strong { display: block; font-size: 16px; line-height: 1.25; }
     .links small { display: block; color: #576d64; margin-top: 5px; }
     .footer-note { padding: 18px 4% 26px; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; border-top: 1px solid #28423c; color: #b8c9c1; font-size: 13px; }
-    dialog { width: min(620px, calc(100% - 32px)); max-height: calc(100dvh - 40px); padding: 0; border: 1px solid #adbbae; border-radius: 6px; background: #f5f6ee; color: #243a36; box-shadow: 0 24px 90px #0006; }
-    dialog::backdrop { background: #0b1919b8; }
-    .dossier-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 20px; background: #d5e4da; border-bottom: 1px solid #adbbae; }
-    .dossier-header span { font-family: ui-monospace, monospace; font-size: 12px; }
-    .close { width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: inherit; font-size: 28px; }
+    dialog { --from-x: 0px; --from-y: 0px; width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 40px); padding: 0; border: 0; border-radius: 4px; background: #f6f2e3; color: #243a36; box-shadow: 0 30px 90px #0008, 0 2px 0 #fff8 inset; overflow: visible; }
+    dialog[open] { animation: dossier-rise .34s cubic-bezier(.2, .8, .2, 1); }
+    dialog::backdrop { background: #0b1919b8; backdrop-filter: blur(2px); }
+    dialog::before { content: ''; position: absolute; left: 26px; top: -17px; width: 168px; height: 24px; border: 1px solid #b6a981; border-bottom: 0; border-radius: 5px 5px 0 0; background: #e5d58f; box-shadow: 0 -3px 10px #0002 inset; transform: rotate(-1.2deg); }
+    dialog::after { content: ''; position: absolute; inset: 0; border: 1px solid #b6a981; border-radius: inherit; pointer-events: none; background: linear-gradient(105deg, #fff6 0 1px, transparent 1px 100%), radial-gradient(circle at 18% 12%, #fff7, transparent 24%), linear-gradient(#00000005 1px, transparent 1px); background-size: auto, auto, 100% 28px; mix-blend-mode: multiply; }
+    dialog[data-story="workflow"]::before { background: #d5e4da; }
+    dialog[data-story="ai"]::before { background: #f6d169; }
+    dialog[data-story="origin"]::before { background: #f1ded9; }
+    .dossier-header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 22px 12px; background: transparent; border-bottom: 1px solid #c8b98b; }
+    .dossier-header span { padding: 5px 9px; border: 1px solid #b6a981; background: #fff9e8; color: #8f3936; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 800; letter-spacing: .08em; transform: rotate(-.7deg); }
+    .close { position: relative; z-index: 2; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: #243a360f; color: inherit; font-size: 28px; }
+    .close:hover { background: #243a3620; }
     .dossier-body { padding: 28px; }
     .dossier-body h2 { font-size: 28px; line-height: 1.2; margin: 0 0 20px; }
     .dossier-body p { font-size: 16px; line-height: 1.75; }
-    .dossier-body a { display: inline-block; margin-top: 12px; font-weight: 650; }
+    .dossier-body a { display: inline-flex; align-items: center; min-height: 42px; margin-top: 12px; padding: 0 14px; border: 1px solid #8f3936; border-radius: 4px; color: #8f3936; font-weight: 750; text-decoration: none; }
+    .dossier-body a:hover { background: #8f3936; color: #fff9e8; }
+    @keyframes dossier-rise {
+      from { opacity: .25; transform: translate(var(--from-x), var(--from-y)) rotate(-4deg) scale(.3); }
+      70% { opacity: 1; transform: translate(0, 0) rotate(1.2deg) scale(1.015); }
+      to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+    }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .intro, .desk-index, .footer-note { padding-inline: max(var(--page-gutter), calc((100% - var(--page-max-width)) / 2 + var(--page-gutter))); }
     @media (max-width: 700px) {
@@ -129,6 +142,8 @@
       .links { column-gap: 20px; }
       .door-message { top: 5%; right: 3%; max-width: 58%; width: 230px; font-size: 12px; padding: 10px; }
       .object-label { display: none; }
+      dialog { width: 100%; max-height: 84dvh; margin: auto 0 0; border-radius: 8px 8px 0 0; }
+      dialog::before { left: 20px; top: -15px; width: 142px; }
       .dossier-body { padding: 22px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -157,7 +172,7 @@
   </header>
   <main>
     <section class="room" aria-label="La mia scrivania">
-      <img class="room-image" src="assets/garage-room.png" width="1672" height="941" alt="Una scrivania con VS Code sul monitor moderno, notebook, caffe e cartelle. Sulle librerie i vecchi computer; sul tavolo floppy e cassette. In fondo, una porta riservata.">
+      <img class="room-image" src="assets/garage-room-topgun.png" width="1672" height="941" alt="Una scrivania con VS Code sul monitor moderno, notebook, caffè e cartelle. Sulle librerie i vecchi computer; sul tavolo floppy e cassette. In fondo, una porta riservata. Sul muro vicino alla porta c'è un poster vintage di Top Gun.">
       <svg class="lamp-shade" viewBox="0 0 1672 941" aria-hidden="true">
         <defs><linearGradient id="unlit-shade" x2="0" y2="1"><stop stop-color="#4e493c"/><stop offset="1" stop-color="#8b826c"/></linearGradient></defs>
         <path d="M205 256 C221 239 329 207 353 216 C370 224 218 270 205 256Z" fill="url(#unlit-shade)"/>
@@ -168,7 +183,7 @@
           <radialGradient id="globe-spill"><stop stop-color="#122221" stop-opacity=".5"/><stop offset="1" stop-color="#122221" stop-opacity="0"/></radialGradient>
         </defs>
         <ellipse cx="1638" cy="307" rx="83" ry="73" fill="url(#globe-spill)"/>
-        <image href="assets/garage-room.png" width="1672" height="941" clip-path="url(#globe-sphere)"/>
+        <image href="assets/garage-room-topgun.png" width="1672" height="941" clip-path="url(#globe-sphere)"/>
       </svg>
       <time class="clock-display" aria-label="Ora locale">
         <svg viewBox="0 0 76 36" aria-hidden="true">
@@ -211,7 +226,7 @@
           </filter>
         </defs>
         <g mask="url(#steam-area)">
-          <image href="assets/garage-room.png" x="-992" y="-356" width="1672" height="941" filter="url(#steam-drift)"/>
+          <image href="assets/garage-room-topgun.png" x="-992" y="-356" width="1672" height="941" filter="url(#steam-drift)"/>
         </g>
       </svg>
       <button class="globe-toggle" type="button" aria-label="Spegni il mappamondo" aria-pressed="true"></button>
@@ -319,7 +334,7 @@
       '.intro nav': { 'aria-label': 'Main navigation' },
       '.language-switch': { 'aria-label': 'Language' },
       '.room': { 'aria-label': 'My desk' },
-      '.room-image': { alt: 'A desk with VS Code on a modern monitor, a laptop, coffee and folders. Vintage computers on the shelves; floppy disks and cassette tapes on the desk. A private door at the back.' },
+      '.room-image': { alt: 'A desk with VS Code on a modern monitor, a laptop, coffee and folders. Vintage computers on the shelves; floppy disks and cassette tapes on the desk. A private door at the back. A vintage Top Gun poster hangs on the wall near the door.' },
       '.workflow': { 'aria-label': 'Open the Workflow Management folder' },
       '.ai': { 'aria-label': 'Open the AI Lab folder' },
       '.origin': { 'aria-label': 'Open the Origin Story folder' },
@@ -411,7 +426,13 @@
       opener = trigger;
       currentStory = key;
       trigger.classList.add('opening');
+      dialog.dataset.story = key;
       renderStory(key);
+      const rect = trigger.getBoundingClientRect();
+      const triggerX = rect.left + rect.width / 2;
+      const triggerY = rect.top + rect.height / 2;
+      dialog.style.setProperty('--from-x', `${Math.round(triggerX - window.innerWidth / 2)}px`);
+      dialog.style.setProperty('--from-y', `${Math.round(triggerY - window.innerHeight / 2)}px`);
       setTimeout(() => {
         dialog.showModal();
         document.body.style.overflow = 'hidden';
