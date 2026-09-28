@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
     * { box-sizing: border-box; }
-    :root { color-scheme: dark; font-family: system-ui, sans-serif; letter-spacing: 0; --page-max-width: 1700px; --page-gutter: clamp(20px, 4vw, 68px); }
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; letter-spacing: 0; --page-max-width: 1700px; --page-gutter: clamp(20px, 4vw, 68px); --room-image: url('assets/garage-room-v5-day-base-clean-wall.png'); --room-day: 'assets/garage-room-v5-day-base-clean-wall.png'; --room-evening: 'assets/garage-room-v5-evening-base-clean-wall.png'; }
     body { margin: 0; background: #142522; color: #fafaf7; }
     button, a { -webkit-tap-highlight-color: transparent; }
     button { font: inherit; cursor: pointer; }
@@ -29,33 +29,58 @@
     .intro nav .language-switch button:last-child { border-radius: 0 4px 4px 0; border-left: 0; }
     .intro nav .language-switch button[aria-pressed="true"] { background: #e9efe6; color: #17302b; }
     .room { position: relative; width: 100%; max-width: var(--page-max-width); margin-inline: auto; aspect-ratio: 1672 / 941; isolation: isolate; overflow: hidden; }
-    .room::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 17% 37%, #10202399, transparent 34%), radial-gradient(ellipse at 28% 67%, #15212666, transparent 48%); opacity: 0; transition: opacity .55s ease; }
+    .room::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 78% 31%, #0813128f, transparent 32%), radial-gradient(ellipse at 82% 71%, #11171680, transparent 42%), linear-gradient(90deg, transparent 0 45%, #0813124d 100%); opacity: 0; transition: opacity .55s ease; }
     .room::after { content: ''; position: absolute; inset: auto 0 0; z-index: 2; height: 14%; pointer-events: none; background: linear-gradient(to top, #0004, transparent); }
+    .room { --tone: brightness(1); }
+    .room[data-scene="day"] { --tone: brightness(.84) saturate(.86) contrast(1.07) sepia(.1); }
+    .room-image, .scene-source { filter: var(--tone); }
     .room-image { display: block; width: 100%; height: 100%; pointer-events: none; transition: filter .55s ease; }
-    .room.lamp-off::before { opacity: 1; }
-    .room.lamp-off .room-image, .room.lamp-off .surface { filter: brightness(.94) saturate(.94); }
-    .lamp-shade { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .55s ease; }
-    .room.lamp-off .lamp-shade { opacity: 1; }
+    .room.room-light-off::before { opacity: 1; }
+    .room.room-light-off::before { z-index: 5; }
+    .room-dim { position: absolute; inset: 0; z-index: 5; pointer-events: none; background: linear-gradient(90deg, #08121022, #0812103d), radial-gradient(ellipse at 64% 58%, transparent 18%, #0812102c 72%); opacity: .62; transition: opacity .55s ease; }
+    .room[data-scene="evening"] .room-dim { opacity: .18; }
+    .room-light-off .room-dim { opacity: .78; }
+    .desk-lamp-light { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+    .lamp-lit-surface { filter: var(--tone) brightness(1.13) saturate(1.06); transition: filter .45s ease; }
+    .room.lamp-off .lamp-lit-surface { filter: var(--tone) brightness(.68) saturate(.82); }
+    /* At night the lamp is the main light: stronger pool on the desk, warm glow and a halo around the shade. */
+    .lamp-bulb-off { opacity: 0; transition: opacity .45s ease; }
+    .room.lamp-off .lamp-bulb-off { opacity: .94; }
+    .lamp-glow, .lamp-halo { opacity: 0; mix-blend-mode: screen; transition: opacity .45s ease; }
+    .room[data-scene="evening"] .lamp-lit-surface { filter: var(--tone) brightness(1.45) saturate(1.15) sepia(.12); }
+    .room[data-scene="evening"] .lamp-glow { opacity: .85; }
+    .room[data-scene="evening"] .lamp-halo { opacity: .7; }
+    .room[data-scene="evening"].lamp-off .lamp-lit-surface { filter: var(--tone) brightness(.62) saturate(.8); }
+    .room.lamp-off .lamp-glow, .room.lamp-off .lamp-halo { opacity: 0; }
     .globe-shade { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .55s ease; }
-    .globe-shade image { filter: brightness(.48) saturate(.35); }
+    .globe-shade image { filter: var(--tone) brightness(.48) saturate(.35); }
     .room.globe-off .globe-shade { opacity: 1; }
     .globe-toggle { position: absolute; right: 0; top: 22.1%; width: 5.5%; height: 14.8%; min-width: 44px; min-height: 44px; z-index: 5; padding: 0; border: 0; border-radius: 50%; background: transparent; }
     .globe-toggle:focus-visible { outline-offset: -3px; }
     .label-globe { left: auto; right: 1%; top: 21%; transform: translateY(-100%); }
-    /* Every cutout shares the illustration's coordinates, so hotspots stay aligned at any width. */
-    .object { position: absolute; inset: 0; z-index: 4; padding: 0; border: 0; background: transparent; clip-path: var(--shape); outline: none; }
-    .object .surface { position: absolute; inset: 0; background: url('assets/garage-room-topgun.png') 0 0 / 100% 100%; clip-path: var(--shape); transform-origin: var(--hinge); transition: transform .35s ease, filter .35s ease; }
-    .folder::before { content: ''; position: absolute; inset: 0; clip-path: var(--shape); background: #e3e1ce; opacity: 0; transition: opacity .2s; }
-    .folder:hover::before, .folder:focus-visible::before, .folder.opening::before { opacity: 1; }
-    .folder:hover .surface, .folder:focus-visible .surface, .folder.opening .surface { transform: perspective(900px) rotate3d(0, 1, -.12, -10deg) translateY(-.35%); filter: brightness(1.12); }
-    .object:focus-visible { background: #f6d169; }
-    .object:focus-visible .surface { filter: brightness(1.25); }
-    .workflow { --shape: polygon(52.3% 66.7%, 62.3% 64.6%, 67.2% 76.3%, 54.5% 79.9%); --hinge: 53% 74%; }
-    .ai { --shape: polygon(65.2% 65.7%, 74.2% 63.9%, 79.5% 75.6%, 68% 78.6%); --hinge: 66% 72%; }
-    .origin { --shape: polygon(77.1% 64.6%, 86.9% 63.1%, 93.8% 76.4%, 81.8% 77.7%); --hinge: 79% 72%; }
-    .door { --shape: polygon(74.6% 5%, 87.9% 2.7%, 87.9% 55.4%, 81% 54.6%, 81% 51%, 74.6% 48.8%); --hinge: 88% 28%; background: #0b1413; }
-    .door:hover .surface, .door:focus-visible .surface { filter: brightness(1.15); }
-    .door.rattling .surface { animation: locked-door .85s ease-in-out; }
+    /* SVG crops use source-image coordinates; only the photographed cover/door moves. */
+    .object { position: absolute; z-index: 4; padding: 0; border: 0; background: transparent; overflow: visible; }
+    .object svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+    .object .surface { position: absolute; inset: 0; transform-origin: var(--hinge); transition: transform .55s cubic-bezier(.2,.65,.25,1); }
+    .skills { left: 52.1531%; top: 64.6121%; width: 15.5502%; height: 16.3656%; --hinge: 8% 55%; --axis-x: .28; }
+    .ai { left: 64.9522%; top: 63.9745%; width: 15.1316%; height: 15.6217%; --hinge: 10% 55%; --axis-x: .37; }
+    .origin { left: 76.6148%; top: 63.0181%; width: 17.823%; height: 15.6217%; --hinge: 12% 55%; --axis-x: .55; }
+    .folder .folder-pages { opacity: 0; transition: opacity .25s .3s; }
+    .folder:hover .folder-pages, .folder:focus-visible .folder-pages, .folder.opening .folder-pages { opacity: 1; transition-delay: 0s; }
+    /* The cover is hinged on its spine edge and lifted "up" on screen. JS sets the folder's plane
+       vectors (--e1*, --l*, --r1*) from the painted quad, so the opening follows the room's axonometry. */
+    @property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+    .folder .surface {
+      --ang: 0deg;
+      --w-x: calc((cos(var(--ang)) - 1) * var(--e1x) + sin(var(--ang)) * var(--lx));
+      --w-y: calc((cos(var(--ang)) - 1) * var(--e1y) + sin(var(--ang)) * var(--ly));
+      transform: matrix(calc(1 + var(--w-x) * var(--r1x)), calc(var(--w-y) * var(--r1x)), calc(var(--w-x) * var(--r1y)), calc(1 + var(--w-y) * var(--r1y)), 0, 0);
+      transition: --ang .5s cubic-bezier(.2,.65,.25,1), filter .3s ease;
+    }
+    .folder:hover .surface, .folder:focus-visible .surface { --ang: 13deg; }
+    .folder.opening .surface { --ang: 104deg; filter: brightness(.7); transition: --ang .6s cubic-bezier(.3,.6,.2,1), filter .3s .25s ease; }
+    .door { left: 73.6842%; top: 1.913%; width: 14.5933%; height: 53.3475%; --hinge: 100% 50%; }
+    .door.rattling .surface { animation: locked-door 1.1s linear; }
     .door-light { position: absolute; left: 80.981%; top: 53.985%; width: 8.014%; height: 4.357%; z-index: 5; pointer-events: none; }
     .door-passing-shadow { animation: behind-door 19s linear infinite; }
     @keyframes behind-door {
@@ -67,38 +92,74 @@
       84% { transform: translateX(48px); }
       96%, 100% { transform: translateX(-65px); }
     }
-    .lamp-toggle { position: absolute; inset: 0; z-index: 5; padding: 0; border: 0; background: transparent; clip-path: polygon(13.1% 11.4%, 15.1% 11.4%, 16.1% 16.4%, 18.6% 18%, 21.4% 23%, 21.4% 24%, 12.1% 28%, 12% 24%, 12.8% 20%, 14% 17%); outline: none; }
+    .lamp-toggle { position: absolute; left: 11.9%; top: 10.6%; width: 10%; height: 18%; min-width: 44px; min-height: 44px; z-index: 5; padding: 0; border: 0; background: transparent; outline: none; }
     .lamp-toggle::after { content: ''; position: absolute; inset: 0; background: #ffd98a; clip-path: inherit; opacity: 0; transition: opacity .2s ease; }
     .lamp-toggle:focus-visible::after { opacity: .25; }
+    .room-toggle { position: absolute; left: 69.5%; top: 17.5%; z-index: 5; width: 2.2%; height: 5.4%; min-width: 44px; min-height: 44px; padding: 0; border: 0; background: transparent; outline: none; }
+    .room-toggle::after { content: ''; position: absolute; inset: 25% 35%; border-radius: 4px; background: #ffd98a; opacity: 0; transition: opacity .2s ease; }
+    .room-toggle:focus-visible::after { opacity: .35; }
     .clock-display { position: absolute; left: 4.55%; top: 65.35%; z-index: 3; width: 4.25%; height: 3.72%; border-radius: 2px; background: #10150f; transform-origin: top left; transform: skewY(-13deg); pointer-events: none; box-shadow: inset 0 0 4px #000; }
     .clock-display svg { display: block; width: 100%; height: 100%; fill: #a4cc86; }
     .clock-display .segment { opacity: .045; }
     .clock-display .segment.lit { opacity: .95; }
     .clock-display .colon { animation: clock-blink 1s steps(1, end) infinite; }
     @keyframes clock-blink { 50% { opacity: .18; } }
-    .lava-lamp { position: absolute; left: 58.01%; top: 25.19%; width: 2.153%; height: 6.801%; z-index: 3; pointer-events: none; }
+    .lava-lamp { position: absolute; left: 58.01%; top: 25.19%; width: 2.153%; height: 6.801%; z-index: 3; pointer-events: none; filter: drop-shadow(0 0 8px #ff9a45aa); }
     .lava-bubble { fill: #ffe174; transform-box: fill-box; transform-origin: center; animation: lava-float var(--duration) ease-in-out infinite alternate; animation-delay: var(--delay); }
-    .coffee-steam { position: absolute; left: 59.33%; top: 37.832%; width: 6.459%; height: 15.409%; z-index: 3; pointer-events: none; transition: filter .55s ease; }
-    .room.lamp-off .coffee-steam { filter: brightness(.94) saturate(.94); }
+    .monitor-agent { position: absolute; left: 14.5933%; top: 29.543%; width: 24.8804%; height: 24.6546%; z-index: 3; pointer-events: none; overflow: hidden; clip-path: polygon(0 0, 100% 1.3%, 100% 93.1%, 0 100%); background: #152028; }
+    .monitor-agent svg { display: block; width: 100%; height: 100%; transform: skewY(-1deg); transform-origin: left center; }
+    .monitor-agent::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, #c5deeb14, transparent 35%, #dae4e807 80%, transparent); }
+    .monitor-agent text { font-family: Consolas, 'Courier New', monospace; font-size: 10px; fill: #ced8de; }
+    .monitor-agent .muted { fill: #81949e; }
+    .monitor-agent .green { fill: #93cfac; }
+    .monitor-agent .blue { fill: #90bddb; }
+    .monitor-agent .gold { fill: #dec58c; }
+    .agent-cursor { animation: cursor-blink 1.2s steps(1, end) infinite; }
+    @keyframes cursor-blink { 50% { opacity: .08; } }
+    .coffee-steam { position: absolute; left: 60.2%; top: 39.3%; width: 4.8%; height: 12.5%; z-index: 4; pointer-events: none; opacity: 1; transition: opacity .55s ease; overflow: visible; }
+    /* Soft, turbulent smoke: blurred puffs that widen, sway and fade; the filter roughens their edges. */
+    .steam-puff { fill: #f4efe4; opacity: 0; transform-box: fill-box; transform-origin: 50% 100%; animation: steam-rise var(--duration) ease-out infinite; animation-delay: var(--delay); }
+    @keyframes steam-rise {
+      0% { transform: translate(0, 0) scale(.5, .6); opacity: 0; }
+      18% { opacity: .55; }
+      55% { transform: translate(calc(var(--drift) * .5), -46px) scale(1.1, 1.5); opacity: .32; }
+      100% { transform: translate(var(--drift), -92px) scale(1.9, 2.3); opacity: 0; }
+    }
     @keyframes lava-float {
       from { transform: translate(0, 17px) scale(.85, 1.15); }
       to { transform: translate(var(--drift), -20px) scale(1.12, .9); }
     }
+    /* Locked door: the hinge is on the right, so a pull only gives a hair of play before the latch stops it.
+       Pull, hit, a smaller second try, then it settles: damped and abrupt rather than a slide. */
     @keyframes locked-door {
-      0%, 100% { transform: perspective(1100px) rotateY(0); }
-      28% { transform: perspective(1100px) rotateY(-2deg) translateX(.22%); filter: brightness(.9); }
-      46% { transform: perspective(1100px) rotateY(-.6deg); }
-      65% { transform: perspective(1100px) rotateY(-1.6deg) translateX(.12%); }
-      82% { transform: perspective(1100px) rotateY(.2deg); }
+      0%, 100% { transform: none; }
+      12% { transform: scaleX(.9915) skewY(.05deg); animation-timing-function: cubic-bezier(.5, 0, 1, .6); }
+      19% { transform: none; animation-timing-function: ease-out; }
+      24% { transform: scaleX(1.0012); animation-timing-function: ease-in-out; }
+      30% { transform: none; }
+      52% { transform: scaleX(.9955); animation-timing-function: cubic-bezier(.5, 0, 1, .6); }
+      58% { transform: none; animation-timing-function: ease-out; }
+      62% { transform: scaleX(1.0006); }
+      68% { transform: none; }
     }
     .object-label { position: absolute; left: var(--label-x); top: var(--label-y); z-index: 6; transform: translate(-50%, -100%); padding: 8px 12px; background: #182b28; color: #fff; border: 1px solid #b9cabd; border-radius: 4px; font-size: 13px; pointer-events: none; opacity: 0; transition: opacity .2s; white-space: nowrap; }
-    .room:has(.workflow:hover, .workflow:focus-visible) .label-workflow,
+    .room:has(.skills:hover, .skills:focus-visible) .label-skills,
     .room:has(.ai:hover, .ai:focus-visible) .label-ai,
     .room:has(.origin:hover, .origin:focus-visible) .label-origin,
     .room:has(.door:hover, .door:focus-visible) .label-door,
     .room:has(.lamp-toggle:hover, .lamp-toggle:focus-visible) .label-lamp,
+    .room:has(.room-toggle:hover, .room-toggle:focus-visible) .label-room,
     .room:has(.globe-toggle:hover, .globe-toggle:focus-visible) .label-globe { opacity: 1; }
-    .door-message { position: absolute; top: 29%; right: 12%; z-index: 7; width: 230px; max-width: 40%; padding: 16px; background: #192b29; border-left: 3px solid #f1b662; box-shadow: 0 6px 30px #0005; font-size: 14px; line-height: 1.5; pointer-events: none; }
+    .door-message { position: absolute; top: 29%; right: 12%; z-index: 7; width: 230px; max-width: 40%; padding: 16px; background: #192b29; border-left: 3px solid #f1b662; box-shadow: 0 6px 30px #0005; font-size: 14px; line-height: 1.5; pointer-events: none; transition: opacity .45s ease; }
+    .door-message.fading { opacity: 0; }
+    .poster-slot { position: absolute; left: 62.15%; top: 8.6%; width: 7.8%; height: 19.8%; z-index: 3; padding: 0; border: 0; background: transparent; cursor: zoom-in; transform: perspective(900px) rotateY(-7deg) rotateZ(-.7deg); transform-origin: center; filter: brightness(.74) saturate(.8) contrast(.92) sepia(.14); }
+    /* Printed paper, not a screen: matte, slightly faded, and darker after sunset. */
+    .room[data-scene="evening"] .poster-slot { filter: brightness(.56) saturate(.72) contrast(.94) sepia(.14); }    .poster-slot img { display: block; width: 100%; height: 100%; object-fit: cover; clip-path: polygon(5% 0, 95% 2%, 100% 98%, 0 96%); box-shadow: 0 3px 7px #0005; }    .poster-slot::before, .poster-slot::after { content: ''; position: absolute; z-index: 1; width: 22%; height: 9%; background: #d9d1aa; opacity: .82; box-shadow: 0 1px 2px #0004; }
+    .poster-slot::before { left: -4%; top: -2%; transform: rotate(-42deg); }
+    .poster-slot::after { right: -5%; bottom: -3%; transform: rotate(-39deg); }
+    .poster-tape { position: absolute; z-index: 1; width: 22%; height: 9%; background: #d9d1aa; opacity: .82; box-shadow: 0 1px 2px #0004; }
+    .poster-tape.top-right { right: -6%; top: -1%; transform: rotate(43deg); }
+    .poster-tape.bottom-left { left: -5%; bottom: -2%; transform: rotate(42deg); }
     .door-message:empty { display: none; }
     .desk-index { padding: 34px 4% 46px; display: grid; grid-template-columns: minmax(280px, .85fr) minmax(0, 1.5fr); gap: clamp(24px, 4vw, 58px); background: #edf0e9; color: #243a36; }
     .desk-index h2 { margin: 0 0 9px; font-size: 22px; }
@@ -115,7 +176,14 @@
     dialog::backdrop { background: #0b1919b8; backdrop-filter: blur(2px); }
     dialog::before { content: ''; position: absolute; left: 26px; top: -17px; width: 168px; height: 24px; border: 1px solid #b6a981; border-bottom: 0; border-radius: 5px 5px 0 0; background: #e5d58f; box-shadow: 0 -3px 10px #0002 inset; transform: rotate(-1.2deg); }
     dialog::after { content: ''; position: absolute; inset: 0; border: 1px solid #b6a981; border-radius: inherit; pointer-events: none; background: linear-gradient(105deg, #fff6 0 1px, transparent 1px 100%), radial-gradient(circle at 18% 12%, #fff7, transparent 24%), linear-gradient(#00000005 1px, transparent 1px); background-size: auto, auto, 100% 28px; mix-blend-mode: multiply; }
-    dialog[data-story="workflow"]::before { background: #d5e4da; }
+    /* Poster lightbox: just the print, no dossier paper. */
+    .poster-dialog { width: fit-content; max-width: 94vw; max-height: none; margin: auto; background: transparent; box-shadow: none; overflow: visible; }
+    .poster-dialog::before, .poster-dialog::after { display: none; }
+    .poster-dialog[open] { animation: poster-zoom .28s cubic-bezier(.2, .8, .2, 1); }
+    .poster-dialog img { display: block; max-width: 94vw; max-height: 90dvh; width: auto; height: auto; border-radius: 2px; box-shadow: 0 24px 80px #000a; cursor: zoom-out; }
+    .poster-close { position: absolute; top: -14px; right: -14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: #f6f2e3; color: #243a36; font-size: 26px; line-height: 1; box-shadow: 0 4px 14px #0006; cursor: pointer; }
+    @keyframes poster-zoom { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: scale(1); } }
+    dialog[data-story="skills"]::before { background: #d5e4da; }
     dialog[data-story="ai"]::before { background: #f6d169; }
     dialog[data-story="origin"]::before { background: #f1ded9; }
     .dossier-header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 22px 12px; background: transparent; border-bottom: 1px solid #c8b98b; }
@@ -148,7 +216,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
-      .folder .surface { transform: none !important; }
+      .folder .surface { --ang: 0deg !important; filter: none !important; }
       .door-passing-shadow { display: none; }
       .coffee-steam { display: none; }
     }
@@ -161,7 +229,7 @@
       <p>Non una company. Un garage per idee che possono uscire allo scoperto.</p>
     </div>
     <nav aria-label="Navigazione principale">
-      <a href="workflow-management-skill/index.html">Workflow</a>
+      <a href="workflow-management-skill/index.html">AI Skills</a>
       <button data-story="origin">Origin Story</button>
       <a href="https://github.com/mmorgano">GitHub</a>
       <div class="language-switch" role="group" aria-label="Lingua">
@@ -172,10 +240,33 @@
   </header>
   <main>
     <section class="room" aria-label="La mia scrivania">
-      <img class="room-image" src="assets/garage-room-topgun.png" width="1672" height="941" alt="Una scrivania con VS Code sul monitor moderno, notebook, caffè e cartelle. Sulle librerie i vecchi computer; sul tavolo floppy e cassette. In fondo, una porta riservata. Sul muro vicino alla porta c'è un poster vintage di Top Gun.">
-      <svg class="lamp-shade" viewBox="0 0 1672 941" aria-hidden="true">
-        <defs><linearGradient id="unlit-shade" x2="0" y2="1"><stop stop-color="#4e493c"/><stop offset="1" stop-color="#8b826c"/></linearGradient></defs>
-        <path d="M205 256 C221 239 329 207 353 216 C370 224 218 270 205 256Z" fill="url(#unlit-shade)"/>
+      <img class="room-image" src="assets/garage-room-v5-day-base-clean-wall.png" width="1672" height="941" alt="Una scrivania con monitor moderno pronto per un agente AI, notebook, caff&egrave; e cartelle. Sulle librerie i vecchi computer; sul tavolo floppy e cassette. In fondo, una porta con cartello Restricted Area e uno spazio poster intercambiabile.">
+      <div class="room-dim" aria-hidden="true"></div>
+      <svg class="desk-lamp-light" viewBox="0 0 1672 941" aria-hidden="true">
+        <defs>
+          <radialGradient id="desk-light-falloff">
+            <stop stop-color="white"/><stop offset=".45" stop-color="white" stop-opacity=".7"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Follows the painted bulb itself: bright pixels become dark grey, the rest stays transparent. -->
+          <filter id="bulb-darken" x="0" y="0" width="1672" height="941" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="0 0 0 0 .17  0 0 0 0 .18  0 0 0 0 .19  1.65 3.2 .6 0 -3.4"/>
+          </filter>
+          <clipPath id="bulb-area"><ellipse cx="277" cy="236" rx="36" ry="18"/></clipPath>
+          <radialGradient id="lamp-glow-gradient">
+            <stop stop-color="#ffc766" stop-opacity=".7"/><stop offset=".5" stop-color="#ff9f3f" stop-opacity=".28"/><stop offset="1" stop-color="#ff9f3f" stop-opacity="0"/>
+          </radialGradient>
+          <mask id="desk-light-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1672" height="941">
+            <ellipse cx="430" cy="642" rx="330" ry="190" fill="url(#desk-light-falloff)"/>
+            <path d="M205 255Q264 226 350 216L350 228Q273 254 210 260Z" fill="white"/>
+            <path d="M232 270H671V507L234 524Z" fill="black"/>
+          </mask>
+        </defs>
+        <image class="scene-source lamp-lit-surface" href="assets/garage-room-v5-day-base-clean-wall.png" width="1672" height="941" mask="url(#desk-light-mask)"/>
+        <ellipse class="lamp-glow" cx="430" cy="642" rx="360" ry="210" fill="url(#lamp-glow-gradient)" mask="url(#desk-light-mask)"/>
+        <ellipse class="lamp-halo" cx="277" cy="240" rx="120" ry="90" fill="url(#lamp-glow-gradient)"/>
+        <g class="lamp-bulb-off" filter="url(#bulb-darken)" clip-path="url(#bulb-area)">
+          <image class="scene-source" href="assets/garage-room-v5-day-base-clean-wall.png" width="1672" height="941"/>
+        </g>
       </svg>
       <svg class="globe-shade" viewBox="0 0 1672 941" aria-hidden="true">
         <defs>
@@ -183,7 +274,7 @@
           <radialGradient id="globe-spill"><stop stop-color="#122221" stop-opacity=".5"/><stop offset="1" stop-color="#122221" stop-opacity="0"/></radialGradient>
         </defs>
         <ellipse cx="1638" cy="307" rx="83" ry="73" fill="url(#globe-spill)"/>
-        <image href="assets/garage-room-topgun.png" width="1672" height="941" clip-path="url(#globe-sphere)"/>
+        <image class="globe-source" href="assets/garage-room-v5-day-base-clean-wall.png" width="1672" height="941" clip-path="url(#globe-sphere)"/>
       </svg>
       <time class="clock-display" aria-label="Ora locale">
         <svg viewBox="0 0 76 36" aria-hidden="true">
@@ -208,29 +299,60 @@
           <path d="M12 4L5 55M26 6L32 55" fill="none" stroke="#fff3b4" stroke-opacity=".5" stroke-width="1"/>
         </g>
       </svg>
+      <div class="monitor-agent" aria-hidden="true">
+        <svg viewBox="0 0 416 232" preserveAspectRatio="none">
+          <path d="M0 0H416V23H0Z" fill="#243139"/>
+          <circle cx="12" cy="12" r="2.5" fill="#cf8679"/><circle cx="22" cy="12" r="2.5" fill="#cfb77b"/><circle cx="32" cy="12" r="2.5" fill="#88b99b"/>
+          <text x="48" y="15" class="muted">MGM / garage-agent</text>
+          <path d="M0 23H96V217H0Z" fill="#19262e"/>
+          <text x="10" y="43" class="muted">EXPLORER</text>
+          <text x="10" y="64">v garage-lab</text>
+          <text x="18" y="84" class="gold">v skills</text>
+          <text x="25" y="103" class="green">workflow.md</text>
+          <text x="18" y="125">&gt; sessions</text>
+          <text x="18" y="145">&gt; tasks</text>
+          <text x="18" y="165" class="muted">README.md</text>
+          <text x="108" y="41" class="muted">workflow.md</text>
+          <path d="M104 49H409" stroke="#34434a"/>
+          <text x="107" y="67" class="muted">01</text><text x="131" y="67" class="blue"># A little more context</text>
+          <text x="107" y="86" class="muted">02</text><text x="131" y="86">Read the last session.</text>
+          <text x="107" y="105" class="muted">03</text><text x="131" y="105">Find the next useful step.</text>
+          <text x="107" y="124" class="muted">04</text><text x="131" y="124" class="green">Leave a trail for tomorrow.</text>
+          <rect class="editor-highlight" x="100" y="131" width="312" height="16" fill="#93cfac" opacity="0"/>
+          <text class="muted editor-new-num" x="107" y="143"></text><text class="green editor-new" x="131" y="143"></text>
+          <path d="M97 152H416V215H97Z" fill="#101b21"/>
+          <text x="108" y="164" class="muted">AGENT</text><circle class="agent-cursor" cx="148" cy="160" r="2" fill="#93cfac"/>
+          <text x="108" y="180" class="muted agent-log-1"></text>
+          <text x="108" y="193" class="muted agent-log-2"></text>
+          <text x="108" y="207" class="green agent-log-3"></text>
+          <path d="M0 215H416V232H0Z" fill="#28423d"/>
+          <text x="10" y="227" class="green">main*</text><text x="106" y="227">workflow-management</text><text x="350" y="227" class="green">UTF-8</text>
+        </svg>
+      </div>
       <button class="lamp-toggle" type="button" aria-label="Spegni la lampada da tavolo" aria-pressed="true"></button>
-      <!-- Refracting the existing steam keeps its painted texture and avoids a second plume. -->
+      <button class="room-toggle" type="button" aria-label="Spegni la luce della stanza" aria-pressed="true"></button>
       <svg class="coffee-steam" viewBox="0 0 108 145" aria-hidden="true">
         <defs>
-          <filter id="steam-feather" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4"/></filter>
-          <mask id="steam-area" maskUnits="userSpaceOnUse" x="0" y="0" width="108" height="145">
-            <path d="M44 136 C49 121 14 121 17 101 C19 83 47 81 41 66 C28 49 57 38 57 17 L77 17 C81 41 60 51 72 68 C87 87 52 94 63 108 C76 122 56 128 56 136Z" fill="#fff" stroke="#fff" stroke-width="9" filter="url(#steam-feather)"/>
-          </mask>
-          <filter id="steam-drift" filterUnits="userSpaceOnUse" x="0" y="0" width="108" height="145" color-interpolation-filters="sRGB">
-            <feTurbulence type="fractalNoise" baseFrequency=".018 .028" numOctaves="2" seed="7" result="flow">
-              <animate attributeName="baseFrequency" values=".018 .028;.025 .019;.018 .028" dur="12s" repeatCount="indefinite"/>
-            </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" in2="flow" scale="7" xChannelSelector="R" yChannelSelector="G">
-              <animate attributeName="scale" values="4;9;5;4" dur="9s" repeatCount="indefinite"/>
-            </feDisplacementMap>
+          <filter id="steam-soft" x="-60%" y="-60%" width="220%" height="220%">
+            <feTurbulence type="fractalNoise" baseFrequency=".035 .06" numOctaves="2" seed="7" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+            <feGaussianBlur in="rough" stdDeviation="3.6"/>
           </filter>
         </defs>
-        <g mask="url(#steam-area)">
-          <image href="assets/garage-room-topgun.png" x="-992" y="-356" width="1672" height="941" filter="url(#steam-drift)"/>
+        <g filter="url(#steam-soft)">
+          <ellipse class="steam-puff" cx="46" cy="128" rx="9" ry="12" style="--duration:7s;--delay:0s;--drift:-14px"/>
+          <ellipse class="steam-puff" cx="58" cy="130" rx="8" ry="11" style="--duration:9s;--delay:-3s;--drift:12px"/>
+          <ellipse class="steam-puff" cx="52" cy="128" rx="10" ry="12" style="--duration:8s;--delay:-5.5s;--drift:-4px"/>
+          <ellipse class="steam-puff" cx="55" cy="131" rx="7" ry="10" style="--duration:10s;--delay:-7.5s;--drift:16px"/>
         </g>
       </svg>
+      <button class="poster-slot" type="button" aria-label="Ingrandisci il poster">
+        <img alt="">
+        <span class="poster-tape top-right"></span>
+        <span class="poster-tape bottom-left"></span>
+      </button>
       <button class="globe-toggle" type="button" aria-label="Spegni il mappamondo" aria-pressed="true"></button>
-      <button class="object folder workflow" data-story="workflow" aria-label="Apri la cartella Workflow Management"><span class="surface" aria-hidden="true"></span></button>
+      <button class="object folder skills" data-story="skills" aria-label="Apri la cartella AI Skills"><span class="surface" aria-hidden="true"></span></button>
       <button class="object folder ai" data-story="ai" aria-label="Apri la cartella AI Lab"><span class="surface" aria-hidden="true"></span></button>
       <button class="object folder origin" data-story="origin" aria-label="Apri la cartella Origin Story"><span class="surface" aria-hidden="true"></span></button>
       <button class="object door" aria-label="Prova ad aprire la porta riservata" aria-describedby="door-status"><span class="surface" aria-hidden="true"></span></button>
@@ -250,11 +372,12 @@
           </g>
         </g>
       </svg>
-      <span class="object-label label-workflow" style="--label-x:59%;--label-y:63%" aria-hidden="true">Workflow Management</span>
+      <span class="object-label label-skills" style="--label-x:59%;--label-y:63%" aria-hidden="true">AI Skills</span>
       <span class="object-label label-ai" style="--label-x:72%;--label-y:62%" aria-hidden="true">Esperimenti con l'AI</span>
       <span class="object-label label-origin" style="--label-x:86%;--label-y:61%" aria-hidden="true">Da dove sono partito</span>
-      <span class="object-label label-door" style="--label-x:81%;--label-y:7%" aria-hidden="true">Solo personale autorizzato</span>
+      <span class="object-label label-door" style="--label-x:81%;--label-y:7%" aria-hidden="true">Restricted area</span>
       <span class="object-label label-lamp" style="--label-x:17%;--label-y:11%" aria-hidden="true">Spegni / accendi la lampada</span>
+      <span class="object-label label-room" style="--label-x:72%;--label-y:28%" aria-hidden="true">Spegni / accendi la luce della stanza</span>
       <span class="object-label label-globe" aria-hidden="true">Spegni il mappamondo</span>
       <div class="door-message" id="door-status" role="status" aria-live="polite"></div>
     </section>
@@ -265,7 +388,7 @@
         <p>Esperimenti, appunti e pezzi del mio percorso. Questo garage &egrave; uno spazio personale: qui trovano posto le idee che posso condividere senza portarmi dietro segreti, clienti o materiale riservato.</p>
       </div>
       <nav class="links" aria-label="Sul tavolo">
-        <button data-story="workflow"><strong>Workflow Management</strong><small>Memoria per il lavoro con l'AI</small></button>
+        <button data-story="skills"><strong>AI Skills</strong><small>Workflow e strumenti pubblici per lavorare con l'AI</small></button>
         <button data-story="ai"><strong>AI Lab</strong><small>Provare, capire, ricominciare</small></button>
         <button data-story="origin"><strong>Origin Story</strong><small>Dai primi computer a oggi</small></button>
         <button data-door><strong>La porta riservata</strong><small>Alcune storie restano qui</small></button>
@@ -280,12 +403,16 @@
     <header class="dossier-header"><span id="story-label"></span><button class="close" aria-label="Chiudi il dossier" title="Chiudi">&times;</button></header>
     <article class="dossier-body"><h2 id="story-title"></h2><div id="story-content"></div></article>
   </dialog>
+  <dialog class="poster-dialog" aria-label="Poster">
+    <img alt="">
+    <button class="poster-close" type="button" aria-label="Chiudi il poster" title="Chiudi">&times;</button>
+  </dialog>
   <script>
     const stories = {
       it: {
-      workflow: {
-        label: 'WORKFLOW / PROGETTO PUBBLICO', title: 'Ripartire senza perdere il filo.',
-        paragraphs: ['Quando lavoro con un assistente AI, voglio ritrovare decisioni, prove e prossimi passi anche nella sessione successiva.', 'Workflow Management nasce da questa esigenza: conservare il contesto del lavoro in file leggibili, con sessioni, task e passaggi di consegne.'],
+      skills: {
+        label: 'AI SKILLS / PROGETTI PUBBLICI', title: 'Strumenti per non perdere il filo.',
+        paragraphs: ['Qui raccolgo gli skill e i workflow pubblici nati mentre sperimento con gli assistenti AI.', 'Workflow Management e il primo: conserva il contesto del lavoro in file leggibili, con sessioni, task e passaggi di consegne. Altri arriveranno quando saranno maturi.'],
         link: 'workflow-management-skill/index.html', linkText: 'Leggi la storia di Workflow Management'
       },
       ai: {
@@ -298,9 +425,9 @@
       }
       },
       en: {
-        workflow: {
-          label: 'WORKFLOW / PUBLIC PROJECT', title: 'Pick up where you left off.',
-          paragraphs: ['When I work with an AI assistant, I want to find my decisions, experiments and next steps again in the next session.', 'Workflow Management grew out of that need: keeping work context in readable files, with session notes, tasks and handovers.'],
+        skills: {
+          label: 'AI SKILLS / PUBLIC PROJECTS', title: 'Tools for keeping the thread.',
+          paragraphs: ['This folder collects the public skills and workflows that grow out of my AI assistant experiments.', 'Workflow Management is the first one: it keeps work context in readable files, with session notes, tasks and handovers. More will come when they are ready.'],
           link: 'workflow-management-skill/index.html', linkText: 'Read the story of Workflow Management'
         },
         ai: {
@@ -319,14 +446,15 @@
       '.desk-index .kicker': 'Ideas out in the open',
       '#desk-title': 'Things I can share.',
       '.desk-index > div > p:last-child': 'Experiments, notes and pieces of my journey. This garage is a personal space for ideas I can share without bringing along secrets, clients or confidential material.',
-      '.links [data-story="workflow"] small': 'Memory for working with AI',
+      '.links [data-story="skills"] strong': 'AI Skills',
+      '.links [data-story="skills"] small': 'Workflows and public tools for working with AI',
       '.links [data-story="ai"] small': 'Try, understand, start again',
       '.links [data-story="origin"] small': 'From my first computers to today',
       '.links [data-door] strong': 'The private door',
       '.links [data-door] small': 'Some stories stay here',
       '.label-ai': 'Experiments with AI',
       '.label-origin': 'Where I started',
-      '.label-door': 'Authorized personnel only',
+      '.label-door': 'Restricted area',
       '.footer-note span:first-child': 'MGM Garage Lab / build, explore, tinker, repeat.',
       '.footer-note span:last-child': 'Private stays private. That is part of the craft.'
     };
@@ -334,13 +462,15 @@
       '.intro nav': { 'aria-label': 'Main navigation' },
       '.language-switch': { 'aria-label': 'Language' },
       '.room': { 'aria-label': 'My desk' },
-      '.room-image': { alt: 'A desk with VS Code on a modern monitor, a laptop, coffee and folders. Vintage computers on the shelves; floppy disks and cassette tapes on the desk. A private door at the back. A vintage Top Gun poster hangs on the wall near the door.' },
-      '.workflow': { 'aria-label': 'Open the Workflow Management folder' },
+      '.room-image': { alt: 'A desk with a modern monitor ready for an AI agent, a laptop, coffee and folders. Vintage computers on the shelves; floppy disks and cassette tapes on the desk. A Restricted Area door stands at the back with an interchangeable poster slot nearby.' },
+      '.skills': { 'aria-label': 'Open the AI Skills folder' },
       '.ai': { 'aria-label': 'Open the AI Lab folder' },
       '.origin': { 'aria-label': 'Open the Origin Story folder' },
       '.door': { 'aria-label': 'Try opening the private door' },
       '.links': { 'aria-label': 'On the desk' },
       '.close': { 'aria-label': 'Close the dossier', title: 'Close' },
+      '.poster-slot': { 'aria-label': 'View the poster larger' },
+      '.poster-close': { 'aria-label': 'Close the poster', title: 'Close' },
       'meta[name="description"]': { content: 'MGM Garage Lab: a public room for experiments, project memory and ideas ready to step outside.' }
     };
     const textTranslations = Object.entries(englishText).map(([selector, en]) => {
@@ -355,12 +485,14 @@
       it: {
         title: 'MGM Garage Lab - Idee in libera uscita',
         localTime: 'Ora locale', lampOn: 'Accendi la lampada da tavolo', lampOff: 'Spegni la lampada da tavolo',
+        roomOn: 'Accendi la luce della stanza', roomOff: 'Spegni la luce della stanza',
         globeOn: 'Accendi il mappamondo', globeOff: 'Spegni il mappamondo',
         doorMessage: 'Questa storia resta qui. Posso condividere quello che ho imparato, non i dettagli riservati.'
       },
       en: {
         title: 'MGM Garage Lab - Ideas out in the open',
         localTime: 'Local time', lampOn: 'Turn on the desk lamp', lampOff: 'Turn off the desk lamp',
+        roomOn: 'Turn on the room light', roomOff: 'Turn off the room light',
         globeOn: 'Turn on the globe', globeOff: 'Turn off the globe',
         doorMessage: 'This story stays here. I can share what I learned, but not the confidential details.'
       }
@@ -375,14 +507,131 @@
     const room = document.querySelector('.room');
     const door = document.querySelector('.door');
     const lampToggle = document.querySelector('.lamp-toggle');
+    const roomToggle = document.querySelector('.room-toggle');
     const globeToggle = document.querySelector('.globe-toggle');
+    const roomImage = document.querySelector('.room-image');
+    const globeSource = document.querySelector('.globe-source');
+    const posterSlot = document.querySelector('.poster-slot');
+    const posterImage = posterSlot.querySelector('img');
     const clock = document.querySelector('.clock-display');
     const status = document.querySelector('#door-status');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const sceneAssets = {
+      day: 'assets/garage-room-v5-day-base-clean-wall.png',
+      evening: 'assets/garage-room-v5-evening-base-clean-wall.png'
+    };
+    const posters = [
+      { src: 'assets/posters/back-to-the-future.webp', fit: 'portrait' },
+      { src: 'assets/posters/terminator.jpg', fit: 'portrait' },
+      { src: 'assets/posters/top-gun.jpg', fit: 'portrait' },
+      { src: 'assets/posters/nasa-grand-tour.jpg', fit: 'portrait' },
+      { src: 'assets/posters/nasa-mars.jpg', fit: 'portrait' },
+      { src: 'assets/posters/nasa-jupiter.jpg', fit: 'portrait' },
+      { src: 'assets/posters/nasa-enceladus.jpg', fit: 'portrait' },
+      { src: 'assets/posters/nasa-kepler-186f.jpg', fit: 'portrait' }
+    ]; // Portrait only: wider posters would cover the light switch next to the slot.
+    // Optional `zoom` = larger file for the lightbox; `src` is the small version pinned to the wall.
+    let currentPoster = posters[0];
     let opener;
     let opening = false;
     let messageTimer;
+    let fadeTimer;
     let currentStory;
+
+    // Each crop is registered to the bitmap, including the original lettering and wear.
+    const cutouts = [
+      { selector: '.skills', box: [872, 608, 260, 154], points: [[872,628],[1037,608],[1122,719],[910,751]], title: 'AI SKILLS', lines: ['Workflow Management', 'Context / sessions / tasks', 'Ideas ready to grow.'] },
+      { selector: '.ai', box: [1086,602,253,147], points: [[1086,616],[1240,602],[1333,709],[1141,735]], title: 'AI LAB', lines: ['Experiments in progress', 'Build. Test. Learn.', 'One useful step at a time.'] },
+      { selector: '.origin', box: [1281,593,298,147], points: [[1281,606],[1432,593],[1565,713],[1355,727]], title: 'ORIGIN STORY', lines: ['Where it all started', 'Curiosity, since the 80s.', 'The story continues.'] },
+      { selector: '.door', box: [1232,18,244,502], points: [[1232,37],[1476,18],[1470,519],[1355,506],[1354,493],[1349,474],[1320,463],[1232,455]] }
+    ];
+    const svgNS = 'http://www.w3.org/2000/svg';
+    function svgNode(tag, attributes, text) {
+      const node = document.createElementNS(svgNS, tag);
+      Object.entries(attributes).forEach(([name, value]) => node.setAttribute(name, value));
+      if (text) node.textContent = text;
+      return node;
+    }
+    cutouts.forEach(({ selector, box, points, title, lines }, index) => {
+      const object = document.querySelector(selector);
+      const [x, y, width, height] = box;
+      Object.assign(object.style, { left: `${x / 1672 * 100}%`, top: `${y / 941 * 100}%`, width: `${width / 1672 * 100}%`, height: `${height / 941 * 100}%` });
+      const svg = svgNode('svg', { viewBox: box.join(' '), 'aria-hidden': 'true' });
+      const defs = svgNode('defs', {});
+      const clip = svgNode('clipPath', { id: `object-crop-${index}`, clipPathUnits: 'userSpaceOnUse' });
+      clip.append(svgNode('polygon', { points: points.map(point => point.join(',')).join(' ') }));
+      defs.append(clip);
+      svg.append(defs, svgNode('image', { class: 'scene-source', href: sceneAssets.day, width: 1672, height: 941, 'clip-path': `url(#object-crop-${index})` }));
+      object.querySelector('.surface').append(svg);
+      if (!title) return;
+      // Plane vectors in image units: e1 = top edge, e2 = spine, lift = screen-up scaled for the camera pitch.
+      const [pa, pb, , pd] = points;
+      const e1 = [pb[0] - pa[0], pb[1] - pa[1]];
+      const e2 = [pd[0] - pa[0], pd[1] - pa[1]];
+      const det = e1[0] * e2[1] - e1[1] * e2[0];
+      const lift = Math.hypot(...e1) * 0.85;
+      const surface = object.querySelector('.surface');
+      const vars = { '--e1x': e1[0], '--e1y': e1[1], '--lx': 0, '--ly': -lift, '--r1x': e2[1] / det, '--r1y': -e2[0] / det };
+      Object.entries(vars).forEach(([name, value]) => surface.style.setProperty(name, value));
+      surface.style.transformOrigin = `${(pa[0] - x) / width * 100}% ${(pa[1] - y) / height * 100}%`;
+      const pages = svgNode('svg', { viewBox: box.join(' '), class: 'folder-pages', 'aria-hidden': 'true' });
+      const [a, b, , d] = points;
+      const paper = svgNode('g', { transform: `matrix(${(b[0]-a[0])/200} ${(b[1]-a[1])/200} ${(d[0]-a[0])/120} ${(d[1]-a[1])/120} ${a[0]} ${a[1]})` });
+      paper.append(svgNode('path', { d: 'M0 0H200L253 120H0Z', fill: '#d4cdbb', stroke: '#887d66', 'stroke-width': 1 }));
+      paper.append(svgNode('path', { d: 'M7 5H197L245 114H7Z', fill: '#e9e3d1' }));
+      paper.append(svgNode('text', { x: 20, y: 26, fill: '#56584f', 'font-family': 'monospace', 'font-size': 12, 'font-weight': 'bold' }, title));
+      lines.forEach((line, lineIndex) => paper.append(svgNode('text', { x: 20, y: 48 + lineIndex * 16, fill: '#79796b', 'font-family': 'monospace', 'font-size': 8 }, line)));
+      paper.append(svgNode('path', { d: 'M20 92H185M20 99H165', stroke: '#bbb8a8', 'stroke-width': 1 }));
+      const clippedPaper = svgNode('g', { 'clip-path': `url(#object-crop-${index})` });
+      clippedPaper.append(paper);
+      pages.append(clippedPaper);
+      object.prepend(pages);
+    });
+
+    // Scripted agent session: it types a command, "thinks", reports the result and edits the open file.
+    const agentSteps = [
+      { cmd: 'read sessions/last.md', done: 'read 1 file' },
+      { cmd: 'find next useful step', done: 'next: polish the room' },
+      { cmd: 'edit workflow.md', done: '+1 line, saved', edit: 'Ship the room, then rest.' },
+      { cmd: 'run checks', done: 'context saved, all good' }
+    ];
+    const THINK_TICKS = 14;
+    const HOLD_TICKS = 9;
+    const spinner = ['|', '/', '-', '\\'];
+    const agentLogs = ['.agent-log-1', '.agent-log-2', '.agent-log-3'].map(selector => document.querySelector(selector));
+    const editorLine = document.querySelector('.editor-new');
+    const editorNumber = document.querySelector('.editor-new-num');
+    const editorHighlight = document.querySelector('.editor-highlight');
+    let agentStep = 0;
+    let agentTick = 0;
+    function renderAgent() {
+      const finished = agentStep >= agentSteps.length;
+      const step = agentSteps[Math.min(agentStep, agentSteps.length - 1)];
+      const typed = finished ? step.cmd.length : Math.min(step.cmd.length, agentTick);
+      const thinking = !finished && agentTick >= step.cmd.length && agentTick < step.cmd.length + THINK_TICKS;
+      const complete = finished || agentTick >= step.cmd.length + THINK_TICKS;
+      const completedCount = finished ? agentSteps.length : agentStep + (complete ? 1 : 0);
+      const shown = agentSteps.slice(0, completedCount).map(item => `ok ${item.cmd}: ${item.done}`).slice(-2);
+      agentLogs[0].textContent = shown[0] || '';
+      agentLogs[1].textContent = shown[1] || '';
+      agentLogs[2].textContent = complete ? '' : `> ${step.cmd.slice(0, typed)}${thinking ? ' ' + spinner[agentTick % spinner.length] : '_'}`;
+      // The file being edited receives its new line character by character.
+      const editing = agentSteps.findIndex(item => item.edit);
+      const started = finished || agentStep > editing || (agentStep === editing && agentTick > step.cmd.length);
+      const chars = !started ? 0 : (agentStep === editing && !finished ? Math.min(step.edit.length, agentTick - step.cmd.length) : agentSteps[editing].edit.length);
+      editorNumber.textContent = chars ? '05' : '';
+      editorLine.textContent = agentSteps[editing].edit.slice(0, chars);
+      editorHighlight.style.opacity = chars && chars < agentSteps[editing].edit.length ? '.16' : chars ? '.07' : '0';
+    }
+    function updateAgent() {
+      if (document.hidden) return;
+      if (reducedMotion.matches) { agentStep = agentSteps.length; renderAgent(); return; }
+      agentTick++;
+      const step = agentSteps[agentStep];
+      if (step && agentTick > step.cmd.length + THINK_TICKS + HOLD_TICKS) { agentStep++; agentTick = 0; }
+      else if (!step && agentTick > 40) { agentStep = 0; agentTick = 0; }
+      renderAgent();
+    }
 
     // Seven-segment geometry scales with the illustrated display, including its perspective.
     const digitSegments = ['abcdef', 'bc', 'abdeg', 'abcdg', 'bcfg', 'acdfg', 'acdefg', 'abc', 'abcdefg', 'abcdfg'];
@@ -437,20 +686,23 @@
         dialog.showModal();
         document.body.style.overflow = 'hidden';
         opening = false;
-      }, reducedMotion.matches ? 0 : 240);
+      }, reducedMotion.matches ? 0 : 560);
     }
 
     function tryDoor(trigger) {
       if (door.classList.contains('rattling')) return;
       clearTimeout(messageTimer);
+      clearTimeout(fadeTimer);
       status.textContent = '';
+      status.classList.remove('fading');
       door.classList.add('rattling');
       setTimeout(() => {
         door.classList.remove('rattling');
         status.textContent = copy[language].doorMessage;
         if (trigger.hasAttribute('data-door')) status.scrollIntoView({ block: 'center', behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-        messageTimer = setTimeout(() => { status.textContent = ''; }, 8000);
-      }, reducedMotion.matches ? 0 : 850);
+        fadeTimer = setTimeout(() => status.classList.add('fading'), 2600);
+        messageTimer = setTimeout(() => { status.textContent = ''; status.classList.remove('fading'); }, 3100);
+      }, reducedMotion.matches ? 0 : 1100);
     }
 
     function updateClock() {
@@ -473,18 +725,50 @@
       updateLightLabels();
     }
 
+    function toggleRoomLight() {
+      const isOff = room.classList.toggle('room-light-off');
+      roomToggle.setAttribute('aria-pressed', String(!isOff));
+      updateLightLabels();
+    }
+
     function toggleGlobe() {
       const isOff = room.classList.toggle('globe-off');
       globeToggle.setAttribute('aria-pressed', String(!isOff));
       updateLightLabels();
     }
 
+    function setSceneFromTime() {
+      const hour = new Date().getHours();
+      const scene = hour >= 7 && hour < 15 ? 'day' : 'evening';
+      const asset = sceneAssets[scene];
+      room.dataset.scene = scene;
+      room.style.setProperty('--room-image', `url('${asset}')`);
+      roomImage.src = asset;
+      globeSource.setAttribute('href', asset);
+      document.querySelectorAll('.scene-source').forEach(image => image.setAttribute('href', asset));
+    }
+
+    function setPoster() {
+      // Random on every load, but never the same poster twice in a row within a browser session.
+      let last = -1;
+      try { last = Number(sessionStorage.getItem('poster-index') ?? -1); } catch { /* storage unavailable */ }
+      let index = Math.floor(Math.random() * posters.length);
+      if (posters.length > 1 && index === last) index = (index + 1 + Math.floor(Math.random() * (posters.length - 1))) % posters.length;
+      try { sessionStorage.setItem('poster-index', String(index)); } catch { /* storage unavailable */ }
+      const poster = posters[index];
+      currentPoster = poster;
+      posterImage.src = poster.src;
+    }
+
     function updateLightLabels() {
       const lampLabel = copy[language][room.classList.contains('lamp-off') ? 'lampOn' : 'lampOff'];
+      const roomLabel = copy[language][room.classList.contains('room-light-off') ? 'roomOn' : 'roomOff'];
       const globeLabel = copy[language][room.classList.contains('globe-off') ? 'globeOn' : 'globeOff'];
       lampToggle.setAttribute('aria-label', lampLabel);
+      roomToggle.setAttribute('aria-label', roomLabel);
       globeToggle.setAttribute('aria-label', globeLabel);
       document.querySelector('.label-lamp').textContent = lampLabel;
+      document.querySelector('.label-room').textContent = roomLabel;
       document.querySelector('.label-globe').textContent = globeLabel;
     }
 
@@ -507,9 +791,14 @@
 
     document.querySelectorAll('[data-story]').forEach(button => button.addEventListener('click', () => openStory(button.dataset.story, button)));
     document.querySelectorAll('[data-language]').forEach(button => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+    setSceneFromTime();
+    setPoster();
     setLanguage(language);
+    updateAgent();
+    setInterval(updateAgent, 120);
     setInterval(updateClock, 1000);
     lampToggle.addEventListener('click', toggleLamp);
+    roomToggle.addEventListener('click', toggleRoomLight);
     globeToggle.addEventListener('click', toggleGlobe);
     door.addEventListener('click', () => tryDoor(door));
     document.querySelector('[data-door]').addEventListener('click', event => tryDoor(event.currentTarget));
@@ -517,6 +806,17 @@
     dialog.addEventListener('click', event => {
       const bounds = dialog.getBoundingClientRect();
       if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
+    });
+    const posterDialog = document.querySelector('.poster-dialog');
+    posterSlot.addEventListener('click', () => {
+      posterDialog.querySelector('img').src = currentPoster.zoom ?? currentPoster.src;
+      posterDialog.showModal();
+      document.body.style.overflow = 'hidden';
+    });
+    posterDialog.addEventListener('click', () => posterDialog.close());
+    posterDialog.addEventListener('close', () => {
+      document.body.style.overflow = '';
+      posterSlot.focus({ preventScroll: true });
     });
     dialog.addEventListener('close', () => {
       document.body.style.overflow = '';
