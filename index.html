@@ -47,6 +47,10 @@
     .lamp-bulb-off { opacity: 0; transition: opacity .45s ease; }
     .room.lamp-off .lamp-bulb-off { opacity: .94; }
     .lamp-glow, .lamp-halo { opacity: 0; mix-blend-mode: screen; transition: opacity .45s ease; }
+    /* Daylight: a lighter version of the same glow, so switching the lamp on is still rewarding. */
+    .room[data-scene="day"]:not(.lamp-off) .lamp-lit-surface { filter: var(--tone) brightness(1.22) saturate(1.1) sepia(.08); }
+    .room[data-scene="day"]:not(.lamp-off) .lamp-glow { opacity: .42; }
+    .room[data-scene="day"]:not(.lamp-off) .lamp-halo { opacity: .5; }
     .room[data-scene="evening"] .lamp-lit-surface { filter: var(--tone) brightness(1.45) saturate(1.15) sepia(.12); }
     .room[data-scene="evening"] .lamp-glow { opacity: .85; }
     .room[data-scene="evening"] .lamp-halo { opacity: .7; }
@@ -56,9 +60,8 @@
     .globe-shade image { filter: var(--tone) brightness(.48) saturate(.35); }
     .room.globe-off .globe-shade { opacity: 1; }
     .globe-toggle { position: absolute; right: 0; top: 22.1%; width: 5.5%; height: 14.8%; min-width: 44px; min-height: 44px; z-index: 5; padding: 0; border: 0; border-radius: 50%; background: transparent; }
-    .globe-toggle:focus-visible { outline-offset: -3px; }
-    .label-globe { left: auto; right: 1%; top: 21%; transform: translateY(-100%); }
-    /* SVG crops use source-image coordinates; only the photographed cover/door moves. */
+    .globe-toggle:focus-visible { outline-offset: -3px; }    .window-toggle { position: absolute; left: 0; top: 6%; width: 10%; height: 24%; min-width: 44px; min-height: 44px; z-index: 5; padding: 0; border: 0; background: transparent; cursor: pointer; }
+    .window-toggle:focus-visible { outline-offset: -3px; }    /* SVG crops use source-image coordinates; only the photographed cover/door moves. */
     .object { position: absolute; z-index: 4; padding: 0; border: 0; background: transparent; overflow: visible; }
     .object svg { display: block; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
     .object .surface { position: absolute; inset: 0; transform-origin: var(--hinge); transition: transform .55s cubic-bezier(.2,.65,.25,1); }
@@ -149,7 +152,8 @@
     .room:has(.door:hover, .door:focus-visible) .label-door,
     .room:has(.lamp-toggle:hover, .lamp-toggle:focus-visible) .label-lamp,
     .room:has(.room-toggle:hover, .room-toggle:focus-visible) .label-room,
-    .room:has(.globe-toggle:hover, .globe-toggle:focus-visible) .label-globe { opacity: 1; }
+    .room:has(.globe-toggle:hover, .globe-toggle:focus-visible) .label-globe,
+    .room:has(.window-toggle:hover, .window-toggle:focus-visible) .label-window { opacity: 1; }
     .door-message { position: absolute; top: 29%; right: 12%; z-index: 7; width: 230px; max-width: 40%; padding: 16px; background: #192b29; border-left: 3px solid #f1b662; box-shadow: 0 6px 30px #0005; font-size: 14px; line-height: 1.5; pointer-events: none; transition: opacity .45s ease; }
     .door-message.fading { opacity: 0; }
     .poster-slot { position: absolute; left: 62.15%; top: 8.6%; width: 7.8%; height: 19.8%; z-index: 3; padding: 0; border: 0; background: transparent; cursor: zoom-in; transform: perspective(900px) rotateY(-7deg) rotateZ(-.7deg); transform-origin: center; filter: brightness(.74) saturate(.8) contrast(.92) sepia(.14); }
@@ -352,6 +356,7 @@
         <span class="poster-tape bottom-left"></span>
       </button>
       <button class="globe-toggle" type="button" aria-label="Spegni il mappamondo" aria-pressed="true"></button>
+      <button class="window-toggle" type="button" aria-label="Fai calare la sera"></button>
       <button class="object folder skills" data-story="skills" aria-label="Apri la cartella AI Skills"><span class="surface" aria-hidden="true"></span></button>
       <button class="object folder ai" data-story="ai" aria-label="Apri la cartella AI Lab"><span class="surface" aria-hidden="true"></span></button>
       <button class="object folder origin" data-story="origin" aria-label="Apri la cartella Origin Story"><span class="surface" aria-hidden="true"></span></button>
@@ -378,7 +383,8 @@
       <span class="object-label label-door" style="--label-x:81%;--label-y:7%" aria-hidden="true">Restricted area</span>
       <span class="object-label label-lamp" style="--label-x:17%;--label-y:11%" aria-hidden="true">Spegni / accendi la lampada</span>
       <span class="object-label label-room" style="--label-x:72%;--label-y:28%" aria-hidden="true">Spegni / accendi la luce della stanza</span>
-      <span class="object-label label-globe" aria-hidden="true">Spegni il mappamondo</span>
+      <span class="object-label label-globe" style="--label-x:93%;--label-y:21%" aria-hidden="true">Spegni il mappamondo</span>
+      <span class="object-label label-window" style="--label-x:9%;--label-y:30%" aria-hidden="true">Fai calare la sera</span>
       <div class="door-message" id="door-status" role="status" aria-live="polite"></div>
     </section>
     <section class="desk-index" aria-labelledby="desk-title">
@@ -487,6 +493,7 @@
         localTime: 'Ora locale', lampOn: 'Accendi la lampada da tavolo', lampOff: 'Spegni la lampada da tavolo',
         roomOn: 'Accendi la luce della stanza', roomOff: 'Spegni la luce della stanza',
         globeOn: 'Accendi il mappamondo', globeOff: 'Spegni il mappamondo',
+        windowEvening: 'Fai calare la sera', windowDay: 'Fai tornare il giorno',
         doorMessage: 'Questa storia resta qui. Posso condividere quello che ho imparato, non i dettagli riservati.'
       },
       en: {
@@ -494,6 +501,7 @@
         localTime: 'Local time', lampOn: 'Turn on the desk lamp', lampOff: 'Turn off the desk lamp',
         roomOn: 'Turn on the room light', roomOff: 'Turn off the room light',
         globeOn: 'Turn on the globe', globeOff: 'Turn off the globe',
+        windowEvening: 'Let the evening in', windowDay: 'Bring back daylight',
         doorMessage: 'This story stays here. I can share what I learned, but not the confidential details.'
       }
     };
@@ -509,6 +517,7 @@
     const lampToggle = document.querySelector('.lamp-toggle');
     const roomToggle = document.querySelector('.room-toggle');
     const globeToggle = document.querySelector('.globe-toggle');
+    const windowToggle = document.querySelector('.window-toggle');
     const roomImage = document.querySelector('.room-image');
     const globeSource = document.querySelector('.globe-source');
     const posterSlot = document.querySelector('.poster-slot');
@@ -739,9 +748,26 @@
 
     function setSceneFromTime() {
       const hour = new Date().getHours();
-      const scene = hour >= 7 && hour < 15 ? 'day' : 'evening';
+      // `?scene=day` or `?scene=evening` forces a scene, to preview the other lighting.
+      const forced = new URLSearchParams(location.search).get('scene');
+      applyScene(forced in sceneAssets ? forced : hour >= 7 && hour < 15 ? 'day' : 'evening');
+    }
+
+    // Clicking the window swaps day and evening; lamp and globe return to that scene's default.
+    function toggleScene() {
+      applyScene(room.dataset.scene === 'day' ? 'evening' : 'day');
+      updateLightLabels();
+    }
+
+    function applyScene(scene) {
       const asset = sceneAssets[scene];
       room.dataset.scene = scene;
+      // In daylight the desk lamp and the globe start switched off; the visitor can still turn them on.
+      const daylight = scene === 'day';
+      room.classList.toggle('lamp-off', daylight);
+      room.classList.toggle('globe-off', daylight);
+      lampToggle.setAttribute('aria-pressed', String(!daylight));
+      globeToggle.setAttribute('aria-pressed', String(!daylight));
       room.style.setProperty('--room-image', `url('${asset}')`);
       roomImage.src = asset;
       globeSource.setAttribute('href', asset);
@@ -767,6 +793,9 @@
       lampToggle.setAttribute('aria-label', lampLabel);
       roomToggle.setAttribute('aria-label', roomLabel);
       globeToggle.setAttribute('aria-label', globeLabel);
+      const windowLabel = copy[language][room.dataset.scene === 'day' ? 'windowEvening' : 'windowDay'];
+      windowToggle.setAttribute('aria-label', windowLabel);
+      document.querySelector('.label-window').textContent = windowLabel;
       document.querySelector('.label-lamp').textContent = lampLabel;
       document.querySelector('.label-room').textContent = roomLabel;
       document.querySelector('.label-globe').textContent = globeLabel;
@@ -800,6 +829,7 @@
     lampToggle.addEventListener('click', toggleLamp);
     roomToggle.addEventListener('click', toggleRoomLight);
     globeToggle.addEventListener('click', toggleGlobe);
+    windowToggle.addEventListener('click', toggleScene);
     door.addEventListener('click', () => tryDoor(door));
     document.querySelector('[data-door]').addEventListener('click', event => tryDoor(event.currentTarget));
     document.querySelector('.close').addEventListener('click', () => dialog.close());
