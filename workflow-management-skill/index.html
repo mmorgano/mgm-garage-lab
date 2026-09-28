@@ -245,7 +245,7 @@
             </div>
             <div class="actions">
               <a class="button button-primary" href="https://github.com/mmorgano/workflow-management-skill">Stable Claude/Codex edition</a>
-              <span class="button button-secondary" aria-disabled="true">Kiro beta in private test</span>
+              <a class="button button-secondary" href="https://github.com/mmorgano/workflow-management-kiro">Kiro edition (public beta)</a>
             </div>
           </div>
 
@@ -272,7 +272,7 @@
         <div class="skill-shell signal-grid">
           <div class="signal"><code>Plain files</code><p>Markdown and JSON in a context folder you control.</p></div>
           <div class="signal"><code>Portable workflow</code><p>The project memory belongs to the work, not one chat window.</p></div>
-          <div class="signal"><code>Beta path</code><p>Kiro adds a team experiment while the stable package stays focused.</p></div>
+          <div class="signal"><code>Beta path</code><p>Kiro adds an experimental team mode, still untested, while the stable package stays focused.</p></div>
         </div>
       </section>
 
@@ -336,15 +336,15 @@
               <article class="card edition-card">
                 <div class="edition-top">
                   <h3>Kiro edition</h3>
-                  <span class="badge badge-beta">Beta test</span>
+                  <span class="badge badge-beta">Public beta</span>
                 </div>
                 <p>A Kiro-specific package with the personal workflow skill and an optional team skill for shared roadmap, tasks, and assignments.</p>
                 <ul class="edition-list">
-                  <li>Private beta while real Kiro testing is pending</li>
+                  <li>Public beta: personal skill tried, team mode experimental and untested</li>
                   <li>Team context stays separate from personal notes</li>
-                  <li>Built for a first pilot before public release</li>
+                  <li>Feedback wanted: try it on a scratch folder and open an issue</li>
                 </ul>
-                <span class="button button-secondary" aria-disabled="true">Private beta</span>
+                <a class="button button-secondary" href="https://github.com/mmorgano/workflow-management-kiro">Open Kiro repository</a>
               </article>
             </div>
           </div>
@@ -473,8 +473,8 @@
               </div>
               <div class="roadmap-row">
                 <code>kiro-beta</code>
-                <span>Real Kiro test, then public release decision for the beta package.</span>
-                <strong>Next</strong>
+                <span>Colleagues try the personal skill and the experimental team mode; their feedback shapes the next version.</span>
+                <strong>Now</strong>
               </div>
             </div>
           </div>
@@ -486,6 +486,7 @@
       <span>&copy; 2026 MGM GARAGE LAB</span>
       <nav aria-label="Project links">
         <a href="https://github.com/mmorgano/workflow-management-skill">Claude / Codex</a>
+        <a href="https://github.com/mmorgano/workflow-management-kiro">Kiro (beta)</a>
         <a href="../index.html">MGM Garage Lab</a>
       </nav>
     </footer>
@@ -515,7 +516,7 @@
               ".skill-hero h1": "Every new chat is a first date. <span>Give it a diary.</span>",
               ".hero-copy": "AI assistants are sharp, but a fresh conversation starts without yesterday's project memory. Workflow Management gives the next session a durable handoff: what changed, what matters, what is blocked, and where to continue.",
               ".actions .button-primary": "Stable Claude/Codex edition",
-              ".actions .button-secondary": "Kiro beta in private test",
+              ".actions .button-secondary": "Kiro edition (public beta)",
               ".date-card p": "The assistant is not lazy. It just wakes up in a new conversation with no diary.",
               ".date-card small": "Personal project memory for AI-assisted work",
               ".mini-card:nth-child(1) strong": "Start",
@@ -532,7 +533,7 @@
               ".signal:nth-child(2) code": "Portable workflow",
               ".signal:nth-child(2) p": "The project memory belongs to the work, not one chat window.",
               ".signal:nth-child(3) code": "Beta path",
-              ".signal:nth-child(3) p": "Kiro adds a team experiment while the stable package stays focused.",
+              ".signal:nth-child(3) p": "Kiro adds an experimental team mode, still untested, while the stable package stays focused.",
               ".section:nth-of-type(3) .section-kicker": "01 / The Problem",
               ".section:nth-of-type(3) h2": "AI can write code. The hard part is remembering why the work looks like this.",
               ".section:nth-of-type(3) .section-lead": "Chat history is not a project plan. It is too long, too hidden, and too fragile. Workflow Management turns the living state of the project into plain files the assistant can read on purpose.",
@@ -560,12 +561,12 @@
               ".edition-card:nth-child(1) .button": "Open repository",
               ".contract-pill": "Same contract",
               ".edition-card:nth-child(3) h3": "Kiro edition",
-              ".edition-card:nth-child(3) .badge": "Beta test",
+              ".edition-card:nth-child(3) .badge": "Public beta",
               ".edition-card:nth-child(3) p": "A Kiro-specific package with the personal workflow skill and an optional team skill for shared roadmap, tasks, and assignments.",
-              ".edition-card:nth-child(3) li:nth-child(1)": "Private beta while real Kiro testing is pending",
+              ".edition-card:nth-child(3) li:nth-child(1)": "Public beta: personal skill tried, team mode experimental and untested",
               ".edition-card:nth-child(3) li:nth-child(2)": "Team context stays separate from personal notes",
-              ".edition-card:nth-child(3) li:nth-child(3)": "Built for a first pilot before public release",
-              ".edition-card:nth-child(3) .button": "Private beta",
+              ".edition-card:nth-child(3) li:nth-child(3)": "Feedback wanted: try it on a scratch folder and open an issue",
+              ".edition-card:nth-child(3) .button": "Open Kiro repository",
               ".quote-band blockquote": "It does not make the AI omniscient. It gives it a notebook, a map, and enough manners to read them before guessing.",
               ".quote-band p": "Everything stays inspectable: Markdown records, JSON configuration, and normal project files under a context folder you control.",
               ".voyage-heading .eyebrow": "03 / Long Vision &middot; Workflow Management",
@@ -609,10 +610,11 @@
               ".roadmap-row:nth-child(1) strong": "Focus",
               ".roadmap-row:nth-child(2) span": "A future RAG implementation where the graph narrows the search before semantic retrieval.",
               ".roadmap-row:nth-child(2) strong": "Later",
-              ".roadmap-row:nth-child(3) span": "Real Kiro test, then public release decision for the beta package.",
-              ".roadmap-row:nth-child(3) strong": "Next",
+              ".roadmap-row:nth-child(3) span": "Colleagues try the personal skill and the experimental team mode; their feedback shapes the next version.",
+              ".roadmap-row:nth-child(3) strong": "Now",
               ".skill-footer nav a:nth-child(1)": "Claude / Codex",
-              ".skill-footer nav a:nth-child(2)": "MGM Garage Lab"
+              ".skill-footer nav a:nth-child(2)": "Kiro (beta)",
+              ".skill-footer nav a:nth-child(3)": "MGM Garage Lab"
             }
           },
           it: {
@@ -637,7 +639,7 @@
               ".skill-hero h1": "Ogni nuova chat è come un primo appuntamento. <span>Dalle un diario.</span>",
               ".hero-copy": "Gli assistenti AI sono brillanti, ma una conversazione nuova parte senza la memoria di progetto di ieri. Workflow Management consegna alla sessione successiva un passaggio di consegne durevole: cosa è cambiato, cosa conta, cosa è bloccato e da dove continuare.",
               ".actions .button-primary": "Edizione stabile Claude/Codex",
-              ".actions .button-secondary": "Beta Kiro in test privato",
+              ".actions .button-secondary": "Edizione Kiro (beta pubblica)",
               ".date-card p": "L'assistente non è pigro. Si sveglia solo in una conversazione nuova senza diario.",
               ".date-card small": "Memoria personale di progetto per il lavoro assistito dall'AI",
               ".mini-card:nth-child(1) strong": "Avvio",
@@ -654,7 +656,7 @@
               ".signal:nth-child(2) code": "Workflow portabile",
               ".signal:nth-child(2) p": "La memoria del progetto appartiene al lavoro, non a una finestra di chat.",
               ".signal:nth-child(3) code": "Percorso beta",
-              ".signal:nth-child(3) p": "Kiro aggiunge un esperimento team mentre il pacchetto stabile resta focalizzato.",
+              ".signal:nth-child(3) p": "Kiro aggiunge una modalità team sperimentale, ancora da testare, mentre il pacchetto stabile resta focalizzato.",
               ".section:nth-of-type(3) .section-kicker": "01 / Il problema",
               ".section:nth-of-type(3) h2": "L'AI sa scrivere codice. La parte difficile è ricordare perché il lavoro è fatto così.",
               ".section:nth-of-type(3) .section-lead": "La cronologia chat non è un piano di progetto. È troppo lunga, troppo nascosta e troppo fragile. Workflow Management trasforma lo stato vivo del progetto in file semplici che l'assistente può leggere intenzionalmente.",
@@ -682,12 +684,12 @@
               ".edition-card:nth-child(1) .button": "Apri repository",
               ".contract-pill": "Stesso contratto",
               ".edition-card:nth-child(3) h3": "Edizione Kiro",
-              ".edition-card:nth-child(3) .badge": "Beta test",
+              ".edition-card:nth-child(3) .badge": "Beta pubblica",
               ".edition-card:nth-child(3) p": "Pacchetto specifico per Kiro con skill personale di workflow e una skill team opzionale per roadmap, task e assegnazioni condivise.",
-              ".edition-card:nth-child(3) li:nth-child(1)": "Beta privata finché il test reale in Kiro non è completato",
+              ".edition-card:nth-child(3) li:nth-child(1)": "Beta pubblica: la skill personale è stata provata, la modalità team è sperimentale e non testata",
               ".edition-card:nth-child(3) li:nth-child(2)": "Il contesto team resta separato dalle note personali",
-              ".edition-card:nth-child(3) li:nth-child(3)": "Costruito per un primo pilot prima della pubblicazione",
-              ".edition-card:nth-child(3) .button": "Beta privata",
+              ".edition-card:nth-child(3) li:nth-child(3)": "Servono feedback: provala su una cartella di prova e apri una issue",
+              ".edition-card:nth-child(3) .button": "Apri il repository Kiro",
               ".quote-band blockquote": "Non rende l'AI onnisciente. Le dà un taccuino, una mappa e abbastanza buone maniere da leggerli prima di tirare a indovinare.",
               ".quote-band p": "Tutto resta ispezionabile: record Markdown, configurazione JSON e normali file di progetto in una cartella di contesto che controlli tu.",
               ".voyage-heading .eyebrow": "03 / Long Vision &middot; Workflow Management",
@@ -731,10 +733,11 @@
               ".roadmap-row:nth-child(1) strong": "Focus",
               ".roadmap-row:nth-child(2) span": "Una futura implementazione RAG in cui il grafo restringe la ricerca prima del retrieval semantico.",
               ".roadmap-row:nth-child(2) strong": "Dopo",
-              ".roadmap-row:nth-child(3) span": "Test reale in Kiro, poi decisione sulla pubblicazione del pacchetto beta.",
-              ".roadmap-row:nth-child(3) strong": "Next",
+              ".roadmap-row:nth-child(3) span": "I colleghi provano la skill personale e la modalità team sperimentale; i loro feedback guidano la prossima versione.",
+              ".roadmap-row:nth-child(3) strong": "Ora",
               ".skill-footer nav a:nth-child(1)": "Claude / Codex",
-              ".skill-footer nav a:nth-child(2)": "MGM Garage Lab"
+              ".skill-footer nav a:nth-child(2)": "Kiro (beta)",
+              ".skill-footer nav a:nth-child(3)": "MGM Garage Lab"
             }
           }
         };
