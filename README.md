@@ -6,11 +6,14 @@ An independent software lab exploring developer tooling, AI-assisted engineering
 
 - [MGM Garage Lab](https://mgmgaragelab.com/)
 - [Workflow Management Skill](https://mgmgaragelab.com/workflow-management-skill/)
+- [Dosselier](https://mgmgaragelab.com/dosselier/)
 
 ## Local preview
 
 Serve this directory with any static web server. The homepage is `index.html`
-and the project page is `workflow-management-skill/index.html`.
+and the project pages are `workflow-management-skill/index.html` and
+`dosselier/index.html` (its screenshots live in `assets/dosselier/`, in English
+and Italian).
 
 ## Publishing
 

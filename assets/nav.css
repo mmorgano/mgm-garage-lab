@@ -1,0 +1,30 @@
+/* Shared page column width — every page linking this file uses the same
+   1700px content column and side gutter, centered via padding-inline so
+   full-width bands (header, footer, filmstrip) can still bleed edge to edge. */
+:root { --page-max-width: 1700px; --page-gutter: clamp(20px, 4vw, 68px); }
+.intro, .desk-index, .footer-note, .filmstrip { padding-inline: max(var(--page-gutter), calc((100% - var(--page-max-width)) / 2 + var(--page-gutter))); }
+
+/* Shared top navigation — used by index.html and any page with a matching
+   header.intro block (e.g. origin-story). Edit here once, every page updates. */
+.intro { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 16px; background: #10231f; border-bottom: 1px solid #28423c; }
+.intro .brand { min-width: 0; }
+.intro .brand h1 { font-size: 19px; margin: 0; font-weight: 700; }
+.intro p { margin: 4px 0 0; font-size: 14px; color: #cad7d0; }
+.intro nav { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+.intro nav a, .intro nav button { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid #47665d; border-radius: 4px; background: #172d29; color: #edf5ed; text-decoration: none; }
+.intro nav a:hover, .intro nav button:hover { background: #e9efe6; color: #17302b; }
+.intro nav a[aria-current="page"], .intro nav button[aria-current="page"] { background: #e9efe6; color: #17302b; }
+.language-switch { display: inline-flex; gap: 0; flex-shrink: 0; }
+.intro nav .language-switch button { min-width: 44px; min-height: 44px; justify-content: center; border-radius: 0; }
+.intro nav .language-switch button:first-child { border-radius: 4px 0 0 4px; }
+.intro nav .language-switch button:last-child { border-radius: 0 4px 4px 0; border-left: 0; }
+.intro nav .language-switch button[aria-pressed="true"] { background: #e9efe6; color: #17302b; }
+
+/* Shared footer — same two-line note on every page. */
+.footer-note { padding-block: 18px 26px; display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; border-top: 1px solid #28423c; color: #b8c9c1; font-size: 13px; }
+
+@media (max-width: 700px) {
+  .intro { display: block; padding: 18px 20px; }
+  .intro nav { justify-content: flex-start; margin-top: 14px; }
+  .intro p { margin-top: 6px; }
+}
