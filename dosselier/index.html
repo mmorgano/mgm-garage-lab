@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dosselier turns household PDFs into a clear, local-first picture of contracts, vehicles, houses and deadlines. You confirm every value; AI is optional.">
+    <meta name="theme-color" content="#10231f">
+    <title>Dosselier - MGM Garage Lab</title>
+    <link rel="canonical" href="https://mgmgaragelab.com/dosselier/">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+      :root { color-scheme: light; background: #142522; }
+      .skill-page {
+        --warm: #8f3936;
+        --coral: #9b3332;
+        --mint: #315f55;
+        --panel: #fafaf7;
+        --panel-strong: #d5e4da;
+        --text: #243a36;
+        --white: #243a36;
+        --muted: #4b6158;
+        --blue-soft: #8f3936;
+        --green: #315f55;
+        --line: #bdc9c0;
+        --line-strong: #adbbae;
+        --page-max-width: 1700px;
+        --page-gutter: clamp(20px, 4vw, 68px);
+        background: #edf0e9;
+        color: var(--text);
+      }
+      .skill-page::before { display: none; }
+      .skill-page :focus-visible { outline: 3px solid #9b3332; outline-offset: 5px; }
+      .skill-shell { width: calc(100% - 2 * var(--page-gutter)); max-width: 1564px; margin: 0 auto; }
+      .skill-header, .skill-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 18px max(var(--page-gutter), calc((100% - var(--page-max-width)) / 2 + var(--page-gutter))); background: #10231f; color: #fafaf7; }
+      .skill-header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid #28423c; }
+      .skill-brand-block { min-width: 0; }
+      .skill-brand { display: inline-block; color: #fafaf7; font-size: 19px; font-weight: 700; text-decoration: none; }
+      .skill-brand-subtitle { margin: 4px 0 0; font-size: 14px; color: #cad7d0; }
+      .skill-nav, .skill-footer nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; }
+      .skill-header a, .skill-footer a { color: #cad7d0; }
+      .skill-header .skill-brand { color: #fafaf7; }
+      .skill-nav a, .skill-nav button, .nav-wip { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid #47665d; border-radius: 4px; background: #172d29; color: #edf5ed; text-decoration: none; font: inherit; }
+      .skill-nav a, .skill-nav button { cursor: pointer; }
+      .skill-nav a:hover, .skill-nav button:hover { background: #e9efe6; color: #17302b; }
+      .skill-nav a[aria-current="page"] { background: #e9efe6; color: #17302b; }
+      .nav-wip { gap: 8px; color: #cad7d0; cursor: default; }
+      .nav-wip small { color: #f6d169; font: 800 10px/1 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+      .language-switch { display: inline-flex; gap: 0; flex-shrink: 0; }
+      .skill-nav .language-switch button { min-width: 44px; min-height: 44px; justify-content: center; border-radius: 0; }
+      .skill-nav .language-switch button:first-child { border-radius: 4px 0 0 4px; }
+      .skill-nav .language-switch button:last-child { border-radius: 0 4px 4px 0; border-left: 0; }
+      .skill-nav .language-switch button[aria-pressed="true"] { background: #e9efe6; color: #17302b; }
+      .skill-footer a:hover { color: #f6d169; }
+      .skill-footer { padding-block: 24px; border-top: 1px solid #28423c; color: #b8c9c1; font-size: 13px; }
+      .skill-header :focus-visible, .skill-footer :focus-visible, .skill-hero :focus-visible { outline-color: #f6d169; }
+      .eyebrow { margin: 0 0 18px; font: 700 12px/1.5 "JetBrains Mono", monospace; letter-spacing: .16em; color: var(--blue-soft); text-transform: uppercase; }
+      .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; }
+      .button-primary { background: #f6d169; color: #17302b; }
+      .button-secondary { border: 1px solid var(--line-strong); color: var(--text); }
+      .button-primary:hover, .button-primary:focus-visible { background: #ffe3a0; color: #17302b; }
+      .button-secondary:hover, .button-secondary:focus-visible { border-color: var(--warm); color: var(--warm); }
+
+      .skill-hero { padding: clamp(42px, 6vw, 78px) 0 clamp(34px, 5vw, 64px); background: #142522; color: #fafaf7; --text: #cad7d0; --white: #fafaf7; --muted: #b8c9c1; --warm: #f6d169; --blue-soft: #f6d169; --panel: #172d29; --line: #28423c; --line-strong: #47665d; }
+      .hero-board { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(18px, 2vw, 28px); align-items: start; }
+      .hero-copy-block { grid-column: span 7; display: flex; flex-direction: column; justify-content: space-between; min-height: 460px; padding: clamp(26px, 3vw, 42px); border: 1px solid #47665d; border-radius: 8px; background: #172d29; }
+      .skill-hero h1 { margin: 0; max-width: 960px; font-size: clamp(48px, 7vw, 108px); line-height: .92; letter-spacing: -.06em; }
+      html[lang="it"] .skill-hero h1 { max-width: 860px; font-size: clamp(44px, 6vw, 92px); line-height: .96; letter-spacing: -.05em; }
+      .skill-hero h1 span { color: var(--warm); }
+      .hero-copy { margin: clamp(22px, 3vw, 36px) 0 0; max-width: 760px; color: var(--text); font-size: clamp(18px, 1.55vw, 23px); line-height: 1.55; }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+      .hero-side { grid-column: span 5; display: grid; grid-template-rows: auto auto; align-content: start; gap: clamp(18px, 2vw, 28px); min-width: 0; }
+      .date-card { padding: clamp(24px, 3vw, 36px); border-radius: 8px; border: 1px solid #bdc9c0; background: #edf0e9; }
+      .date-card p { margin: 0; color: #243a36; font-size: clamp(22px, 2.3vw, 36px); line-height: 1.15; letter-spacing: -.03em; }
+      .date-card small { display: block; margin-top: 18px; color: #576d64; font: 700 11px/1.7 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+      .mini-stack { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); align-items: start; gap: 12px; }
+      .mini-card { min-height: 140px; padding: 18px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--panel); }
+      .mini-card strong { display: block; margin-bottom: 12px; color: var(--warm); font: 700 11px/1.4 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+      .mini-card span { color: var(--text); font-size: 14px; line-height: 1.55; }
+      .shot-feature { grid-column: 1 / -1; margin: clamp(4px, 1vw, 12px) 0 0; border: 1px solid #47665d; border-radius: 8px; background: var(--panel); overflow: hidden; }
+      .shot-feature img { display: block; width: 100%; height: auto; }
+      .shot-caption { margin: 0; padding: 14px 18px; border-top: 1px solid var(--line-strong); background: #10231f; color: var(--muted); font: 700 11px/1.6 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+      .signal-row { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #d5e4da; }
+      .signal-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .signal { padding: clamp(22px, 3vw, 34px); border-right: 1px solid var(--line); }
+      .signal:last-child { border-right: 0; }
+      .signal code { position: relative; display: inline-block; z-index: 0; color: #8f3936; font-size: 13px; font-weight: 800; letter-spacing: .04em; }
+      .signal code::before { content: ""; position: absolute; left: -6px; right: -6px; bottom: 1px; z-index: -1; height: .65em; background: #f6d169; transform: rotate(-1.5deg); opacity: .9; }
+      .signal p { margin: 10px 0 0; color: var(--text); font-size: 17px; line-height: 1.55; }
+
+      .section { border-top: 1px solid var(--line); padding: clamp(54px, 7vw, 96px) 0; }
+      .section-grid { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: clamp(28px, 5vw, 70px); align-items: start; }
+      .section-kicker { position: sticky; top: 98px; display: inline-flex; align-items: center; width: fit-content; min-height: 34px; margin: 2px 0 0; padding: 0 12px; border-left: 3px solid #9b3332; background: #f1ded9; color: #8f3936; font: 800 13px/1.4 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+      .section h2 { margin: 0; max-width: 1100px; font-size: clamp(32px, 5vw, 68px); line-height: 1; letter-spacing: -.05em; }
+      .section-lead { margin: 22px 0 0; max-width: 860px; color: var(--text); font-size: clamp(17px, 1.45vw, 21px); line-height: 1.7; }
+      .card { border: 1px solid var(--line-strong); border-radius: 8px; background: var(--panel); padding: clamp(20px, 2vw, 28px); }
+      .card h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.25; }
+      .card p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+
+      .problem-bento { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 14px; margin-top: 34px; }
+      .problem-bento .large { grid-column: span 3; grid-row: span 2; min-height: 290px; background: #f1ded9; }
+      .problem-bento .wide { grid-column: span 3; }
+      .problem-bento .small { grid-column: span 2; }
+      .problem-bento .large h3 { font-size: clamp(28px, 3vw, 44px); letter-spacing: -.04em; }
+
+      .quote-band { border-block: 1px solid #28423c; background: #142522; --white: #fafaf7; --muted: #b8c9c1; padding: clamp(54px, 7vw, 86px) 0; }
+      .quote-band blockquote { margin: 0; max-width: 1260px; font-size: clamp(34px, 5.8vw, 86px); line-height: .98; letter-spacing: -.06em; color: var(--white); }
+      .quote-band p { margin: 22px 0 0; max-width: 760px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+
+      .step-board { display: grid; grid-template-columns: repeat(10, minmax(0,1fr)); gap: 14px; margin-top: 34px; }
+      .step-card { grid-column: span 2; min-height: 200px; }
+      .step-card code { display: inline-block; margin-bottom: 14px; color: var(--warm); font-size: 13px; font-weight: 800; }
+      .step-card:nth-child(1) { background: #d5e4da; }
+
+      .shots { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; margin-top: 34px; }
+      .shot { margin: 0; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--panel); overflow: hidden; }
+      .shot img { display: block; width: 100%; height: auto; }
+      .shot figcaption { padding: 16px 20px 20px; border-top: 1px solid var(--line); }
+      .shot figcaption strong { display: block; margin-bottom: 6px; font-size: 17px; }
+      .shot figcaption span { color: var(--muted); font-size: 15px; line-height: 1.6; }
+      .shots .shot:first-child { grid-column: 1 / -1; }
+
+      .trust-board { display: grid; grid-template-columns: repeat(12, minmax(0,1fr)); gap: 14px; margin-top: 34px; }
+      .trust-card { min-height: 180px; grid-column: span 4; }
+      .trust-card code { display: inline-block; margin-bottom: 14px; color: var(--warm); font-size: 13px; font-weight: 800; }
+
+      .roadmap-list { display: grid; gap: 0; margin-top: 34px; border-top: 1px solid var(--line-strong); }
+      .roadmap-row { display: grid; grid-template-columns: 220px minmax(0, 1fr) 100px; gap: 22px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line-strong); }
+      .roadmap-row code { color: var(--warm); font-size: 14px; }
+      .roadmap-row span { color: var(--text); line-height: 1.55; }
+      .roadmap-row strong { justify-self: end; color: var(--green); font: 700 11px/1 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+      @media (max-width: 1120px) {
+        .hero-copy-block, .hero-side, .shot-feature { grid-column: 1 / -1; }
+        .hero-copy-block { min-height: auto; }
+        .section-grid { grid-template-columns: 1fr; }
+        .section-kicker { position: static; }
+        .step-board { grid-template-columns: repeat(6, minmax(0,1fr)); }
+        .step-card { grid-column: span 2; }
+        .trust-card { grid-column: span 6; }
+      }
+      @media (max-width: 820px) {
+        .mini-stack, .signal-grid, .shots { grid-template-columns: 1fr; }
+        .problem-bento, .step-board, .trust-board { grid-template-columns: 1fr; }
+        .problem-bento .large, .problem-bento .wide, .problem-bento .small, .step-card, .trust-card { grid-column: auto; }
+        .shots .shot:first-child { grid-column: auto; }
+        .signal { border-right: 0; border-bottom: 1px solid var(--line); }
+        .signal:last-child { border-bottom: 0; }
+        .roadmap-row { grid-template-columns: 1fr; gap: 8px; }
+        .roadmap-row strong { justify-self: start; }
+      }
+      @media (max-width: 560px) {
+        .hero-copy-block, .date-card, .card { padding: 20px; }
+        .button { width: 100%; }
+      }
+    </style>
+  </head>
+  <body class="skill-page">
+    <header class="skill-header">
+      <div class="skill-brand-block">
+        <a class="skill-brand" href="../index.html">MGM Garage Lab</a>
+        <p class="skill-brand-subtitle" data-i="subtitle">Not a company. A garage for ideas ready to step outside.</p>
+      </div>
+      <nav class="skill-nav" aria-label="Main navigation" data-i-label="nav">
+        <a href="../workflow-management-skill/index.html">Workflow Skill</a>
+        <a href="./index.html" aria-current="page">Dosselier</a>
+        <a href="https://github.com/mmorgano">GitHub</a>
+        <div class="language-switch" role="group" aria-label="Language" data-i-label="language">
+          <button type="button" data-language="it" lang="it" aria-label="Italiano" aria-pressed="false">IT</button>
+          <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="skill-hero">
+        <div class="skill-shell hero-board">
+          <div class="hero-copy-block">
+            <div>
+              <p class="eyebrow">Dosselier</p>
+              <h1 data-i="h1">Household paperwork, understood. <span>Not just stored.</span></h1>
+              <p class="hero-copy" data-i="heroCopy">Dosselier turns the PDFs of everyday life &mdash; contracts, insurance, utilities, vehicle papers &mdash; into a clear picture of what you have, with whom, and when something expires. It runs on your own computer, and it never decides for you.</p>
+            </div>
+            <div class="actions">
+              <a class="button button-primary" href="https://github.com/mmorgano/dosselier" data-i="ctaCode">Read the code</a>
+              <a class="button button-secondary" href="../workflow-management-skill/index.html" data-i="ctaCase">Built with the Workflow Skill</a>
+            </div>
+          </div>
+
+          <aside class="hero-side" aria-label="Dosselier summary" data-i-label="summary">
+            <div class="date-card">
+              <p data-i="cardQuote">A document vault is easy. Knowing what your contracts say is the hard part.</p>
+              <small data-i="cardSmall">A personal administrative knowledge system</small>
+            </div>
+            <div class="mini-stack">
+              <div class="mini-card"><strong data-i="m1t">Import</strong><span data-i="m1s">Drop in a PDF. The same file is never stored twice.</span></div>
+              <div class="mini-card"><strong data-i="m2t">Review</strong><span data-i="m2s">Confirm what was found. Nothing counts until you do.</span></div>
+              <div class="mini-card"><strong data-i="m3t">Know</strong><span data-i="m3s">See deadlines, search, compare two versions.</span></div>
+            </div>
+          </aside>
+
+          <figure class="shot-feature">
+            <img data-shot="review" src="../assets/dosselier/dosselier-review-en.png" width="1040" height="952" alt="The Dosselier review screen for a renewal notice: four suggested values with confidence scores and Confirm or Reject buttons, and two already confirmed values." data-i-alt="heroAlt">
+            <figcaption class="shot-caption" data-i="heroCaption">The review screen &mdash; suggestions with their confidence, and what you already confirmed</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="signal-row" aria-label="Core promises" data-i-label="promises">
+        <div class="skill-shell signal-grid">
+          <div class="signal"><code data-i="s1t">Local-first</code><p data-i="s1p">Everything stays on your computer: no account, no cloud, no upload.</p></div>
+          <div class="signal"><code data-i="s2t">You confirm</code><p data-i="s2p">Every value the tool finds is a suggestion until you confirm it. Nothing is guessed silently.</p></div>
+          <div class="signal"><code data-i="s3t">AI is optional</code><p data-i="s3p">Fully usable without any AI. An AI provider is opt-in, for scanned pages and other languages.</p></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker" data-i="k1">01 / The Problem</p>
+          <div>
+            <h2 data-i="p2h">Storing a document is easy. Knowing what it commits you to is not.</h2>
+            <p class="section-lead" data-i="p2lead">Household administration fragments across folders, PDFs, emails and portals. Dosselier is not a document vault: documents attach to real things &mdash; a vehicle, a house, a contract &mdash; so the picture stays understandable and actionable.</p>
+            <div class="problem-bento">
+              <article class="card large">
+                <h3 data-i="b1h">Which contracts do I even have?</h3>
+                <p data-i="b1p">Insurance, energy, telephone, the car&hellip; each with its own provider, its own dates and its own PDF somewhere. The answer lives in your memory, until it does not.</p>
+              </article>
+              <article class="card wide">
+                <h3 data-i="b2h">Renewals that surprise</h3>
+                <p data-i="b2p">A contract renews itself because the date passed unnoticed in a folder.</p>
+              </article>
+              <article class="card wide">
+                <h3 data-i="b3h">Cancellation windows</h3>
+                <p data-i="b3p">The last day to cancel is written in a paragraph nobody rereads.</p>
+              </article>
+              <article class="card small">
+                <h3 data-i="b4h">Same provider, new terms</h3>
+                <p data-i="b4p">What changed between last year's document and this year's?</p>
+              </article>
+              <article class="card small">
+                <h3 data-i="b5h">Scattered papers</h3>
+                <p data-i="b5p">Folders group files, not the things they are about.</p>
+              </article>
+              <article class="card small">
+                <h3 data-i="b6h">Sensitive by nature</h3>
+                <p data-i="b6p">Policy numbers, addresses, amounts: not for a stranger's server.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quote-band">
+        <div class="skill-shell">
+          <blockquote data-i="quote">It suggests. You decide.</blockquote>
+          <p data-i="quoteP">Every extracted value keeps its source and its status &mdash; suggested, confirmed or rejected. Only confirmed values drive deadlines and comparisons, and a confirmed value is never silently overwritten.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker" data-i="k2">02 / How It Works</p>
+          <div>
+            <h2 data-i="w2h">From a PDF to a deadline you can trust, in five steps.</h2>
+            <div class="step-board">
+              <article class="card step-card">
+                <code data-i="st1c">import</code>
+                <h3 data-i="st1h">Import</h3>
+                <p data-i="st1p">A PDF with a text layer goes in. The same content is recognised and never duplicated.</p>
+              </article>
+              <article class="card step-card">
+                <code data-i="st2c">extract</code>
+                <h3 data-i="st2h">Extract</h3>
+                <p data-i="st2p">Plain, explainable rules suggest the document type, dates, provider, amount and contract number.</p>
+              </article>
+              <article class="card step-card">
+                <code data-i="st3c">review</code>
+                <h3 data-i="st3h">Review</h3>
+                <p data-i="st3p">Confirm, edit or reject each suggestion. Only what you confirm becomes authoritative.</p>
+              </article>
+              <article class="card step-card">
+                <code data-i="st4c">connect</code>
+                <h3 data-i="st4h">Connect</h3>
+                <p data-i="st4p">Link documents to a vehicle, a house or a contract &mdash; one document can belong to several.</p>
+              </article>
+              <article class="card step-card">
+                <code data-i="st5c">follow</code>
+                <h3 data-i="st5h">Follow</h3>
+                <p data-i="st5p">A deadlines view, structured search, and a side-by-side comparison of two documents of the same contract.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker" data-i="k3">03 / What It Looks Like</p>
+          <div>
+            <h2 data-i="v3h">A quiet interface for a serious subject.</h2>
+            <p class="section-lead" data-i="v3lead">Screens from the running app, with the three fictional sample documents that ship with the project. No real data appears anywhere on this page.</p>
+            <div class="shots">
+              <figure class="shot">
+                <img data-shot="documents" src="../assets/dosselier/dosselier-documents-en.png" width="1040" height="938" loading="lazy" alt="The Documents screen: a group of documents that still need review, and a month group with the reviewed ones, each with Review, Download and Delete." data-i-alt="shot1Alt">
+                <figcaption><strong data-i="shot1h">Documents that need you first</strong><span data-i="shot1p">Open suggestions are pulled to the top; everything else is grouped by month so the list stays readable as it grows.</span></figcaption>
+              </figure>
+              <figure class="shot">
+                <img data-shot="compare" src="../assets/dosselier/dosselier-compare-en.png" width="1040" height="759" loading="lazy" alt="The comparison screen: two documents of the same contract side by side, with differing fields highlighted and each value tagged confirmed or suggested." data-i-alt="shot2Alt">
+                <figcaption><strong data-i="shot2h">Two documents, side by side</strong><span data-i="shot2p">Differences are highlighted, and every value shows whether it is confirmed or only suggested.</span></figcaption>
+              </figure>
+              <figure class="shot">
+                <img data-shot="deadlines" src="../assets/dosselier/dosselier-deadlines-en.png" width="1040" height="651" loading="lazy" alt="The deadlines screen: a chronological list of cancellation, renewal and end dates, each with its provider and the vehicle or house it concerns." data-i-alt="shot3Alt">
+                <figcaption><strong data-i="shot3h">What is coming, in order</strong><span data-i="shot3p">Cancellation, renewal and end dates from confirmed contract fields, with the provider and the vehicle or house they concern.</span></figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker" data-i="k4">04 / Built To Be Trusted</p>
+          <div>
+            <h2 data-i="t4h">The decisions that keep it honest.</h2>
+            <div class="trust-board">
+              <article class="card trust-card">
+                <code data-i="tr1c">deterministic</code>
+                <h3 data-i="tr1h">Same input, same answer</h3>
+                <p data-i="tr1p">The core follows plain rules you can read. No model is needed for it to work, and nothing depends on a remote service.</p>
+              </article>
+              <article class="card trust-card">
+                <code data-i="tr2c">provenance</code>
+                <h3 data-i="tr2h">Every value has a source</h3>
+                <p data-i="tr2p">Each field remembers where it came from and whether a person confirmed it, so a heuristic is never presented as a fact.</p>
+              </article>
+              <article class="card trust-card">
+                <code data-i="tr3c">private</code>
+                <h3 data-i="tr3h">Your machine, your files</h3>
+                <p data-i="tr3p">It listens on your own computer only and keeps documents and data locally. The one optional exception is an AI provider you switch on yourself.</p>
+              </article>
+              <article class="card trust-card">
+                <code data-i="tr4c">five languages</code>
+                <h3 data-i="tr4h">Speaks the way you read</h3>
+                <p data-i="tr4p">The interface is available in Italian, English, French, German and Spanish, and follows your browser.</p>
+              </article>
+              <article class="card trust-card">
+                <code data-i="tr5c">second opinion</code>
+                <h3 data-i="tr5h">Reviewed by another model</h3>
+                <p data-i="tr5p">Every change is checked by an independent model before it is kept &mdash; and it keeps finding real bugs.</p>
+              </article>
+              <article class="card trust-card">
+                <code data-i="tr6c">case study</code>
+                <h3 data-i="tr6h">Made with the Workflow Skill</h3>
+                <p data-i="tr6p">Dosselier is built with, and is a working example of, the Workflow Management Skill: sessions, tasks and decisions kept as plain files.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="skill-shell section-grid">
+          <p class="section-kicker" data-i="k5">05 / Where It Stands</p>
+          <div>
+            <h2 data-i="n5h">A first release that works end to end.</h2>
+            <p class="section-lead" data-i="n5lead">Version 0.1 covers the whole path from import to comparison. It is a personal, single-user project, built in the open as a portfolio piece.</p>
+            <div class="roadmap-list">
+              <div class="roadmap-row">
+                <code data-i="r1c">v0.1</code>
+                <span data-i="r1s">Import, review, vehicles, houses and contracts, deadlines, search and structured comparison.</span>
+                <strong data-i="r1b">Done</strong>
+              </div>
+              <div class="roadmap-row">
+                <code data-i="r2c">languages</code>
+                <span data-i="r2s">Interface in five languages, with the language remembered.</span>
+                <strong data-i="r2b">Done</strong>
+              </div>
+              <div class="roadmap-row">
+                <code data-i="r3c">help</code>
+                <span data-i="r3s">Contextual help on fields and a short user guide.</span>
+                <strong data-i="r3b">Next</strong>
+              </div>
+              <div class="roadmap-row">
+                <code data-i="r4c">history</code>
+                <span data-i="r4s">Full document version history and a textual comparison of two PDFs.</span>
+                <strong data-i="r4b">Later</strong>
+              </div>
+              <div class="roadmap-row">
+                <code data-i="r5c">reminders</code>
+                <span data-i="r5s">Deadline notifications and calendar export.</span>
+                <strong data-i="r5b">Later</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="skill-footer">
+      <span>&copy; 2026 MGM GARAGE LAB</span>
+      <nav aria-label="Project links" data-i-label="projectLinks">
+        <a href="https://github.com/mmorgano/dosselier">Dosselier</a>
+        <a href="../workflow-management-skill/index.html">Workflow Skill</a>
+        <a href="../index.html">MGM Garage Lab</a>
+      </nav>
+    </footer>
+
+    <script>
+      (function () {
+        var languageKey = "mgm-garage-language";
+        // The English text lives in the HTML (it is what shows without JavaScript);
+        // only the Italian version is listed here.
+        var italian = {
+          title: "Dosselier - MGM Garage Lab",
+          description: "Dosselier trasforma i PDF di casa in un quadro chiaro e locale di contratti, veicoli, case e scadenze. Ogni valore lo confermi tu; l'AI è facoltativa.",
+          labels: {
+            nav: "Navigazione principale", language: "Lingua", summary: "Riepilogo di Dosselier",
+            promises: "Promesse principali", projectLinks: "Link del progetto"
+          },
+          text: {
+            subtitle: "Non una company. Un garage per idee che possono uscire allo scoperto.",
+            h1: "La burocrazia di casa, capita. <span>Non solo archiviata.</span>",
+            heroCopy: "Dosselier trasforma i PDF della vita di tutti i giorni &mdash; contratti, assicurazioni, utenze, documenti del veicolo &mdash; in un quadro chiaro di cosa hai, con chi, e quando qualcosa scade. Gira sul tuo computer e non decide mai al posto tuo.",
+            ctaCode: "Leggi il codice", ctaCase: "Costruito con il Workflow Skill",
+            cardQuote: "Archiviare un documento è facile. Sapere cosa dicono i tuoi contratti è la parte difficile.",
+            cardSmall: "Un sistema personale di conoscenza amministrativa",
+            m1t: "Importa", m1s: "Trascini un PDF. Lo stesso file non viene mai salvato due volte.",
+            m2t: "Rivedi", m2s: "Confermi ciò che è stato trovato. Finché non lo fai, non conta.",
+            m3t: "Sai", m3s: "Scadenze, ricerca, confronto tra due versioni.",
+            heroCaption: "La schermata di revisione &mdash; i suggerimenti con la loro affidabilità, e ciò che hai già confermato",
+            s1t: "Locale", s1p: "Tutto resta sul tuo computer: niente account, niente cloud, niente upload.",
+            s2t: "Confermi tu", s2p: "Ogni valore trovato è un suggerimento finché non lo confermi. Niente viene indovinato di nascosto.",
+            s3t: "L'AI è facoltativa", s3p: "Si usa benissimo senza AI. Un provider AI è opt-in, per pagine scansionate e altre lingue.",
+            k1: "01 / Il problema",
+            p2h: "Archiviare un documento è facile. Sapere a cosa ti impegna, no.",
+            p2lead: "L'amministrazione di casa si frammenta tra cartelle, PDF, email e portali. Dosselier non è un archivio di documenti: i documenti si agganciano a cose reali &mdash; un veicolo, una casa, un contratto &mdash; così il quadro resta comprensibile e utilizzabile.",
+            b1h: "Che contratti ho, davvero?", b1p: "Assicurazione, energia, telefono, l'auto&hellip; ognuno con il suo fornitore, le sue date e il suo PDF da qualche parte. La risposta sta nella memoria, finché non ci sta più.",
+            b2h: "Rinnovi che sorprendono", b2p: "Un contratto si rinnova da solo perché la data è passata inosservata in una cartella.",
+            b3h: "Finestre di disdetta", b3p: "L'ultimo giorno utile per disdire è scritto in un paragrafo che nessuno rilegge.",
+            b4h: "Stesso fornitore, nuove condizioni", b4p: "Cosa è cambiato tra il documento dell'anno scorso e quello di quest'anno?",
+            b5h: "Carte sparse", b5p: "Le cartelle raggruppano file, non le cose di cui parlano.",
+            b6h: "Dati sensibili per natura", b6p: "Numeri di polizza, indirizzi, importi: non per il server di uno sconosciuto.",
+            quote: "Suggerisce. Decidi tu.",
+            quoteP: "Ogni valore estratto conserva la sua fonte e il suo stato &mdash; proposto, confermato o rifiutato. Solo i valori confermati guidano scadenze e confronti, e un valore confermato non viene mai sovrascritto in silenzio.",
+            k2: "02 / Come funziona",
+            w2h: "Da un PDF a una scadenza di cui fidarti, in cinque passi.",
+            st1c: "importa", st1h: "Importa", st1p: "Entra un PDF con livello di testo. Lo stesso contenuto viene riconosciuto e mai duplicato.",
+            st2c: "estrai", st2h: "Estrai", st2p: "Regole semplici e spiegabili propongono tipo di documento, date, fornitore, importo e numero di contratto.",
+            st3c: "rivedi", st3h: "Rivedi", st3p: "Confermi, modifichi o rifiuti ogni suggerimento. Solo ciò che confermi diventa autorevole.",
+            st4c: "collega", st4h: "Collega", st4p: "Colleghi i documenti a un veicolo, una casa o un contratto &mdash; un documento può appartenere a più elementi.",
+            st5c: "segui", st5h: "Segui", st5p: "Una vista delle scadenze, la ricerca strutturata e il confronto affiancato di due documenti dello stesso contratto.",
+            k3: "03 / Che aspetto ha",
+            v3h: "Un'interfaccia tranquilla per un tema serio.",
+            v3lead: "Schermate dell'app in esecuzione, con i tre documenti di esempio fittizi che accompagnano il progetto. In questa pagina non compare nessun dato reale.",
+            shot1h: "Prima i documenti che ti aspettano", shot1p: "I suggerimenti aperti salgono in cima; il resto è raggruppato per mese, così l'elenco resta leggibile anche quando cresce.",
+            shot2h: "Due documenti, affiancati", shot2p: "Le differenze sono evidenziate e ogni valore mostra se è confermato o solo proposto.",
+            shot3h: "Cosa arriva, in ordine", shot3p: "Date di disdetta, rinnovo e fine dai campi confermati dei contratti, con il fornitore e il veicolo o la casa a cui si riferiscono.",
+            k4: "04 / Fatto per essere affidabile",
+            t4h: "Le scelte che lo tengono onesto.",
+            tr1c: "deterministico", tr1h: "Stesso input, stessa risposta", tr1p: "Il nucleo segue regole semplici che puoi leggere. Non serve alcun modello perché funzioni e nulla dipende da un servizio remoto.",
+            tr2c: "provenienza", tr2h: "Ogni valore ha una fonte", tr2p: "Ogni campo ricorda da dove viene e se una persona lo ha confermato, così un'euristica non passa mai per un fatto.",
+            tr3c: "privato", tr3h: "Il tuo computer, i tuoi file", tr3p: "Ascolta solo sul tuo computer e tiene documenti e dati in locale. L'unica eccezione facoltativa è un provider AI che accendi tu.",
+            tr4c: "cinque lingue", tr4h: "Parla come leggi", tr4p: "L'interfaccia è disponibile in italiano, inglese, francese, tedesco e spagnolo, e segue il tuo browser.",
+            tr5c: "seconda opinione", tr5h: "Rivisto da un altro modello", tr5p: "Ogni modifica è controllata da un modello indipendente prima di essere tenuta &mdash; e continua a trovare bug veri.",
+            tr6c: "caso di studio", tr6h: "Fatto con il Workflow Skill", tr6p: "Dosselier è costruito con, ed è un esempio funzionante del, Workflow Management Skill: sessioni, task e decisioni come file semplici.",
+            k5: "05 / A che punto è",
+            n5h: "Una prima versione che funziona dall'inizio alla fine.",
+            n5lead: "La versione 0.1 copre tutto il percorso, dall'importazione al confronto. È un progetto personale, per un solo utente, costruito in pubblico come pezzo di portfolio.",
+            r1c: "v0.1", r1s: "Importazione, revisione, veicoli, case e contratti, scadenze, ricerca e confronto strutturato.", r1b: "Fatto",
+            r2c: "lingue", r2s: "Interfaccia in cinque lingue, con la lingua ricordata.", r2b: "Fatto",
+            r3c: "aiuto", r3s: "Aiuto contestuale sui campi e una breve guida per l'utente.", r3b: "Prossimo",
+            r4c: "storico", r4s: "Storico completo delle versioni di un documento e confronto testuale tra due PDF.", r4b: "Più avanti",
+            r5c: "promemoria", r5s: "Notifiche delle scadenze ed esportazione nel calendario.", r5b: "Più avanti"
+          },
+          alt: {
+            heroAlt: "La schermata di revisione di Dosselier per un avviso di rinnovo: quattro valori proposti con affidabilità e pulsanti Conferma o Rifiuta, e due valori già confermati.",
+            shot1Alt: "La schermata Documenti: un gruppo di documenti ancora da rivedere e un gruppo mensile con quelli rivisti, ciascuno con Rivedi, Scarica ed Elimina.",
+            shot2Alt: "La schermata di confronto: due documenti dello stesso contratto affiancati, con i campi diversi evidenziati e ogni valore etichettato come confermato o proposto.",
+            shot3Alt: "La schermata Scadenze: elenco cronologico di date di disdetta, rinnovo e fine, ciascuna con il fornitore e il veicolo o la casa a cui si riferisce."
+          }
+        };
+        var english = { title: document.title, description: document.querySelector("meta[name='description']").getAttribute("content"), text: {}, alt: {}, labels: {} };
+        document.querySelectorAll("[data-i]").forEach(function (el) { english.text[el.dataset.i] = el.innerHTML; });
+        document.querySelectorAll("[data-i-alt]").forEach(function (el) { english.alt[el.dataset.iAlt] = el.getAttribute("alt"); });
+        document.querySelectorAll("[data-i-label]").forEach(function (el) { english.labels[el.dataset.iLabel] = el.getAttribute("aria-label"); });
+        var copy = { en: english, it: italian };
+
+        function setLanguage(language) {
+          if (language !== "it" && language !== "en") return;
+          var data = copy[language];
+          document.documentElement.lang = language;
+          document.title = data.title;
+          document.querySelector("meta[name='description']").setAttribute("content", data.description);
+          document.querySelectorAll("[data-i]").forEach(function (el) {
+            var value = data.text[el.dataset.i];
+            if (value != null) el.innerHTML = value;
+          });
+          document.querySelectorAll("[data-i-alt]").forEach(function (el) {
+            var value = data.alt[el.dataset.iAlt];
+            if (value != null) el.setAttribute("alt", value);
+          });
+          document.querySelectorAll("[data-i-label]").forEach(function (el) {
+            var value = data.labels[el.dataset.iLabel];
+            if (value != null) el.setAttribute("aria-label", value);
+          });
+          // The screenshots come in both languages of the app itself.
+          document.querySelectorAll("[data-shot]").forEach(function (img) {
+            img.setAttribute("src", "../assets/dosselier/dosselier-" + img.dataset.shot + "-" + language + ".png");
+          });
+          document.querySelectorAll("[data-language]").forEach(function (button) {
+            button.setAttribute("aria-pressed", String(button.dataset.language === language));
+          });
+          try { localStorage.setItem(languageKey, language); } catch (error) {}
+        }
+
+        var language = (navigator.language || "en").toLowerCase().indexOf("it") === 0 ? "it" : "en";
+        try {
+          var saved = localStorage.getItem(languageKey);
+          if (saved === "it" || saved === "en") language = saved;
+        } catch (error) {}
+        document.querySelectorAll("[data-language]").forEach(function (button) {
+          button.addEventListener("click", function () { setLanguage(button.dataset.language); });
+        });
+        setLanguage(language);
+      })();
+    </script>
+  </body>
+</html>
