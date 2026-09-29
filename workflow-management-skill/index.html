@@ -43,12 +43,10 @@
       .skill-nav, .skill-footer nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; }
       .skill-header a, .skill-footer a { color: #cad7d0; }
       .skill-header .skill-brand { color: #fafaf7; }
-      .skill-nav a, .skill-nav button, .nav-wip { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid #47665d; border-radius: 4px; background: #172d29; color: #edf5ed; text-decoration: none; font: inherit; }
+      .skill-nav a, .skill-nav button { display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border: 1px solid #47665d; border-radius: 4px; background: #172d29; color: #edf5ed; text-decoration: none; font: inherit; }
       .skill-nav a, .skill-nav button { cursor: pointer; }
       .skill-nav a:hover, .skill-nav button:hover { background: #e9efe6; color: #17302b; }
       .skill-nav a[aria-current="page"] { background: #e9efe6; color: #17302b; }
-      .nav-wip { gap: 8px; color: #cad7d0; cursor: default; }
-      .nav-wip small { color: #f6d169; font: 800 10px/1 "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
       .language-switch { display: inline-flex; gap: 0; flex-shrink: 0; }
       .skill-nav .language-switch button { min-width: 44px; min-height: 44px; justify-content: center; border-radius: 0; }
       .skill-nav .language-switch button:first-child { border-radius: 4px 0 0 4px; }
@@ -225,7 +223,8 @@
       </div>
       <nav class="skill-nav" aria-label="Main navigation">
         <a href="./index.html" aria-current="page">Workflow Skill</a>
-        <span class="nav-wip" aria-disabled="true"><span class="origin-label">Origin Story</span><small>WIP</small></span>
+        <a href="../dosselier/index.html">Dosselier</a>
+        <a href="../origin-story/index.html">Origin Story</a>
         <a href="https://github.com/mmorgano">GitHub</a>
         <div class="language-switch" role="group" aria-label="Language">
           <button type="button" data-language="it" lang="it" aria-label="Italiano" aria-pressed="false">IT</button>
@@ -510,8 +509,6 @@
             },
             content: {
               ".skill-brand-subtitle": "Not a company. A garage for ideas ready to step outside.",
-              ".origin-label": "Origin Story",
-              ".nav-wip small": "WIP",
               ".skill-hero .eyebrow": "Workflow Management Skill",
               ".skill-hero h1": "Every new chat is a first date. <span>Give it a diary.</span>",
               ".hero-copy": "AI assistants are sharp, but a fresh conversation starts without yesterday's project memory. Workflow Management gives the next session a durable handoff: what changed, what matters, what is blocked, and where to continue.",
@@ -633,8 +630,6 @@
             },
             content: {
               ".skill-brand-subtitle": "Non una company. Un garage per idee che possono uscire allo scoperto.",
-              ".origin-label": "Origin Story",
-              ".nav-wip small": "WIP",
               ".skill-hero .eyebrow": "Workflow Management Skill",
               ".skill-hero h1": "Ogni nuova chat è come un primo appuntamento. <span>Dalle un diario.</span>",
               ".hero-copy": "Gli assistenti AI sono brillanti, ma una conversazione nuova parte senza la memoria di progetto di ieri. Workflow Management consegna alla sessione successiva un passaggio di consegne durevole: cosa è cambiato, cosa conta, cosa è bloccato e da dove continuare.",
