@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Origin Story: dai primi computer anni 80 al negozio, dalla laurea a Roma e al Lussemburgo, fino alle notti di sperimentazione con l'AI.">
+<meta name="theme-color" content="#10231f">
+<title>Origin Story - MGM Garage Lab</title>
+<link rel="canonical" href="https://mgmgaragelab.com/origin-story/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/nav.css">
+<style>
+  * { box-sizing: border-box; }
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+  body { margin: 0; background: #142522; color: #fafaf7; }
+  .intro .brand h1 a { color: inherit; text-decoration: none; }
+
+  .story-wrap { max-width: var(--page-max-width); margin-inline: auto; }
+
+  /* --- Stage: scene (crossfades per chapter) + card docked to the right edge --- */
+  .story-stage { position: relative; width: 100%; aspect-ratio: 1672 / 941; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 80px #0008; background: #0c1615; }
+  .chapter-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .4s ease; }
+  .chapter-scene[data-active="true"] { opacity: 1; }
+
+  .card-slot { position: absolute; right: 0; top: 0; width: 38%; height: 100%; min-width: 300px; }
+  .paper-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; filter: drop-shadow(-10px 4px 18px #00000090); }
+
+  .card { position: absolute; inset: 0; overflow: auto; color: #2c2417; padding: 15% 9% 8%; opacity: 0; transform: translateY(10px) scale(.99); pointer-events: none; transition: opacity .32s ease, transform .32s ease; }
+  .card[data-active="true"] { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+  .card-text { max-width: 100%; }
+  .card .eyebrow { display: inline-block; padding: 7px 14px 7px 20px; margin: -4px 0 10px -6px; border: 0; background: url('assets/chapter-tag.png') no-repeat center / 100% 100%; color: #6b3a22; font-family: ui-monospace, monospace; font-size: clamp(9px, 1vw, 11px); font-weight: 800; letter-spacing: .08em; transform: rotate(-1.2deg); filter: drop-shadow(0 2px 3px #0003); }
+  .card h2 { margin: 0 0 8px; font-family: 'Kalam', 'Architects Daughter', system-ui, sans-serif; font-weight: 700; font-size: clamp(18px, 1.9vw, 25px); line-height: 1.2; }
+  .card .underline { display: block; width: clamp(60px, 9vw, 110px); height: 5px; margin-bottom: 14px; border-radius: 3px; background: #4f9c96; }
+  .card p { margin: 0 0 10px; font-family: 'Architects Daughter', system-ui, sans-serif; font-size: clamp(12px, 1.15vw, 14.5px); line-height: 1.55; }
+  .card .highlight { position: relative; display: inline-block; margin: 8px 0 4px; padding: 8px 20px 12px 12px; background: linear-gradient(165deg, #fbec8e, #f3d968 88%, #e9cc57); box-shadow: 2px 4px 8px #00000030, 0 1px 0 #ffffff60 inset; transform: rotate(-.6deg); font-family: 'Caveat', cursive; font-size: clamp(14px, 1.4vw, 18px); line-height: 1.25; }
+  .card .highlight::after { content: ''; position: absolute; right: 0; bottom: 0; width: 14px; height: 14px; background: linear-gradient(135deg, transparent 50%, #cbb44a 50%, #cbb44a 58%, #00000022 60%); box-shadow: -1px -1px 2px #00000020; }
+  .card .signoff { margin-top: 8px; font-family: 'Caveat', cursive; font-size: clamp(15px, 1.6vw, 19px); color: #4a4030; }
+
+  /* --- Inset photo (real, non-baked) --- */
+  .polaroid { position: relative; float: right; width: clamp(96px, 22%, 150px); margin: 0 0 10px 14px; padding: 4px 4px 10px; background: #fdfcf6; box-shadow: 0 10px 22px #00000040; transform: rotate(3deg); }
+  .polaroid .tape { position: absolute; left: -10px; top: -8px; width: 34px; height: 14px; background: #eee0c26b; border: 1px solid #d8c99966; transform: rotate(-18deg); }
+  .polaroid img { display: block; width: 100%; height: auto; filter: sepia(.16) saturate(.92) contrast(1.03) brightness(.97); }
+  .polaroid img.aged { filter: sepia(.45) saturate(.72) contrast(1.06) brightness(.93); }
+  .polaroid figcaption { margin-top: 4px; font-family: 'Caveat', cursive; font-size: clamp(10px, 1.1vw, 13px); line-height: 1.15; color: #3a3324; text-align: center; }
+  .polaroid--second { clear: right; transform: rotate(-4deg); margin-top: -4px; }
+
+  /* --- Chapter prev/next arrows: fixed at the bottom-right of the paper, same spot for every chapter --- */
+  .card-nav { position: absolute; right: 9%; bottom: 5%; z-index: 5; display: flex; gap: 8px; }
+  .card-nav-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #8f393655; background: #fdfcf6; color: #6b3a22; font-size: 17px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 8px #00000030; padding: 0; }
+  .card-nav-btn:hover { background: #f3ead8; }
+  .card-nav-btn:focus-visible { outline: 2px solid #8f3936; outline-offset: 2px; }
+  .card-nav-btn:disabled { opacity: .35; cursor: default; }
+
+  /* --- Filmstrip: full-width band attached under the hero stage, reusing the site's "desk-index" beige band look --- */
+  .filmstrip-band { background: #edf0e9; color: #243a36; }
+  .filmstrip { display: flex; gap: 12px; padding-block: 16px 22px; overflow-x: auto; scrollbar-width: thin; }
+  .film-tab { display: flex; flex-direction: column; gap: 6px; flex: none; width: clamp(88px, 11vw, 138px); border: 0; padding: 0; background: transparent; cursor: pointer; text-align: left; }
+  .film-thumb { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 5px; border: 2px solid transparent; box-shadow: 0 6px 14px -6px #00000030; }
+  .film-tab[aria-current="true"] .film-thumb { border-color: #8f3936; }
+  .film-tab:focus-visible .film-thumb { outline: 3px solid #8f3936; outline-offset: 2px; }
+  .film-num { display: block; font-family: ui-monospace, monospace; font-size: 10px; font-weight: 800; letter-spacing: .06em; color: #8f3936; }
+  .film-title { display: block; font-family: system-ui, sans-serif; font-size: 12px; font-weight: 700; line-height: 1.25; color: #243a36; }
+
+  @media (prefers-reduced-motion: reduce) { .card, .chapter-scene { transition: none; } }
+
+  /* --- Narrow screens: scene on top, card full width with a flat paper texture --- */
+  @media (max-width: 1280px) {
+    .story-stage { aspect-ratio: auto; box-shadow: none; border-radius: 0; display: flex; flex-direction: column; overflow: visible; }
+    .chapter-scene { position: static; display: none; aspect-ratio: 16 / 10; border-radius: 6px; opacity: 1; }
+    .chapter-scene[data-active="true"] { display: block; }
+    .card-slot { position: relative; width: auto; min-width: 0; margin: 14px 16px 18px; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px #0006; background: url('assets/paper-texture.jpg') center / cover no-repeat, #ede4d0; }
+    .paper-bg { display: none; }
+    .card-slot .card { position: static; inset: auto; padding: 40px 28px 56px; display: none; }
+    .card-slot .card[data-active="true"] { display: block; }
+    .card-slot .card-text { max-width: 820px; margin-inline: auto; }
+    .polaroid { width: clamp(120px, 38vw, 170px); }
+  }
+</style>
+</head>
+<body>
+  <header class="intro">
+    <div class="brand">
+      <h1><a href="../index.html">MGM Garage Lab</a></h1>
+      <p>Non una company. Un garage per idee che possono uscire allo scoperto.</p>
+    </div>
+    <nav aria-label="Navigazione principale">
+      <a href="../workflow-management-skill/index.html">Workflow Skill</a>
+      <a href="../dosselier/index.html">Dosselier</a>
+      <a href="./index.html" aria-current="page">Origin Story</a>
+      <a href="https://github.com/mmorgano">GitHub</a>
+      <div class="language-switch" role="group" aria-label="Lingua">
+        <button type="button" data-language="it" lang="it" aria-label="Italiano" aria-pressed="true">IT</button>
+        <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="story-wrap">
+    <div class="story-stage">
+      <img class="chapter-scene" data-chapter="1" data-active="true" src="assets/scene-1.jpg" alt="">
+      <img class="chapter-scene" data-chapter="2" src="assets/scene-2.jpg" alt="" loading="lazy">
+      <img class="chapter-scene" data-chapter="3" src="assets/scene-3.jpg" alt="" loading="lazy">
+      <img class="chapter-scene" data-chapter="4" src="assets/scene-4.jpg" alt="" loading="lazy">
+      <img class="chapter-scene" data-chapter="5" src="assets/scene-5.jpg" alt="" loading="lazy">
+      <img class="chapter-scene" data-chapter="6" src="assets/scene-6.jpg" alt="" loading="lazy">
+      <img class="chapter-scene" data-chapter="7" src="assets/scene-7.jpg" alt="" loading="lazy">
+
+      <div class="card-slot">
+        <img class="paper-bg" src="assets/paper-sheet.png" alt="" aria-hidden="true">
+
+        <article class="card" data-chapter="1" data-active="true">
+          <div class="card-text">
+            <figure class="polaroid">
+              <div class="tape"></div>
+              <img src="assets/photo-ch1-christmas.png" alt="Foto di un bambino davanti a un home computer anni 80, con l'albero di Natale sullo sfondo.">
+              <figcaption>Natale 19xx<br>Il mio primo computer ♡</figcaption>
+            </figure>
+            <span class="eyebrow">CAPITOLO 01</span>
+            <h2>Il Natale dei primi comandi</h2>
+            <span class="underline"></span>
+            <p>Io e mio fratello aprimmo insieme una pila di pacchetti: tastiera, registratore, joystick e giochi. Collegammo il nostro home computer anni 80 alla TV della cucina, mentre mamma preparava il pranzo di Natale. Il primo gioco era un calcio fatto di pochi pixel, ma per noi era una meraviglia: ricordo quel giorno come uno dei più belli della mia infanzia.</p>
+            <p>In terza media scoprii che il professore di fisica usava un computer come il mio per programmare. Presi il manuale e cominciai dai primi comandi, compreso il mitico GOTO e il suo inevitabile spaghetti code. Fu la prima volta che provai a dire al computer cosa fare.</p>
+            <p class="highlight">«Prima mi stupiva quello che appariva sullo schermo. Poi ho voluto capire come farlo apparire.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <article class="card" data-chapter="2">
+          <div class="card-text">
+            <span class="eyebrow">CAPITOLO 02</span>
+            <h2>Il banco delle prime prove</h2>
+            <span class="underline"></span>
+            <p>Dopo le superiori avevo bisogno di lavorare. Mio fratello era entrato nel mondo della telefonia e insieme aprimmo un negozio ad Acitrezza; più tardi ne arrivò un altro a Catania. I PC, però, mi erano già familiari: passavo i pomeriggi nello studio di mio padre, circondato da macchine che cambiavano generazione a una velocità sorprendente.</p>
+            <p>Con l'aiuto di un amico più esperto iniziai ad assemblare computer da vendere. Accendere una macchina costruita pezzo per pezzo, aggiornare il BIOS e installare il sistema operativo dava una soddisfazione enorme, anche quando un componente allentato o un driver ostinato ci costringeva a ricominciare. In negozio imparai anche ad ascoltare le persone: dal telefono passammo ai sistemi satellitari e alle prime piccole reti domestiche.</p>
+            <p class="highlight">«Un computer funzionava davvero quando funzionava anche per la persona che lo aveva comprato.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <article class="card" data-chapter="3">
+          <div class="card-text">
+            <span class="eyebrow">CAPITOLO 03</span>
+            <h2>Le ore dopo il negozio</h2>
+            <span class="underline"></span>
+            <p>Nel 2001 il negozio rendeva poco e non riuscivo più a immaginare lì il mio futuro. Un amico mi parlò del nuovo corso di Informatica; scoprii che potevo recuperare alcuni esami già sostenuti a Ingegneria e mi iscrissi. Lavoravo di giorno, quindi ai libri restavano le notti e i fine settimana.</p>
+            <p>Mi appassionavano soprattutto gli algoritmi. A una prova in aula risolsi con poche righe ricorsive un problema per cui erano previste tre ore: quando mi alzai dopo una ventina di minuti, il professore pensò che stessi rinunciando, poi lesse la soluzione e mi fece i complimenti. Nel novembre 2006 arrivò la laurea in Informatica, dopo cinque anni in cui avevo tenuto insieme lavoro e studio.</p>
+            <p class="highlight">«La notte era il tempo che avevo. Ho imparato a farlo contare.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <article class="card" data-chapter="4">
+          <div class="card-text">
+            <span class="eyebrow">CAPITOLO 04</span>
+            <h2>Dietro i tornelli</h2>
+            <span class="underline"></span>
+            <p>La settimana della laurea ricevetti una chiamata per un colloquio a Roma. Sul negozio avevo appena lasciato un cartello: «Chiuso per laurea… la mia»; al ritorno lo trovai pieno di auguri. Pochi giorni dopo arrivò un'offerta per un anno di lavoro e presi una decisione difficile: annunciai la chiusura del negozio.</p>
+            <p>A Roma entrai in un palazzo di vetro, passai i tornelli con il badge e vidi un'azienda di centinaia di persone. Era molto più grande di quanto avessi immaginato, eppure l'ambiente mi sembrò familiare. Dopo anni in cui avevo costruito il mio lavoro quasi da solo, cominciavo a capire cosa significasse far parte di un gruppo.</p>
+            <p class="highlight">«Quel badge apriva una porta molto più grande dell'ufficio.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <article class="card" data-chapter="5">
+          <div class="card-text">
+            <span class="eyebrow">CAPITOLO 05</span>
+            <h2>Imparare mentre si corre</h2>
+            <span class="underline"></span>
+            <p>Per qualche mese lavorai in Sardegna e, nei fine settimana, esploravo la costa. Ricordo anche una partita della Roma vista con i colleghi in un ristorante normalmente tranquillo: tifavano con tanto entusiasmo che rischiammo quasi di essere mandati via. In quegli anni il lavoro cambiava spesso, ma erano anche le persone a rendere vivi i posti in cui arrivavo.</p>
+            <p>Nella consulenza imparai a entrare in contesti nuovi e a cercare risposte in poco tempo: studiare, cercare, provare, sbagliare e ripartire. A volte bisognava fare i conti con aspettative difficili da mantenere. Mi è rimasta l'abitudine di affrontare un problema senza aspettare di sapere già tutto, cercando una strada anche quando la prima non funziona.</p>
+            <p class="highlight">«Non sempre conoscevo la risposta. Sapevo da dove cominciare a cercarla.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <article class="card" data-chapter="6">
+          <div class="card-text">
+            <figure class="polaroid">
+              <div class="tape"></div>
+              <img src="assets/photo-ch6-map.png" alt="">
+              <figcaption>Lussemburgo</figcaption>
+            </figure>
+            <figure class="polaroid polaroid--second">
+              <div class="tape"></div>
+              <img class="aged" src="assets/photo-ch6-clio.png" alt="">
+              <figcaption>30 giugno 2017<br>La Clio piena</figcaption>
+            </figure>
+            <span class="eyebrow">CAPITOLO 06</span>
+            <h2>La Clio piena</h2>
+            <span class="underline"></span>
+            <p>Pochi giorni dopo il nostro matrimonio arrivò un'offerta di lavoro in Lussemburgo. Alina disse subito sì e cominciammo a preparare le valigie; il 30 giugno 2017 arrivammo con la Clio carica all'inverosimile. Ricordo ancora lo stupore alla prima sosta per fare benzina: il prezzo era così basso che pensai a un errore.</p>
+            <p>Entrai in una grande realtà europea occupandomi di dati statistici, in un contesto diverso da quelli che avevo conosciuto fino ad allora. Imparai a comprenderne gli strumenti, i processi e le esigenze, ampliando il mio modo di lavorare. Quando arrivò l'occasione di contribuire all'evoluzione dei sistemi, portai con me la curiosità e l'inventiva coltivate negli anni.</p>
+            <p class="highlight">«Partire è stato un salto. Restare curioso mi ha aiutato ad atterrare.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <article class="card" data-chapter="7">
+          <div class="card-text">
+            <span class="eyebrow">CAPITOLO 07</span>
+            <h2>Notti, tentativi, nuove domande</h2>
+            <span class="underline"></span>
+            <p>Quando provai per la prima volta a farmi aiutare dall'AI a scrivere una funzione, capii che il mio lavoro stava per cambiare. Non immaginavo quanto in fretta: arrivarono strumenti capaci di seguire interi progetti, insieme a notti insonni in cui mi chiedevo se un giorno ci sarebbe stato ancora bisogno di me. Alina mi lasciò lo spazio per studiare e sperimentare, come aveva fatto nelle altre svolte della nostra vita.</p>
+            <p>I progetti personali diventarono il mio laboratorio: alcune prove funzionavano, altre lasciavano funzioni cancellate e decisioni impossibili da ricostruire. Così iniziai a definire meglio le idee, organizzare attività e roadmap e registrare le scelte; da quel bisogno nacque il mio primo strumento per seguire progetti lunghi con l'AI. Oggi scrivo meno codice direttamente, ma dedico più attenzione a ciò che va costruito, a come guidare il lavoro e a verificare il risultato.</p>
+            <p class="highlight">«L'AI mi ha dato più possibilità. Ho dovuto imparare a dare loro una direzione.»</p>
+            <p class="signoff">— MGM</p>
+          </div>
+        </article>
+
+        <div class="card-nav">
+          <button class="card-nav-btn card-nav-prev" type="button" aria-label="Capitolo precedente">‹</button>
+          <button class="card-nav-btn card-nav-next" type="button" aria-label="Capitolo successivo">›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="filmstrip-band">
+    <nav class="filmstrip" aria-label="Capitoli">
+      <button class="film-tab" data-chapter="1" aria-current="true">
+        <img class="film-thumb" src="assets/scene-1.jpg" alt="">
+        <span class="film-num">01</span><span class="film-title">Il Natale dei primi comandi</span>
+      </button>
+      <button class="film-tab" data-chapter="2">
+        <img class="film-thumb" src="assets/scene-2.jpg" alt="" loading="lazy">
+        <span class="film-num">02</span><span class="film-title">Il banco delle prime prove</span>
+      </button>
+      <button class="film-tab" data-chapter="3">
+        <img class="film-thumb" src="assets/scene-3.jpg" alt="" loading="lazy">
+        <span class="film-num">03</span><span class="film-title">Le ore dopo il negozio</span>
+      </button>
+      <button class="film-tab" data-chapter="4">
+        <img class="film-thumb" src="assets/scene-4.jpg" alt="" loading="lazy">
+        <span class="film-num">04</span><span class="film-title">Dietro i tornelli</span>
+      </button>
+      <button class="film-tab" data-chapter="5">
+        <img class="film-thumb" src="assets/scene-5.jpg" alt="" loading="lazy">
+        <span class="film-num">05</span><span class="film-title">Imparare mentre si corre</span>
+      </button>
+      <button class="film-tab" data-chapter="6">
+        <img class="film-thumb" src="assets/scene-6.jpg" alt="" loading="lazy">
+        <span class="film-num">06</span><span class="film-title">La Clio piena</span>
+      </button>
+      <button class="film-tab" data-chapter="7">
+        <img class="film-thumb" src="assets/scene-7.jpg" alt="" loading="lazy">
+        <span class="film-num">07</span><span class="film-title">Notti, tentativi, nuove domande</span>
+      </button>
+    </nav>
+  </div>
+
+  <footer class="footer-note">
+    <span>MGM Garage Lab / costruisci, esplora, sperimenta, ripeti.</span>
+    <span>Ci&ograve; che &egrave; privato resta privato. Fa parte del mestiere.</span>
+  </footer>
+
+  <script>
+    const tabs = [...document.querySelectorAll('.film-tab')];
+    const scenes = document.querySelectorAll('.chapter-scene');
+    const cards = document.querySelectorAll('.card');
+    const chapterOrder = tabs.map(t => t.dataset.chapter);
+    const prevBtn = document.querySelector('.card-nav-prev');
+    const nextBtn = document.querySelector('.card-nav-next');
+
+    function goToChapter(chapter) {
+      tabs.forEach(t => t.setAttribute('aria-current', String(t.dataset.chapter === chapter)));
+      scenes.forEach(s => s.setAttribute('data-active', String(s.dataset.chapter === chapter)));
+      cards.forEach(c => c.setAttribute('data-active', String(c.dataset.chapter === chapter)));
+      document.querySelector('.card-slot').scrollTop = 0;
+      const index = chapterOrder.indexOf(chapter);
+      prevBtn.disabled = index <= 0;
+      nextBtn.disabled = index >= chapterOrder.length - 1;
+    }
+
+    tabs.forEach(tab => tab.addEventListener('click', () => goToChapter(tab.dataset.chapter)));
+
+    prevBtn.addEventListener('click', () => {
+      const current = tabs.find(t => t.getAttribute('aria-current') === 'true');
+      const index = chapterOrder.indexOf(current.dataset.chapter);
+      if (index > 0) goToChapter(chapterOrder[index - 1]);
+    });
+    nextBtn.addEventListener('click', () => {
+      const current = tabs.find(t => t.getAttribute('aria-current') === 'true');
+      const index = chapterOrder.indexOf(current.dataset.chapter);
+      if (index < chapterOrder.length - 1) goToChapter(chapterOrder[index + 1]);
+    });
+
+    /* --- IT / EN --- Italian stays in the HTML as the fallback; English lives here. Same storage key as the home page. */
+    const englishChapters = {
+      1: { title: 'Christmas, Pixels and GOTO',
+        paragraphs: ['My brother and I opened a pile of presents together: a keyboard, a cassette recorder, a joystick and some games. We connected our 1980s home computer to the kitchen TV while Mum prepared Christmas lunch. Our first game was football made of chunky pixels, but to us it was astonishing; I still remember that day as one of the happiest of my childhood.',
+          'In my final year of middle school, I discovered that my physics teacher used a computer like mine to write programs. I picked up the manual and tried the first commands, including the legendary GOTO and its inevitable spaghetti code. It was my first attempt to tell the computer what to do.'],
+        quote: '“At first, I was amazed by what appeared on the screen. Then I wanted to learn how to make it appear.”',
+        captions: ['Christmas 19xx<br>My first computer ♡'],
+        alts: ['Photo of a child in front of an 1980s home computer, with a Christmas tree in the background.'] },
+      2: { title: 'At the Workbench',
+        paragraphs: ['After high school, I needed to earn a living. My brother had started working in mobile phones, and together we opened a shop in Acitrezza; another followed in Catania. Computers were already familiar to me: I spent afternoons in my father’s office, surrounded by machines that seemed to become outdated almost as soon as they arrived.',
+          'With help from a friend who knew the work, I began assembling PCs for customers. Powering up a machine built piece by piece, updating the BIOS and installing the operating system was deeply satisfying, even when a loose component or a stubborn driver sent us back to the workbench. The shop also taught me to listen: over time, our work expanded from phones to satellite systems and small home networks.'],
+        quote: '“A computer truly worked when it worked for the person who bought it.”' },
+      3: { title: 'After the Shop Closed',
+        paragraphs: ['By 2001, the shop earned little and I could no longer picture my future there. A friend told me about a new Computer Science degree; I found out that some of my earlier engineering exams would count towards it, and I enrolled. I worked during the day, leaving nights and weekends for my books.',
+          'Algorithms were the subjects I loved most. In one classroom test, I solved a three-hour problem with a short recursive answer: when I stood up after about twenty minutes, the professor thought I was giving up, then read my work and congratulated me. I graduated in Computer Science in November 2006, after five years of fitting study around work.'],
+        quote: '“The nights were the time I had. I learned to make them count.”' },
+      4: { title: 'Through the Turnstiles',
+        paragraphs: ['During the week of my graduation, I got a call inviting me to an interview in Rome. I had just put a sign on the shop door saying, “Closed for graduation… mine”; when I returned, it was covered in good wishes. A few days later, I was offered a one-year contract and made a difficult decision: I announced that the shop would close.',
+          'In Rome, I walked into a glass building, passed through badge-operated turnstiles and saw a company with hundreds of people. It was far bigger than I had imagined, yet the atmosphere felt familiar. After years of largely building my own work, I was beginning to learn what it meant to be part of a team.'],
+        quote: '“That badge opened a door much bigger than the office.”' },
+      5: { title: 'Learning on the Move',
+        paragraphs: ['I spent a few months working in Sardinia and explored the coast on weekends. I also remember watching a Roma match with colleagues in a usually quiet restaurant: they cheered so loudly that we nearly got thrown out. Work changed often in those years, but the people made each new place memorable.',
+          'Consulting taught me to step into unfamiliar situations and look for answers quickly: study, search, try, get it wrong and start again. Sometimes we also had to deal with expectations that were hard to meet. I kept the habit of tackling a problem before I knew everything about it, looking for another way when the first one failed.'],
+        quote: '“I didn’t always know the answer. I knew where to start looking.”' },
+      6: { title: 'A Car Full of Luggage',
+        paragraphs: ['A few days after our wedding, I received a job offer in Luxembourg. Alina said yes straight away and we started packing; on 30 June 2017, we arrived with our Clio filled to the brim. I still remember stopping for fuel and thinking the price on the pump must be a mistake.',
+          'I joined a large European organisation working with statistical data, in a setting unlike those I had known before. I learned to understand its tools, processes and needs, broadening the way I worked. When the opportunity came to contribute to the evolution of its systems, I brought the curiosity and resourcefulness I had developed over the years.'],
+        quote: '“Moving was a leap. Staying curious helped me land.”',
+        captions: ['Luxembourg', '30 June 2017<br>The packed Clio'] },
+      7: { title: 'Late Nights, New Questions',
+        paragraphs: ['The first time I asked AI to help me write a function, I sensed that my work was about to change. I did not expect it to happen so quickly: tools that could follow entire projects arrived, along with sleepless nights wondering whether there would still be a place for me. Alina gave me room to study and experiment, as she had through the other turning points in our lives.',
+          'Personal projects became my workshop: some experiments worked, while others left me with deleted functions and decisions I could no longer trace. I began defining ideas more clearly, organising tasks and roadmaps, and recording decisions; that need led me to build my first tool for managing long projects with AI. I now write less code directly, but spend more time deciding what to build, guiding the work and checking the result.'],
+        quote: '“AI gave me more possibilities. I had to learn how to give them direction.”' }
+    };
+    const englishPage = {
+      description: 'Origin Story: from my first 1980s computers to the shop, a degree, Rome and Luxembourg, and the nights spent experimenting with AI.',
+      tagline: 'Not a company. A garage for ideas ready to step outside.',
+      chapter: 'CHAPTER', prev: 'Previous chapter', next: 'Next chapter', chapters: 'Chapters', nav: 'Main navigation', lang: 'Language',
+      footer: ['MGM Garage Lab / build, explore, tinker, repeat.', 'Private stays private. That is part of the craft.']
+    };
+
+    const q = (root, sel) => [...root.querySelectorAll(sel)];
+    const italian = {};
+    cards.forEach(card => {
+      italian[card.dataset.chapter] = {
+        eyebrow: card.querySelector('.eyebrow').textContent,
+        title: card.querySelector('h2').textContent,
+        paragraphs: q(card, '.card-text > p:not(.highlight):not(.signoff)').map(p => p.textContent),
+        quote: card.querySelector('.highlight').textContent,
+        captions: q(card, 'figcaption').map(c => c.innerHTML),
+        alts: q(card, '.polaroid img').map(i => i.getAttribute('alt'))
+      };
+    });
+    const italianPage = {
+      description: document.querySelector('meta[name="description"]').content,
+      tagline: document.querySelector('.intro p').textContent,
+      prev: prevBtn.getAttribute('aria-label'), next: nextBtn.getAttribute('aria-label'),
+      chapters: document.querySelector('.filmstrip').getAttribute('aria-label'),
+      nav: document.querySelector('.intro nav').getAttribute('aria-label'),
+      lang: document.querySelector('.language-switch').getAttribute('aria-label'),
+      footer: q(document, '.footer-note span').map(s => s.textContent),
+      films: tabs.map(t => t.querySelector('.film-title').textContent)
+    };
+
+    const languageKey = 'mgm-garage-language';
+    let language = navigator.language.toLowerCase().startsWith('it') ? 'it' : 'en';
+    try {
+      const saved = localStorage.getItem(languageKey);
+      if (saved === 'it' || saved === 'en') language = saved;
+    } catch { /* The page works without browser storage. */ }
+
+    function setLanguage(next) {
+      if (next !== 'it' && next !== 'en') return;
+      language = next;
+      const en = next === 'en';
+      document.documentElement.lang = next;
+      document.querySelector('meta[name="description"]').content = en ? englishPage.description : italianPage.description;
+      document.querySelector('.intro p').textContent = en ? englishPage.tagline : italianPage.tagline;
+      document.querySelector('.intro nav').setAttribute('aria-label', en ? englishPage.nav : italianPage.nav);
+      document.querySelector('.language-switch').setAttribute('aria-label', en ? englishPage.lang : italianPage.lang);
+      prevBtn.setAttribute('aria-label', en ? englishPage.prev : italianPage.prev);
+      nextBtn.setAttribute('aria-label', en ? englishPage.next : italianPage.next);
+      document.querySelector('.filmstrip').setAttribute('aria-label', en ? englishPage.chapters : italianPage.chapters);
+      q(document, '.footer-note span').forEach((s, i) => { s.textContent = (en ? englishPage : italianPage).footer[i]; });
+      cards.forEach(card => {
+        const n = card.dataset.chapter, it = italian[n], e = englishChapters[n];
+        card.querySelector('.eyebrow').textContent = en ? it.eyebrow.replace('CAPITOLO', englishPage.chapter) : it.eyebrow;
+        card.querySelector('h2').textContent = en ? e.title : it.title;
+        q(card, '.card-text > p:not(.highlight):not(.signoff)').forEach((p, i) => { p.textContent = en ? e.paragraphs[i] : it.paragraphs[i]; });
+        card.querySelector('.highlight').textContent = en ? e.quote : it.quote;
+        q(card, 'figcaption').forEach((c, i) => { c.innerHTML = en && e.captions ? e.captions[i] : it.captions[i]; });
+        q(card, '.polaroid img').forEach((img, i) => { const alt = en && e.alts ? e.alts[i] : it.alts[i]; if (alt !== undefined) img.setAttribute('alt', alt); });
+      });
+      tabs.forEach((t, i) => { t.querySelector('.film-title').textContent = en ? englishChapters[t.dataset.chapter].title : italianPage.films[i]; });
+      q(document, '[data-language]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.language === next)));
+      try { localStorage.setItem(languageKey, next); } catch { /* Language switching does not depend on storage. */ }
+    }
+    q(document, '[data-language]').forEach(b => b.addEventListener('click', () => setLanguage(b.dataset.language)));
+
+    const preselect = new URLSearchParams(location.search).get('chapter');
+    goToChapter(preselect && chapterOrder.includes(preselect) ? preselect : chapterOrder[0]);
+    setLanguage(language);
+  </script>
+</body>
+</html>
